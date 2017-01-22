@@ -1,4 +1,9 @@
+<?php
+
+?>
+
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -17,7 +22,7 @@
             </tr>
             <tr>
                 <td>
-                    password:<input type="text" id="input2" name="passwd"/>
+                    password:<input type="password" id="input2" name="passwd"/>
                 </td>
             </tr>
             <tr>

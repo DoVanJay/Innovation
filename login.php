@@ -20,19 +20,22 @@ function whichWeek($days)               /*计算当前是第几周*/
 
 <?php
 require('./mysql.php');
-//$username = $_POST['name'];
-//$passwd = $_POST['passwd'];
+session_start();
+//$_SESSION['username'] = '杜文杰';
+//$_SESSION['passwd'] = 'dwjdwjdwj';
+@$_SESSION['username'] = $_POST['name'];
+@$_SESSION['passwd'] = $_POST['passwd'];
 
-$username = '杜文杰';
-$passwd = 'dwjdwjdwj';
-//session_start();
-$_SESSION['s_username'] = $username;
+$username = $_SESSION['username'];
+$passwd = $_SESSION['passwd'];
+
 $sql_user = "select * from user where passwd='$passwd' and name='$username';";
 $result[] = mysqli_query($con, $sql_user);
 $row = mysqli_fetch_row($result[0]);         /*查找是否有符合的用户*/
 if ($row == 0) {
-    echo "无法登录";
+    echo "<br/><br/>您已注销或登录失败。";
 } else {
+
     $date = date('y-m-d');
     $day = array('日', '一', '二', '三', '四', '五', '六');
     $firstDay = mysqli_fetch_array(mysqli_query($con, "select * from TheFirstDay"));
@@ -42,8 +45,12 @@ if ($row == 0) {
     $firstDay = date('y') . '-' . $firstDay[0] . '-' . (string)$firstDay[1];
     $days = calDays($firstDay, $date);      /*当天和本学期第一天中间隔了多少天*/
     $whichweek = whichWeek($days);          /*当前是第几周*/
-    $mysqlZC = $day[date("w")] . "0%";
-    $sql_innovation = "select * from innovation WHERE JSXM='$username' AND find_in_set('$whichweek',SKZCMX) AND SKSJ like '1%' ";
+    if ($day[date("w")] != 0) {
+        $mysqlZJ = $day[date("w")] . "%";
+    } else {
+        $mysqlZJ = 7 . "%";
+    }
+    $sql_innovation = "select * from innovation WHERE JSXM='$username' AND find_in_set('$whichweek',SKZCMX) AND SKSJ like '$mysqlZJ' ";
 
     $result = mysqli_query($con, $sql_innovation);
 
@@ -63,6 +70,14 @@ if ($row == 0) {
     </head>
     <body>
     <h1 style="text-align: center">多媒体机房管理系统</h1>
+    <?php
+    echo $username . " 老师,您好。";
+    ?>
+    <?php
+    echo '点此 <a href="off.php">注销</a><br />';
+
+
+    ?>
     <p>今天是 第<span
             style="text-decoration-line: underline"> <?php echo "&nbsp" . $whichweek . " " ?></span><?php echo "周 周" ?>
         <span style="text-decoration-line: underline"> <?php echo $day[date("w")] . '&nbsp' ?></span>
@@ -75,12 +90,18 @@ if ($row == 0) {
                     $info = mysqli_fetch_array($result);            /*取出当前老师课表信息*/
                     $SKSJ = (string)$info[0];                       /*取出上课时间*/
                     $sksjPY = exec("python dayInWeek.py $SKSJ");    /*对上课时间进行切片*/
-                    $info[1] = "第" . $sksjPY[1] . $sksjPY[2] . "节和" . "第" . $sksjPY[3] . $sksjPY[4] . "节  " . $info[1] . " 有课";
-                    if ($n != mysqli_num_rows($result)) {
-                        echo $info[1].";"."&nbsp;&nbsp;";
+                    $m = strlen($sksjPY);
+                    if ($m == 5) {
+                        $info[1] = "第" . $sksjPY[1] . $sksjPY[2] . "节和" . "第" . $sksjPY[3] . $sksjPY[4] . "节  " . $info[1] . " 有课";
                     } else {
-                        echo $info[1].";"."&nbsp;&nbsp;";
+                        $info[1] = "第" . $sksjPY[1] . $sksjPY[2] . "节/" . "第" . $sksjPY[3] . $sksjPY[4] . "节/" . "第" . $sksjPY[5] . $sksjPY[6] . "节/" . "第" . $sksjPY[7] . $sksjPY[8] . "节  " . $info[1] . " 有课";
                     }
+//                    if ($n != mysqli_num_rows($result)) {
+//                        echo $info[1] . ";" . "&nbsp;&nbsp;";
+//                    } else {
+//                        echo $info[1] . ";" . "&nbsp;&nbsp;";
+//                    }
+                    echo $info[1] . ";" . "&nbsp;&nbsp;";
                     $n = $n - 1;
                 }
 
