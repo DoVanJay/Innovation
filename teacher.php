@@ -1,3 +1,9 @@
+<!--
+注意:
+1.实际课表中的字段位置可能与现在不一致,拿到详细数据库后要进行调整;
+2.
+-->
+
 <?php /*自定义函数*/
 
 function calDays($date1, $date2)        /*计算两天之间隔了多少天*/
@@ -61,7 +67,7 @@ $result = mysqli_query($con, $sql_innovation);
 echo $username . " 老师,您好。";
 ?>
 <?php
-echo '点此 <a href="off.php">注销</a><br />';
+echo '点此 <a href="off.php">注销</a><br />  点此查看您的操作记录<>';
 ?>
 <p>今天是 第<span
         style="text-decoration-line: underline"> <?php echo "&nbsp" . $whichweek . " " ?></span><?php echo "周 周" ?>
@@ -71,11 +77,17 @@ echo '点此 <a href="off.php">注销</a><br />';
             <?php
             if (mysqli_num_rows($result)) {
                 $n = mysqli_num_rows($result);
+                $o = 0;
                 while ($n > 0) {
                     $info = mysqli_fetch_array($result);            /*取出当前老师课表信息*/
                     $SKSJ = (string)$info[0];                       /*取出上课时间*/
                     $sksjPY = exec("python dayInWeek.py $SKSJ");    /*对上课时间进行切片*/
                     $m = strlen($sksjPY);
+                    if (strpos($info[1], "多媒体") || strpos($info[1], "文理楼")) {
+                        $operation[$o][0] = $info[0];
+                        $operation[$o][1] = $info[1];
+                        $o = $o + 1;
+                    }
                     switch ($m) {
                         case "9":
                             $info[1] = "第" . $sksjPY[1] . $sksjPY[2] . "节/" . "第" . $sksjPY[3] . $sksjPY[4] . "节/" . "第" . $sksjPY[5] . $sksjPY[6] . "节/" . "第" . $sksjPY[7] . $sksjPY[8] . "节  " . $info[1] . " 有课";
@@ -114,14 +126,14 @@ echo '点此 <a href="off.php">注销</a><br />';
                      echo "checked";
                  } ?>/>完全关闭（包括内网）</label>
                                  <input name="" type="submit" value="提交"/>
-
         </pre>
 </form>
 
 <hr/>
 <p id="notice">
 <pre style="font-size:120%">
-<span style="color: red;font-weight: bold;font-size: 140%">注意：</span> 1.该操作系统只能用于多媒体机房和文理楼机房的控制；
+<span style="color: red;font-weight: bold;font-size: 140%">注意：</span>
+        1.该操作系统只能用于多媒体机房和文理楼机房的控制；
         2.从上课前10分钟到您的课结束，您都有权限控制机房网络;
         3.您的课结束后网络将自动恢复到完全开放状态；
         例：您03和04节在文理楼105有课，那么从03节上课前十分钟到04节课下课机房网络都将处于您
