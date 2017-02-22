@@ -1,14 +1,7 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: jay
- * Date: 17-1-23
- * Time: 下午9:38
- */
 session_start();
 header("content-type:text/html;charset=utf-8");
 $host = "localhost";
-/*本地服务器，以后再换*/
 $username = "root";
 $password = "";
 $db = "operating_log";
@@ -18,8 +11,10 @@ if (mysqli_connect_errno()) {
     exit();
 }
 //$result = mysqli_query("SELECT * FROM log WHERE NAME =".$_SESSION["username"]);
-$sql = "insert log values(NOW(),".$_SESSION["username"].);
-
+$sql = "insert log values(NOW(),".$_SESSION["username"].$_SESSION;
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
 if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) {
     echo "<script>alert('对不起,操作出错！')</script>";
 } else {
@@ -35,7 +30,5 @@ if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) 
             echo "it's 2";
             break;
     }
-
 }
-
 header("location:teacher.php?setnetwork=" . $var);/*get传参并不安全，还要解决注销之后记录当前网络状态的问题*/
