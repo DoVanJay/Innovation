@@ -1,4 +1,7 @@
 <?php
+/**
+ * 设置网络状态
+ */
 session_start();
 header("content-type:text/html;charset=utf-8");
 $host = "localhost";
@@ -10,25 +13,32 @@ if (mysqli_connect_errno()) {
     echo "连接失败";
     exit();
 }
-//$result = mysqli_query("SELECT * FROM log WHERE NAME =".$_SESSION["username"]);
-$sql = "insert log values(NOW(),".$_SESSION["username"].$_SESSION;
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
-//////////////////////////////////////////////////
 if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) {
     echo "<script>alert('对不起,操作出错！')</script>";
 } else {
     $var = $_POST["network"];
     switch ($_POST['network']) {
         case 0:
-            echo "it's 0";
+            ///////////////////////////////////////////////////
+            ///这里设置交换机对应接口下的网络状态//////////////////////
+            ///////////////////////////////////////////////////
+            $sql = "insert log values(NOW(),\"" . $_SESSION["username"] . "\",\"" . $_POST['classroomName'] . "\",\"完全开放\")";
+            mysqli_query($con, $sql);
             break;
         case 1:
-            echo "it's 1";
+            ///////////////////////////////////////////////////
+            ///这里设置交换机对应接口下的网络状态//////////////////////
+            ///////////////////////////////////////////////////
+            $sql = "insert log values(NOW(),\"" . $_SESSION["username"] . "\",\"" . $_POST['classroomName'] . "\",\"仅关闭内网\")";
+            mysqli_query($con, $sql);
             break;
         case 2:
-            echo "it's 2";
+            ///////////////////////////////////////////////////
+            ///这里设置交换机对应接口下的网络状态//////////////////////
+            ///////////////////////////////////////////////////
+            $sql = "insert log values(NOW(),\"" . $_SESSION["username"] . "\",\"" . $_POST['classroomName'] . "\",\"完全关闭\")";
+            mysqli_query($con, $sql);
             break;
     }
 }
-header("location:teacher.php?setnetwork=" . $var);/*get传参并不安全，还要解决注销之后记录当前网络状态的问题*/
+header("location:teacher.php");

@@ -1,4 +1,7 @@
 <?php
+/**
+ * 登录功能
+ */
 session_start();
 require('./mysql.php');
 @$_SESSION['username'] = $_POST['name'];
