@@ -4,7 +4,7 @@
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 </head>
 <body>
-<p>请选择要查询的日期:
+<p>请输入要查询的日期:
 <form name="form1" method="post" action="query.php">
     <select name='YYYY' onchange="YYYYMM(this.value)">
         <option value="">年</option>
@@ -93,13 +93,8 @@
 /**
  * 该程序实现教师查询自己操作记录和管理员查询所有教师操作记录的功能
  */
-/**
- *
- * 注:老师与管理员是否在同一张表中?
- *
- */
-session_start();
-header("content-type:text/html;charset=utf-8");
+//session_start();
+//header("content-type:text/html;charset=utf-8");
 $host = "localhost";
 $username = "root";
 $password = "";

@@ -8,7 +8,7 @@
 </head>
 <body>
 <dev>
-    <form name="login" method="post" id="login" action="login.php" onsubmit="">
+    <form name="login" method="post" id="login" action="/possess/login.php" onsubmit="">
         <table>
             <tr>
                 <td>
@@ -30,5 +30,6 @@
             </tr>
         </table>
     </form>
+</dev>
 </body>
 </html>

@@ -1,9 +1,22 @@
-<!--
-注意:
-1.实际课表中的字段位置可能与现在不一致,拿到详细数据库后要进行调整;
-2.
--->
 <?php
+/** to be continue
+TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
+ * 1.实际课表中的字段位置可能与现在不一致,拿到详细数据库后要进行调整;
+ * 2.上课时间例如1234连在一起,注意处理
+T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C
+TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC
+        T:::::T                   B::::B     B:::::B         C:::::C
+        T:::::T                   B::::BBBBBB:::::B         C:::::C
+        T:::::T                   B:::::::::::::BB          C:::::C
+        T:::::T                   B::::BBBBBB:::::B         C:::::C
+        T:::::T                   B::::B     B:::::B        C:::::C
+        T:::::T                   B::::B     B:::::B        C:::::C
+        T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC
+      TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C
+      T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C
+      T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
+      TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
+ */
 /**
  * 教师操作界面
  */
@@ -14,7 +27,6 @@ function calDays($date1, $date2)        /*计算两天之间隔了多少天*/
     $time2 = strtotime($date2);
     return ($time2 - $time1) / 86400;
 }
-
 function whichWeek($days)               /*计算当前是第几周*/
 {
     if (($days / 7) >= floor($days / 7)) {
@@ -23,10 +35,9 @@ function whichWeek($days)               /*计算当前是第几周*/
         return (int)($days / 7);
     }
 }
-
 ?>
 <?php
-require('./mysql.php');
+require('../possess/mysql.php');
 session_start();
 if ($_SESSION['username'] == false) {
     header("location:login.php");
@@ -65,14 +76,12 @@ $result = mysqli_query($con, $sql_innovation);
     }
 </script>
 <body>
-<div align="center"><img src="head.jpg"  width="550"/>
+<div align="center"><img src="../head.jpg" width="550"/>
 </div>
 <br/><br/>
 <?php
-echo $username . " 老师,您好。";
-?>
-<?php
-echo '点此 <a href="off.php">注销</a>&nbsp;&nbsp;;&nbsp; 点此<a href="query.php">查看您的操作记录</a>';
+echo "<p><span style='font-weight: bold;font-size: 110%'>".$username . "</span> 老师, 您好。 
+点此 <a href=\"../possess/off.php\">注销</a>&nbsp;&nbsp;;&nbsp; 点此<a href=\"query.php\">查看您的操作记录</a></p>";
 $o = 0;/*当天的课程数*/
 ?>
 <p>今天是 第<span
@@ -84,7 +93,7 @@ $o = 0;/*当天的课程数*/
                 while ($n > 0) {
                     $info = mysqli_fetch_array($result);            /*取出当前老师课表信息*/
                     $SKSJ = (string)$info[0];                       /*取出上课时间*/
-                    $sksjPY = exec("python dayInWeek.py $SKSJ");    /*对上课时间进行切片*/
+                    $sksjPY = exec("python ../possess/dayInWeek.py $SKSJ");    /*对上课时间进行切片*/
                     $m = strlen($sksjPY);
                     if (strstr($info[1], "微") || strstr($info[1], "文理")) {
                         $operation[$o][0] = $info[0];/*可操作的机房课程时间*/
@@ -106,6 +115,7 @@ $o = 0;/*当天的课程数*/
                 }
             } else {
                 $info[1] = "无课";
+
                 echo $info[1];
             }
             ?> </span></p>
@@ -131,7 +141,7 @@ switch ($nowTime) {
 }
 /** to be continue
 TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
-第11节课的网络状态设置应该和第9&10之间不断
+第11节课的网络状态设置应该和第9&10之间不断,还有1234连课,检测下$nowPermit
 T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C
 TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC
         T:::::T                   B::::B     B:::::B         C:::::C
@@ -146,8 +156,7 @@ TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCC
       T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
       TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
  */
-$nowPermit = '60102';/*临时设置*/
-
+$nowPermit = '10102';/*临时设置*/
 
 $todayLesson = ' + ';
 for ($l = 0; $l < $o; $l++) {/*$o为当天在机房上的课程数*/
@@ -174,9 +183,9 @@ if (strstr($todayLesson, $nowPermit)) {   /*根据时间判断当前是否有可
 设置学生机网络状态(设置后将会记住选项以表示当前状态):
         <label><input name="network" type="radio" value="0" >完全开放 </label>
         <label><input name="network" type="radio" value="1" >仅关闭外网</label>
-        <label><input name="network" type="radio" value="2" >完全关闭(包括内网)</label>
+        <label><input name="network" type="radio" value="2" >完全关闭(包括内网)</label>         <input name="" type="submit" value="提交"/>
         <input name="classroomName" type="hidden" value="' . $nowPermitClassroomname . '">
-                                <input name="" type="submit" value="提交"/>
+                                
         </pre>
         </form>';
 } else {
