@@ -19,3 +19,49 @@
  *       T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
  *       TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
  */
+require('../possess/mysql.php');
+
+?>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Set Classroom</title>
+</head>
+<script>
+    classLocation = document.classroom.classLocation.outerHTML;
+    classNum = document.classroom.classNum.outerHTML;
+    function setLocation(str) {
+        var s = '<option value="num">教室编号</option>';
+        if (str == "wei") {
+            for (var i = 1; i < 10; i++) {
+                s += "<option value='" + i + "'> " + i + "</option>\r\n";
+            }
+            document.classroom.classNum.outerHTML = "<select name='classNum'>" + s + "</select>";
+        } else if (str == "wenli") {
+            for (var i = 10; i < 20; i++) {
+                s += "<option value='" + i + "'> " + i + "</option>\r\n";
+            }
+            document.classroom.classNum.outerHTML = "<select name='classNum'>" + s + "</select>";
+        }
+        else {
+            document.classroom.classNum.outerHTML = '<select name="classNum"><option value="num">教室编号</option></select>';
+        }
+    }
+</script>
+<body>
+<form name="classroom" method="post" action="admin-setClass.php">
+    <select name="classLocation" onchange="setLocation(this.value)">
+        <option>教室位置</option>
+        <option value="wei">微</option>
+        <option value="wenli">文理</option>
+    </select>
+    <select name="classNum">
+        <option value="num">教室编号</option>
+    </select>
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

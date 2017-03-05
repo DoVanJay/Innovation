@@ -1,21 +1,21 @@
 <?php
 /** to be continue
-TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
+ * TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
  * 1.实际课表中的字段位置可能与现在不一致,拿到详细数据库后要进行调整;
  * 2.上课时间例如1234连在一起,注意处理
-T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C
-TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC
-        T:::::T                   B::::B     B:::::B         C:::::C
-        T:::::T                   B::::BBBBBB:::::B         C:::::C
-        T:::::T                   B:::::::::::::BB          C:::::C
-        T:::::T                   B::::BBBBBB:::::B         C:::::C
-        T:::::T                   B::::B     B:::::B        C:::::C
-        T:::::T                   B::::B     B:::::B        C:::::C
-        T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC
-      TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C
-      T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C
-      T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
-      TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
+ * T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C
+ * TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC
+ * T:::::T                   B::::B     B:::::B         C:::::C
+ * T:::::T                   B::::BBBBBB:::::B         C:::::C
+ * T:::::T                   B:::::::::::::BB          C:::::C
+ * T:::::T                   B::::BBBBBB:::::B         C:::::C
+ * T:::::T                   B::::B     B:::::B        C:::::C
+ * T:::::T                   B::::B     B:::::B        C:::::C
+ * T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC
+ * TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C
+ * T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C
+ * T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
+ * TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
  */
 /**
  * 教师操作界面
@@ -27,6 +27,7 @@ function calDays($date1, $date2)        /*计算两天之间隔了多少天*/
     $time2 = strtotime($date2);
     return ($time2 - $time1) / 86400;
 }
+
 function whichWeek($days)               /*计算当前是第几周*/
 {
     if (($days / 7) >= floor($days / 7)) {
@@ -35,6 +36,7 @@ function whichWeek($days)               /*计算当前是第几周*/
         return (int)($days / 7);
     }
 }
+
 ?>
 <?php
 require('../possess/mysql.php');
@@ -80,7 +82,7 @@ $result = mysqli_query($con, $sql_innovation);
 </div>
 <br/><br/>
 <?php
-echo "<p><span style='font-weight: bold;font-size: 110%'>".$username . "</span> 老师, 您好。 
+echo "<p><span style='font-weight: bold;font-size: 110%'>" . $username . "</span> 老师, 您好。 
 点此 <a href=\"../possess/off.php\">注销</a>&nbsp;&nbsp;;&nbsp; 点此<a href=\"query.php\">查看您的操作记录</a></p>";
 $o = 0;/*当天的课程数*/
 ?>
@@ -140,23 +142,23 @@ switch ($nowTime) {
         $nowPermit = '0000';
 }
 /** to be continue
-TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
-第11节课的网络状态设置应该和第9&10之间不断,还有1234连课,检测下$nowPermit
-T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C
-TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC
-        T:::::T                   B::::B     B:::::B         C:::::C
-        T:::::T                   B::::BBBBBB:::::B         C:::::C
-        T:::::T                   B:::::::::::::BB          C:::::C
-        T:::::T                   B::::BBBBBB:::::B         C:::::C
-        T:::::T                   B::::B     B:::::B        C:::::C
-        T:::::T                   B::::B     B:::::B        C:::::C
-        T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC
-      TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C
-      T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C
-      T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
-      TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
+ * TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
+ * 第11节课的网络状态设置应该和第9&10之间不断,还有1234连课,检测下$nowPermit
+ * T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C
+ * TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC
+ * T:::::T                   B::::B     B:::::B         C:::::C
+ * T:::::T                   B::::BBBBBB:::::B         C:::::C
+ * T:::::T                   B:::::::::::::BB          C:::::C
+ * T:::::T                   B::::BBBBBB:::::B         C:::::C
+ * T:::::T                   B::::B     B:::::B        C:::::C
+ * T:::::T                   B::::B     B:::::B        C:::::C
+ * T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC
+ * TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C
+ * T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C
+ * T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
+ * TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
  */
-$nowPermit = '10102';/*临时设置*/
+$nowPermit = '30102';/*临时设置*/
 
 $todayLesson = ' + ';
 for ($l = 0; $l < $o; $l++) {/*$o为当天在机房上的课程数*/

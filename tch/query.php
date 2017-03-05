@@ -28,8 +28,7 @@
         //先给年下拉框赋内容
         var y = new Date().getFullYear();
         var str = strYYYY.substring(0, strYYYY.length - 9);
-        for (var i = (y - 1); i < (y + 1); i++) //以今年为准，前30年，后30年
-        {
+        for (var i = (y - 1); i < (y + 1); i++) {
             str += "<option value='" + i + "'> " + i + "</option>\r\n";
         }
         document.form1.YYYY.outerHTML = str + "</select>";
@@ -75,7 +74,7 @@
     {
         var s = strDD.substring(0, strDD.length - 9);
         for (var i = 1; i < 10; i++) {
-            s += "<option value='" + i + "'> " + 0 + i + "</option>\r\n";
+            s += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
             document.form1.DD.outerHTML = s + "</select>";
         }
         for (var i = 10; i < (n + 1); i++)
@@ -93,8 +92,8 @@
 /**
  * 该程序实现教师查询自己操作记录和管理员查询所有教师操作记录的功能
  */
-//session_start();
-//header("content-type:text/html;charset=utf-8");
+session_start();
+header("content-type:text/html;charset=utf-8");
 $host = "localhost";
 $username = "root";
 $password = "";
@@ -105,21 +104,24 @@ if (mysqli_connect_errno()) {
     exit();
 }
 @$time = $_POST['YYYY'];
-@$diasplay = $_POST['YYYY'] . "年";
+@$display = $_POST['YYYY'] . "年";
 if (@$_POST['MM']) {
     @$time = $time . "-" . $_POST['MM'];
-    @$diasplay = $diasplay . $_POST['MM'] . "月";
+    @$display = $display . $_POST['MM'] . "月";
     if (@$_POST['DD']) {
         @$time = $time . "-" . $_POST['DD'];
-        @$diasplay = $diasplay . $_POST['DD'] . "日";
+        @$display = $display . $_POST['DD'] . "日";
     }
 }
-echo "当前查询日期:&nbsp;&nbsp;&nbsp;" . $diasplay . "<br/>";
+if ($display != "年") {
+    echo "<p>当前查询日期: <span style='background-color: lightgreen ;'>" . $display . "</span></p>";
+}
+
 $teacherName = $_SESSION['username'];
 $sql = "select * from log where name='$teacherName' and time LIKE '%$time%'";
 $result = mysqli_query($con, $sql);
 ?>
-<textarea rows="30" cols="70">
+<textarea rows="30" cols="70" readonly="readonly">
     <?php
     echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
     if ($time) {

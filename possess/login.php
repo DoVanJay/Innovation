@@ -19,6 +19,5 @@ if ($row == 0) {
     } else {
         header("location:../tch/teacher.php");
     }
-
-
+//ini_set('session.name', 'PHPSESSID_RS');
 }

@@ -16,7 +16,7 @@
         <option value="">日</option>
     </select>
     <input type="text" name="tchName">
-    <input type="submit" value="提交" onclick="jilu">
+    <input type="submit" value="提交" >
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="admin.php">点此返回主操作界面</a>
 </form>
@@ -74,7 +74,7 @@
     {
         var s = strDD.substring(0, strDD.length - 9);
         for (var i = 1; i < 10; i++) {
-            s += "<option value='" + i + "'> " + 0 + i + "</option>\r\n";
+            s += "<option value='" +0+ i + "'> " + 0 + i + "</option>\r\n";
             document.form1.DD.outerHTML = s + "</select>";
         }
         for (var i = 10; i < (n + 1); i++)
@@ -138,12 +138,12 @@ if (@$_POST['MM']) {
     }
 }
 if ($tchName) {
-    echo "当前查询 " . $tchName . "老师 日期为:&nbsp;&nbsp;&nbsp;" . $diasplay . "的操作记录<br/>";
+    echo "<p>当前查询 <span style='background-color: lightgreen ;'>" . $tchName . "</span> 在 <span style='background-color: lightgreen ;'>" . $diasplay . "</span>的操作记录</p>";
 }
-$sql = "select * from log where name='$tchName' and time LIKE '%$time%'";
+$sql = "select * f`rom log where name='$tchName' and time LIKE '%$time%'";
 $result = mysqli_query($con, $sql);
 ?>
-<textarea rows="25" cols="70">
+<textarea rows="25" cols="70" readonly="readonly">
     <?php
     echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
     if ($time) {
