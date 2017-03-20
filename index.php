@@ -8,11 +8,11 @@
 </head>
 <body>
 <dev>
-    <form name="login" method="post" id="login" action="/possess/login.php" onsubmit="">
+    <form name="login" method="post" id="login" action="/possess/login.php">
         <table>
             <tr>
                 <td>
-                    username:<input type="text" id="input1" name="name"/>
+                    username:<input type="text" id="input1" name="ID"/>
                 </td>
             </tr>
             <tr>

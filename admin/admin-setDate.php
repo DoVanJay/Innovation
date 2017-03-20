@@ -15,14 +15,10 @@
         //先给年下拉框赋内容
         var y = new Date().getFullYear();
         var str = strYYYY.substring(0, strYYYY.length - 9);
-        for (var i = y - 1; i < y + 1; i++) //以今年为准，前30年，后30年
-        {
-            str += "<option value='" + i + "'> " + i + "</option>\r\n";
-        }
+        str += "<option value='" + y + "'> " + y + "</option>\r\n";
         document.form1.YYYY.outerHTML = str + "</select>";
         //赋月份的下拉框
-
-
+        var str = strMM.substring(0, strMM.length - 9);
         for (var i = 1; i < 10; i++) {
             str += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
         }
@@ -34,18 +30,18 @@
         var n = MonHead[new Date().getMonth()];
         if (new Date().getMonth() == 1 && IsPinYear(YYYYvalue)) n++;
         writeDay(n); //赋日期下拉框
-    };
-    //    function YYYYMM(str) //年发生变化时日期发生变化(主要是判断闰平年)
-    //    {
-    //        var MMvalue = document.form1.MM.options[document.form1.MM.selectedIndex].value;
-    //        if (MMvalue == "") {
-    //            document.form1.DD.outerHTML = strDD;
-    //            return;
-    //        }
-    //        var n = MonHead[MMvalue - 1];
-    //        if (MMvalue == 2 && IsPinYear(str)) n++;
-    //        writeDay(n)
-    //    }
+    }
+    function YYYYMM(str) //年发生变化时日期发生变化(主要是判断闰平年)
+    {
+        var MMvalue = document.form1.MM.options[document.form1.MM.selectedIndex].value;
+        if (MMvalue == "") {
+            document.form1.DD.outerHTML = strDD;
+            return;
+        }
+        var n = MonHead[MMvalue - 1];
+        if (MMvalue == 2 && IsPinYear(str)) n++;
+        writeDay(n)
+    }
     function MMDD(str) //月发生变化时日期联动
     {
         var YYYYvalue = document.form1.YYYY.options[document.form1.YYYY.selectedIndex].value;
@@ -74,9 +70,18 @@
     }
 </script>
 <body>
-<p>请输入要设置为本学期第一天的日期:
-<form name="form1" id="year" method="post" action="admin-setDate.php">
-    <select name='YYYY'></select>
+<div align="center"><img src="../head.jpg" width="550"/>
+</div>
+<?php
+require('../possess/mysql.php');
+$sql_currentFirstDay = "select * from thefirstday";
+$result = mysqli_query($con, $sql_currentFirstDay);
+$currentFirstDay = mysqli_fetch_array($result);
+echo "<p>当前已设置的开学第一天为 : <span style='text-decoration-line: underline;font-weight: bold'>" . $currentFirstDay[0] . "年" . "$currentFirstDay[1]" . "月" . $currentFirstDay[2] . "日</span></p>";
+?>
+<p>请确认后输入要设置为本学期第一天的日期:
+<form name="form1" method="post" action="admin-setDate.php" onsubmit="return confirm('确认修改日期？')">
+    <select name='YYYY' id="year"></select>
     <select name="MM" id="month" onchange="MMDD(this.value)">
         <option value="">月</option>
     </select>
@@ -88,16 +93,16 @@
     <a href="admin.php">点此返回主操作界面</a>
 </form>
 <?php
-require('../possess/mysql.php');
 @$year = $_POST["YYYY"];
 @$month = $_POST["MM"];
 @$day = $_POST["DD"];
 if ($month != 0 && $day != 0 && $year != 0) {
     $cleanTable = "truncate table thefirstday";
     mysqli_query($con, $cleanTable);
-    $sql_thefirstday = "INSERT INTO `thefirstday` (`month`, `day`) VALUES ('$month', '$day'); ";
+    $sql_thefirstday = "INSERT INTO `thefirstday` (`year`, `month`, `day`) VALUES ('$year','$month', '$day'); ";
     if (mysqli_query($con, $sql_thefirstday)) {
-        echo "<script>alert('设置成功!本学期第一天将从 " . $year . "年" . $month . "月" . $day . "日" . " 开始计算');document.getElementById(\"submit\").click();</script>";
+        echo "<script>alert('设置成功 !  本学期第一天将从 " . $year . "年" . $month . "月" . $day . "日" . " 开始计算');
+                      window.location.href='admin-setDate.php';</script>";
     }
 } else if ($month != 0 || $day != 0) {
     echo "<script>alert('设置失败,请输入正确的日期');</script>";

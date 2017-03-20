@@ -18,29 +18,30 @@ function whichWeek($days)               /*计算当前是第几周*/
         return (int)($days / 7);
     }
 }
+
 ?>
 <?php
 require('../possess/mysql.php');
 session_start();
-if ($_SESSION['username'] == false) {
-    header("location:login.php");
+if ($_SESSION['ID'] == false) {
+    header("location:../possess/login.php");
 }
-$username = $_SESSION['username'];
+$adminID = $_SESSION['ID'];
 $date = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
 $firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from TheFirstDay'));
-if ($firstDay[0] < 10) {
-    $firstDay[0] = "0" . '' . (string)$firstDay[0];
-}
-$firstDay = date('y') . '-' . $firstDay[0] . '-' . (string)$firstDay[1];
+$firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];//第一天的日期格式化
 $days = calDays($firstDay, $date);      /*当天和本学期第一天中间隔了多少天*/
-$whichweek = whichWeek($days);          /*当前是第几周*/
+$whichWeek = whichWeek($days);          /*当前是第几周*/
 if (date("w") != 0) {
     $mysqlZJ = date("w") . "%";
 } else {
     $mysqlZJ = 7 . "%";
 }
-$sql_innovation = "select * from innovation WHERE JSXM='$username' AND find_in_set('$whichweek',SKZCMX) AND SKSJ like '$mysqlZJ' ";
+$sql_innovation = "select * from innovation 
+                      WHERE JSXM='$username' 
+                      AND find_in_set('$whichWeek',SKZCMX) 
+                      AND SKSJ like '$mysqlZJ' ";
 $result = mysqli_query($con, $sql_innovation);
 ?>
 <html>
@@ -48,20 +49,21 @@ $result = mysqli_query($con, $sql_innovation);
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>管理系统</title>
+    <title>管理员操作界面</title>
 </head>
 <body>
 <div align="center"><img src="../head.jpg" width="550"/>
 </div>
 <br/><br/>
 <?php
-echo "<p><span style='font-weight: bold;font-size: 110%'>" . $username . "</span> 管理员, 您好。点此 <a href=\"../possess/off.php\">注销</a></p>";
+echo "<p><span style='font-weight: bold;font-size: 110%'>" . $adminID . "</span> 管理员, 您好。点此 <a href=\"../possess/off.php\">注销</a></p>";
 ?>
 <p>今天是 第<span
-        style="text-decoration-line: underline"> <?php echo "&nbsp" . $whichweek . " " ?></span><?php echo "周 周" . $day[date("w")] . '&nbsp;&nbsp;;' ?></span>
+        style="text-decoration-line: underline"> <?php echo "&nbsp" . $whichWeek . " " ?></span><?php echo "周 周" . $day[date("w")] . '&nbsp;&nbsp;;' ?></span>
 </p>
+<p>点此 <a href="../tch/teacher.php">查看您当前有课/可直接控制的教室</a> ;</p>
 <p>点此 <a href="admin-query.php">查看所有老师的操作记录</a> ;</p>
-<p>点此 <a href="admin-setDate.php">设置本学期的第一天以及节假日</a> ;</p>
+<p>点此 <a href="admin-setDate.php">设置本学期的第一天</a> ;</p>
 <p>点此 <a href="admin-setClass.php">给老师开放临时的教室控制权限(限当天设置当天有效)</a> ;</p>
 <br/>
 <hr/>
@@ -69,9 +71,9 @@ echo "<p><span style='font-weight: bold;font-size: 110%'>" . $username . "</span
 <pre style="font-size:120%">
 <span style="color: red;font-weight: bold;font-size: 140%">注意：</span>
         1.每周从周一开始计算;
-        2.若当前周次为负数(如-2),则为开学前第2周;
+        2.若当前周次为负数(如-2),则为开学前倒数第2周;
         3.
     </pre>
-</p></div>
+</p>
 </body>
 </html>

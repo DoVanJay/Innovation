@@ -2,7 +2,6 @@
 /**
  * 连接数据库
  */
-header("content-type:text/html;charset=utf-8");
 $host = "localhost";
 /*本地服务器，以后再换*/
 $username = "root";

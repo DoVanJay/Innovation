@@ -1,10 +1,12 @@
 <html>
 <head>
-    <title>操作记录查询</title>
+    <title>全员操作记录查询</title>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 </head>
 <body>
-<p>请输入要查询的日期及教师姓名:
+<div align="center"><img src="../head.jpg" width="550"/>
+</div>
+<p>请输入要查询的日期及教师工号:
 <form name="form1" id="year" method="post" action="admin-query.php">
     <select name='YYYY' onchange="YYYYMM(this.value)">
         <option value="">年</option>
@@ -15,8 +17,8 @@
     <select name="DD" id="day">
         <option value="">日</option>
     </select>
-    <input type="text" name="tchName">
-    <input type="submit" value="提交" >
+    <input type="text" value="请输入教师工号" onfocus="javascript:if(this.value=='请输入教师工号')this.value='';" name="tchNum">
+    <input type="submit" value="提交">
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="admin.php">点此返回主操作界面</a>
 </form>
@@ -74,7 +76,7 @@
     {
         var s = strDD.substring(0, strDD.length - 9);
         for (var i = 1; i < 10; i++) {
-            s += "<option value='" +0+ i + "'> " + 0 + i + "</option>\r\n";
+            s += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
             document.form1.DD.outerHTML = s + "</select>";
         }
         for (var i = 10; i < (n + 1); i++)
@@ -98,7 +100,6 @@
 /**
  * 该程序实现教师查询自己操作记录和管理员查询所有教师操作记录的功能
  */
-
 /** to be continue
  * TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
  * 教师重名怎么办?
@@ -127,7 +128,7 @@ if (mysqli_connect_errno()) {
     exit();
 }
 @$time = $_POST['YYYY'];
-@$tchName = $_POST['tchName'];
+@$tchNum = $_POST['tchNum'];
 @$diasplay = $_POST['YYYY'] . "年";
 if (@$_POST['MM']) {
     @$time = $time . "-" . $_POST['MM'];
@@ -137,18 +138,18 @@ if (@$_POST['MM']) {
         @$diasplay = $diasplay . $_POST['DD'] . "日";
     }
 }
-if ($tchName) {
-    echo "<p>当前查询 <span style='background-color: lightgreen ;'>" . $tchName . "</span> 在 <span style='background-color: lightgreen ;'>" . $diasplay . "</span>的操作记录</p>";
+if ($tchNum!=null&&$tchNum!='请输入教师工号') {
+    echo "<p>当前查询工号为 <span style='background-color: lightgreen ;'>" . $tchNum . "</span> 的老师在 <span style='background-color: lightgreen ;'>" . $diasplay . "</span>的操作记录</p>";
 }
-$sql = "select * f`rom log where name='$tchName' and time LIKE '%$time%'";
+$sql = "select * from log where tchNum='$tchNum' and time LIKE '%$time%'";
 $result = mysqli_query($con, $sql);
 ?>
 <textarea rows="25" cols="70" readonly="readonly">
     <?php
-    echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
+    echo "++++操作时间++++++工号++++姓名++++操作教室++++++++\n";
     if ($time) {
         echo "结果如下:\n";
-        if ($tchName) {
+        if ($tchNum!=null&&$tchNum!='请输入教师工号') {
             if (mysqli_num_rows($result) < 1) {
                 echo "\n当前日期无操作记录";
             } else {
@@ -157,7 +158,7 @@ $result = mysqli_query($con, $sql);
                 }
             }
         } else {
-            echo "\n请输入教师姓名(>_<)";
+            echo "\n请输入教师工号(>_<)";
         }
     }
     ?>

@@ -1,9 +1,11 @@
 <html>
 <head>
-    <title>操作记录查询</title>
+    <title>当前用户操作记录查询</title>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
 </head>
 <body>
+<div align="center"><img src="../head.jpg" width="550"/>
+</div>
 <p>请输入要查询的日期:
 <form name="form1" method="post" action="query.php">
     <select name='YYYY' onchange="YYYYMM(this.value)">
