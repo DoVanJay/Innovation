@@ -2,24 +2,8 @@
 /**
  * 设置网络状态
  */
-/** to be continue
- * TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
- * log 中写入教师工号
- * T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C
- * TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC
- *         T:::::T                   B::::B     B:::::B         C:::::C
- *         T:::::T                   B::::BBBBBB:::::B         C:::::C
- *         T:::::T                   B:::::::::::::BB          C:::::C
- *         T:::::T                   B::::BBBBBB:::::B         C:::::C
- *         T:::::T                   B::::B     B:::::B        C:::::C
- *         T:::::T                   B::::B     B:::::B        C:::::C
- *         T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC
- *       TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C
- *       T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C
- *       T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
- *       TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
- */
 session_start();
+include("../test.php");
 header("content-type:text/html;charset=utf-8");
 $host = "localhost";
 $username = "root";
@@ -30,6 +14,7 @@ if (mysqli_connect_errno()) {
     echo "连接失败";
     exit();
 }
+$_SESSION["tchID"] = '1507020326';//临时设置
 if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) {
     echo "<script>alert('对不起,操作出错！')</script>";
 } else {
@@ -37,23 +22,24 @@ if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) 
     switch ($_POST['network']) {
         case 0:
             ///////////////////////////////////////////////////
-            ///这里设置交换机对应接口下的网络状态////////////////////
-            ///////////////////////////////////////////////////
-            $sql = "insert log values(NOW(),\"" .$_SESSION["tchID"]. $_SESSION["username"] . "\",\"" . $_POST['classroomName'] . "\",\"完全开放\")";
+            ///这里设置交换机对应接口下的网络状态:完全开放////////////////////
+            exe("undo packet-filter name dmt101_deny_upc inbound");
+            $sql = "insert log values(NOW(),\"" . $_SESSION["tchID"] . $_SESSION["username"] . "\",\"" . $_POST['classroomName'] . "\",\"完全开放\")";
             mysqli_query($con, $sql);
             break;
         case 1:
             ///////////////////////////////////////////////////
-            ///这里设置交换机对应接口下的网络状态//////////////////////
+            ///这里设置交换机对应接口下的网络状态:仅关闭外网//////////////////////
             ///////////////////////////////////////////////////
-            $sql = "insert log values(NOW(),\"".$_SESSION["tchID"] . $_SESSION["username"] . "\",\"" . $_POST['classroomName'] . "\",\"仅关闭内网\")";
+            $sql = "insert log values(NOW(),\"" . $_SESSION["tchID"] . $_SESSION["username"] . "\",\"" . $_POST['classroomName'] . "\",\"仅关闭内网\")";
             mysqli_query($con, $sql);
             break;
         case 2:
             ///////////////////////////////////////////////////
-            ///这里设置交换机对应接口下的网络状态//////////////////////
+            ///这里设置交换机对应接口下的网络状态:完全关闭//////////////////////
             ///////////////////////////////////////////////////
-            $sql = "insert log values(NOW(),\"" .$_SESSION["tchID"]. $_SESSION["username"] . "\",\"" . $_POST['classroomName'] . "\",\"完全关闭\")";
+            exe("packet-filter name dmt101_deny_upc inbound");
+            $sql = "insert log values(NOW(),\"" . $_SESSION["tchID"] . $_SESSION["username"] . "\",\"" . $_POST['classroomName'] . "\",\"完全关闭\")";
             mysqli_query($con, $sql);
             break;
     }

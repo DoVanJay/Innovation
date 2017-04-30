@@ -5,6 +5,10 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Set Date</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <script language="JavaScript">
     window.onload = function () {
@@ -72,42 +76,43 @@
 <body>
 <div align="center"><img src="../head.jpg" width="550"/>
 </div>
-<?php
-require('../possess/mysql.php');
-$sql_currentFirstDay = "select * from thefirstday";
-$result = mysqli_query($con, $sql_currentFirstDay);
-$currentFirstDay = mysqli_fetch_array($result);
-echo "<p>当前已设置的开学第一天为 : <span style='text-decoration-line: underline;font-weight: bold'>" . $currentFirstDay[0] . "年" . "$currentFirstDay[1]" . "月" . $currentFirstDay[2] . "日</span></p>";
-?>
-<p>请确认后输入要设置为本学期第一天的日期:
-<form name="form1" method="post" action="admin-setDate.php" onsubmit="return confirm('确认修改日期？')">
-    <select name='YYYY' id="year"></select>
-    <select name="MM" id="month" onchange="MMDD(this.value)">
-        <option value="">月</option>
-    </select>
-    <select name="DD" id="day">
-        <option value="">日</option>
-    </select>
-    <input type="submit" id="submit" value="提交">
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="admin.php">点此返回主操作界面</a>
-</form>
-<?php
-@$year = $_POST["YYYY"];
-@$month = $_POST["MM"];
-@$day = $_POST["DD"];
-if ($month != 0 && $day != 0 && $year != 0) {
-    $cleanTable = "truncate table thefirstday";
-    mysqli_query($con, $cleanTable);
-    $sql_thefirstday = "INSERT INTO `thefirstday` (`year`, `month`, `day`) VALUES ('$year','$month', '$day'); ";
-    if (mysqli_query($con, $sql_thefirstday)) {
-        echo "<script>alert('设置成功 !  本学期第一天将从 " . $year . "年" . $month . "月" . $day . "日" . " 开始计算');
-                      window.location.href='admin-setDate.php';</script>";
+<br><br>
+<div align="left" style="margin-left: 20%">
+    <?php
+    require('../possess/mysql.php');
+    $sql_currentFirstDay = "select * from thefirstday";
+    $result = mysqli_query($con, $sql_currentFirstDay);
+    $currentFirstDay = mysqli_fetch_array($result);
+    echo "<p>已将当前学期的开学第一天为 : <span style='text-decoration-line: underline;font-weight: bold'>" . $currentFirstDay[0] . "年" . "$currentFirstDay[1]" . "月" . $currentFirstDay[2] . "日</span></p>";
+    ?>
+    <p>请确认后输入要设置为本学期第一天的日期:
+    <form name="form1" method="post" action="admin-setDate.php" onsubmit="return confirm('确认修改日期？')">
+        <select name='YYYY' id="year"></select>
+        <select name="MM" id="month" onchange="MMDD(this.value)">
+            <option value="">月</option>
+        </select>
+        <select name="DD" id="day">
+            <option value="">日</option>
+        </select>
+        <button type="submit" class="btn btn-warning">提交</button>
+        <button type="button" class="btn btn-success" onclick="window.location.href='admin.php'">点此返回主操作界面</button>
+    </form>
+    <?php
+    @$year = $_POST["YYYY"];
+    @$month = $_POST["MM"];
+    @$day = $_POST["DD"];
+    if ($month != 0 && $day != 0 && $year != 0) {
+        $cleanTable = "truncate table thefirstday";
+        mysqli_query($con, $cleanTable);
+        $sql_thefirstday = "INSERT INTO `thefirstday` (`year`, `month`, `day`) VALUES ('$year','$month', '$day'); ";
+        if (mysqli_query($con, $sql_thefirstday)) {
+            echo "<script>alert('设置成功 !  本学期第一天将从 " . $year . "年" . $month . "月" . $day . "日" . " 开始计算');
+                      window.location.href='admin.php';</script>";
+        }
+    } else if ($month != 0 || $day != 0) {
+        echo "<script>alert('设置失败,请输入正确的日期');</script>";
     }
-} else if ($month != 0 || $day != 0) {
-    echo "<script>alert('设置失败,请输入正确的日期');</script>";
-}
-?>
-</p>
+    ?>
+</div>
 </body>
 </html>

@@ -2,154 +2,143 @@
 <head>
     <title>全员操作记录查询</title>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div align="center"><img src="../head.jpg" width="550"/>
 </div>
-<p>请输入要查询的日期及教师工号:
-<form name="form1" id="year" method="post" action="admin-query.php">
-    <select name='YYYY' onchange="YYYYMM(this.value)">
-        <option value="">年</option>
-    </select>
-    <select name="MM" id="month" onchange="MMDD(this.value)">
-        <option value="">月</option>
-    </select>
-    <select name="DD" id="day">
-        <option value="">日</option>
-    </select>
-    <input type="text" value="请输入教师工号" onfocus="javascript:if(this.value=='请输入教师工号')this.value='';" name="tchNum">
-    <input type="submit" value="提交">
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="admin.php">点此返回主操作界面</a>
-</form>
-<script language="JavaScript">
-    window.onload = function () {
-        strYYYY = document.form1.YYYY.outerHTML;
-        strMM = document.form1.MM.outerHTML;
-        strDD = document.form1.DD.outerHTML;
-        MonHead = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        //先给年下拉框赋内容
-        var y = new Date().getFullYear();
-        var str = strYYYY.substring(0, strYYYY.length - 9);
-        for (var i = (y - 1); i < (y + 1); i++) //以今年为准，前30年，后30年
+<br>
+<div align="left" style="margin-left: 20%;height:120%;overflow: hidden">
+    <p>请输入要查询的日期及教师工号:
+    <form name="selectDate" method="post" action="admin-query.php">
+        <select name='year' onchange="YYMM()">
+            <option value="">年</option>
+        </select>
+        <select name="month" id="month" onchange="MMDD(this.value)">
+            <option value="">月</option>
+        </select>
+        <select name="day" id="day">
+            <option value="">日</option>
+        </select>
+        <input type="text" value="请输入教师工号" onfocus="javascript:if(this.value=='请输入教师工号')this.value='';" name="tchID">
+        <button type="submit" class="btn btn-warning">提交</button>
+        <button type="button" class="btn btn-success" onclick="window.location.href='admin.php'">点此返回主操作界面</button>
+    </form>
+    <script language="JavaScript">
+        window.onload = function () {
+            var strYear = document.selectDate.year.outerHTML;
+            var y = new Date().getFullYear();
+            var strY = strYear.substring(0, strYear.length - 9);
+            for (var i = y; i > (y - 2); i--) {
+                strY += "<option value='" + i + "'> " + i + "</option>\r\n";
+            }
+            document.selectDate.year.outerHTML = strY + "</select>";
+        }
+        function YYMM() {
+            var strM = '<select name="month" onchange="MMDD(this.value)"><option value="">月</option>';
+            for (var i = 1; i < 10; i++) {
+                strM += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
+            }
+            for (i = 10; i < 13; i++) {
+                strM += "<option value='" + i + "'> " + i + "</option>\r\n";
+            }
+            document.selectDate.month.outerHTML = strM + "</select>";
+        }
+        function MMDD(strM) {
+            var strD = '<select name="day"><option value="">日</option>';
+            var yearValue = document.selectDate.year.options[document.selectDate.year.selectedIndex].value;
+            switch (strM) {
+                case'01':
+                case'03':
+                case'05':
+                case'07':
+                case'08':
+                case'10':
+                case'12':
+                    for (var i = 1; i <= 9; i++) {
+                        strD += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
+                    }
+                    for (i = 10; i <= 31; i++) {
+                        strD += "<option value='" + i + "'> " + i + "</option>\r\n";
+                    }
+                    break;
+                case '02':
+                    if (isLeapYear(yearValue)) {
+                        for (var i = 1; i <= 9; i++) {
+                            strD += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
+                        }
+                        for (i = 10; i <= 29; i++) {
+                            strD += "<option value='" + i + "'> " + i + "</option>\r\n";
+                        }
+                    } else {
+                        for (var i = 1; i <= 9; i++) {
+                            strD += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
+                        }
+                        for (i = 10; i <= 28; i++) {
+                            strD += "<option value='" + i + "'> " + i + "</option>\r\n";
+                        }
+                    }
+                    break;
+                case '04':
+                case '06':
+                case '09':
+                case '11':
+                    for (var i = 1; i <= 9; i++) {
+                        strD += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
+                    }
+                    for (i = 10; i <= 30; i++) {
+                        strD += "<option value='" + i + "'> " + i + "</option>\r\n";
+                    }
+                    break;
+            }
+            document.selectDate.day.outerHTML = strD + "</select>";
+        }
+        function isLeapYear(year)//判断是否闰平年
         {
-            str += "<option value='" + i + "'> " + i + "</option>\r\n";
+            return (0 == year % 4 && (year % 100 != 0 || year % 400 == 0))
         }
-        document.form1.YYYY.outerHTML = str + "</select>";
-        //赋月份的下拉框
-        var str = strMM.substring(0, strMM.length - 9);
-        for (var i = 1; i < 10; i++) {
-            str += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
-        }
-        for (var i = 10; i < 13; i++) {
-            str += "<option value='" + i + "'> " + i + "</option>\r\n";
-        }
-        document.form1.MM.outerHTML = str + "</select>";
-        document.form1.YYYY.value = y;
-        var n = MonHead[new Date().getMonth()];
-        if (new Date().getMonth() == 1 && IsPinYear(YYYYvalue)) n++;
-        writeDay(n); //赋日期下拉框
-    }
-    function YYYYMM(str) //年发生变化时日期发生变化(主要是判断闰平年)
-    {
-        var MMvalue = document.form1.MM.options[document.form1.MM.selectedIndex].value;
-        if (MMvalue == "") {
-            document.form1.DD.outerHTML = strDD;
-            return;
-        }
-        var n = MonHead[MMvalue - 1];
-        if (MMvalue == 2 && IsPinYear(str)) n++;
-        writeDay(n)
-    }
-    function MMDD(str) //月发生变化时日期联动
-    {
-        var YYYYvalue = document.form1.YYYY.options[document.form1.YYYY.selectedIndex].value;
-        if (str == "") {
-            document.form1.DD.outerHTML = strDD;
-            return;
-        }
-        var n = MonHead[str - 1];
-        if (str == 2 && IsPinYear(YYYYvalue)) n++;
-        writeDay(n)
-    }
-    function writeDay(n) //据条件写日期的下拉框
-    {
-        var s = strDD.substring(0, strDD.length - 9);
-        for (var i = 1; i < 10; i++) {
-            s += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
-            document.form1.DD.outerHTML = s + "</select>";
-        }
-        for (var i = 10; i < (n + 1); i++)
-            s += "<option value='" + i + "'> " + i + "</option>\r\n";
-        document.form1.DD.outerHTML = s + "</select>";
-    }
-    function IsPinYear(year)//判断是否闰平年
-    {
-        return (0 == year % 4 && (year % 100 != 0 || year % 400 == 0))
-    }
-    function jilu() {
-        var month = document.getElementById('month').options[document.getElementById('month').selectedIndex].value;
-        var day = document.getElementById('day').options[document.getElementById('day').selectedIndex].value;
-        alert(day);
-        document.form1.MM.value = month;
-        document.form1.DD.value = day;
-    }
-</script>
-</p>
-<?php
-/**
- * 该程序实现教师查询自己操作记录和管理员查询所有教师操作记录的功能
- */
-/** to be continue
- * TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
- * 教师重名怎么办?
- * 考虑到browser会崩溃  是否需要开放全年查询功能?或设定最多显示的数据大小
- * T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C
- * TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC
- *         T:::::T                   B::::B     B:::::B         C:::::C
- *         T:::::T                   B::::BBBBBB:::::B         C:::::C
- *         T:::::T                   B:::::::::::::BB          C:::::C
- *         T:::::T                   B::::BBBBBB:::::B         C:::::C
- *         T:::::T                   B::::B     B:::::B        C:::::C
- *         T:::::T                   B::::B     B:::::B        C:::::C
- *         T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC
- *       TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C
- *       T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C
- *       T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
- *       TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
- */
-$host = "localhost";
-$username = "root";
-$password = "";
-$db = "operating_log";
-$con = mysqli_connect($host, $username, $password, $db);
-if (mysqli_connect_errno()) {
-    echo "连接失败";
-    exit();
-}
-@$time = $_POST['YYYY'];
-@$tchNum = $_POST['tchNum'];
-@$diasplay = $_POST['YYYY'] . "年";
-if (@$_POST['MM']) {
-    @$time = $time . "-" . $_POST['MM'];
-    @$diasplay = $diasplay . $_POST['MM'] . "月";
-    if (@$_POST['DD']) {
-        @$time = $time . "-" . $_POST['DD'];
-        @$diasplay = $diasplay . $_POST['DD'] . "日";
-    }
-}
-if ($tchNum!=null&&$tchNum!='请输入教师工号') {
-    echo "<p>当前查询工号为 <span style='background-color: lightgreen ;'>" . $tchNum . "</span> 的老师在 <span style='background-color: lightgreen ;'>" . $diasplay . "</span>的操作记录</p>";
-}
-$sql = "select * from log where tchNum='$tchNum' and time LIKE '%$time%'";
-$result = mysqli_query($con, $sql);
-?>
-<textarea rows="25" cols="70" readonly="readonly">
+    </script>
+    </p>
     <?php
-    echo "++++操作时间++++++工号++++姓名++++操作教室++++++++\n";
+    /**
+     * 该程序实现教师查询自己操作记录和管理员查询所有教师操作记录的功能
+     */
+    $host = "localhost";
+    $username = "root";
+    $password = "";
+
+    $db = "operating_log";
+    $con = mysqli_connect($host, $username, $password, $db);
+    if (mysqli_connect_errno()) {
+        echo "连接失败";
+        exit();
+    }
+    @$time = $_POST['year'];
+    @$tchID = $_POST['tchID'];
+    @$display = $_POST['year'] . "年";
+    if (@$_POST['month']) {
+        @$time = $time . "-" . $_POST['month'];
+        @$display = $display . $_POST['month'] . "月";
+        if (@$_POST['day']) {
+            @$time = $time . "-" . $_POST['day'];
+            @$display = $display . $_POST['day'] . "日";
+        }
+    }
+    if ($tchID != null && $tchID != '请输入教师工号') {
+        echo "<p>当前查询工号为 <span style='background-color: lightgreen ;'>" . $tchID . "</span> 的老师在 <span style='background-color: lightgreen ;'>" . $display . "</span>的操作记录</p>";
+    }
+    $sql = "select * from log where tchID='$tchID' and time LIKE '%$time%'";
+    $result = mysqli_query($con, $sql);
+    ?>
+    <textarea rows="25" cols="70" readonly="readonly">
+    <?php
+    echo "++++操作时间++++工号+++++操作教室+++具体操作++++\n";
     if ($time) {
         echo "结果如下:\n";
-        if ($tchNum!=null&&$tchNum!='请输入教师工号') {
+        if ($tchID != null && $tchID != '请输入教师工号') {
             if (mysqli_num_rows($result) < 1) {
                 echo "\n当前日期无操作记录";
             } else {
@@ -163,5 +152,17 @@ $result = mysqli_query($con, $sql);
     }
     ?>
 </textarea>
+</div>
+<br><br><br>
+<p>sadfo</p>
+<div style="background-color: grey;width: 100%;text-align:left">
+<pre
+        style="position: fixed;margin: 0 auto;bottom: 0;width: 100%; font-family: 幼圆; color: white;font-size: medium;background-color: grey;">
+<span style="color: red;font-weight: bold;font-size: 140%;">注意：</span>
+若只输入年，则将查询全年记录；
+若输入年月则将查询该年该月的全部记录；
+</pre>
+</div>
+
 </body>
 </html>

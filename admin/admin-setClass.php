@@ -36,19 +36,22 @@ function whichWeek($days)               /*计算当前是第几周*/
 }
 
 require('../possess/mysql.php');
-//session_start();
+$class1 = null;
+$class2 = null;
+$classLocation = null;
+$classNum = null;
+$tchID = null;
 @$class1 = $_POST['no1'];
 @$class2 = $_POST['no2'];
 @$classLocation = $_POST['classLocation'];
 @$classNum = $_POST['classNum'];
 @$tchID = $_POST['tchID'];
-$date = date('y-m-d');
-
-
+//echo $class1 . "-" . $class2 . "-" . $classLocation . "-" . $classNum . "-" . $tchID;
+$today = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
 $firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from thefirstday'));
 $firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];
-$days = calDays($firstDay, $date);      /*当天和本学期第一天中间隔了多少天*/
+$days = calDays($firstDay, $today);      /*当天和本学期第一天中间隔了多少天*/
 $whichweek = whichWeek($days);          /*当前是第几周*/
 if (date("w") != 0) {
     $dayInWeek = date("w");         /*对当前是周几的判断*/
@@ -65,11 +68,11 @@ for (; $i <= $class2; $i++) {
         $classes = $classes . $i;
     }
 }
-
 //and (locationOfClass like '文理%' or locationOfClass like '微%')
 @$sql_check = "select tchID from schedule 
-                      where tchID='$tchID' 
-                      and (timeForClass LIKE '%$classes%' or locate(timeForClass,'$dayInWeek$classes')) 
+                      where tchID='$tchID'
+                      and (SUBSTRING(timeForClass,2) LIKE '%$classes%' or locate(SUBSTRING(timeForClass,2),'$classes')) /*查找包含 classes 或被 classes包含的*/
+                      and LEFT (timeForClass,1)='$dayInWeek'/*确定周几相同*/
                       and find_in_set('$whichweek',detailsOfWeeks); ";
 //设置的时间有无课,有的话直接修改,否则添加
 $check_result = mysqli_query($con, $sql_check);
@@ -93,11 +96,11 @@ $check = mysqli_num_rows($check_result);
  *       TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
  */
 if ($class1 != null && $class2 != null && $classLocation != null && $classNum != null && $tchID != null) {
-    if ($check) {
-        @$sql_update = "update schedule 
+    if ($check && $class1 != null) {
+        @$sql_update = "update schedule
                           set locationOfClass='$classLocation$classNum' ,timeForClass='$dayInWeek$classes' 
                           where tchID='$tchID' 
-                          and (timeForClass LIKE '%$classes%' or locate(timeForClass,'$dayInWeek$classes')) 
+                          and (timeForClass LIKE '%$classes%' or locate(timeForClass,'$dayInWeek$classes'))  
                           and find_in_set('$whichweek',detailsOfWeeks)";
         if (@mysqli_query($con, $sql_update)) {
             echo "<script>alert('更新操作成功');
@@ -128,6 +131,7 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
     }
 }
 ?>
+<!--suppress ALL -->
 <html>
 <head>
     <meta charset="UTF-8">
@@ -135,10 +139,29 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>设置教师定时定点操作权限</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <script>
     classLocation = document.classroom.classLocation.outerHTML;
     classNum = document.classroom.classNum.outerHTML;
+    function setClassNo2(str) {
+        var s = '<option>m</option>';
+        var i = str;
+        do {
+            i++;
+            if (i < 10) {
+                s += "<option  value='" + i + "'> " + 0 + i + "</option>\r\n";
+            }
+            else {
+                s += "<option  value='" + i + "'> " + i + "</option>\r\n";
+            }
+        } while (i < 11);
+        document.classroom.no2.outerHTML = "<select name='no2'>" + s + "</select>";
+    }
+
     function setLocation(str) {
         var s = '<option value="num">教室编号</option>';
         if (str != "微") {
@@ -158,82 +181,75 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
             document.classroom.classNum.outerHTML = "<select name='classNum'>" + s + "</select>";
         }
     }
-    //    function regress() {
-    //        this.document.classroom.no1.outerHTML = "<select name='no1'><option>n</option></select>";
-    //        this.document.classroom.no2.outerHTML = "<select name='no2'><option>m</option></select>";
-    //        this.document.classroom.classLocation.outerHTML = "<select name='classLocation'><option>教室位置</option></select>";
-    //        this.document.classroom.classNum.outerHTML = "<select name='classNum'><option>教室编号</option></select>";
-    //        this.document.classroom.tchID.outerHTML = "<input name='tchID' type='text' value='请输入教师工号' onfocus=javascript:if(this.value=='请输入教师工号')this.value='';>";
-    //    }
 </script>
 <body>
-
 <div align="center"><img src="../head.jpg" width="550"/>
 </div>
-<p>
-    请输入上课时间,教室名称以及教师工号:
-</p>
-<form name="classroom" method="post" action="admin-setClass.php">
-    <p>第<select name="no1">
-            <option>n</option>
-            <option value="1">01</option>
-            <option value="2">02</option>
-            <option value="3">03</option>
-            <option value="4">04</option>
-            <option value="6">06</option>
-            <option value="5">05</option>
-            <option value="7">07</option>
-            <option value="8">08</option>
-            <option value="9">09</option>
-            <option value="10">10</option>
-        </select>&nbsp;-&nbsp;
-        <select name="no2">
-            <option>m</option>
-            <option value="2">02</option>
-            <option value="3">03</option>
-            <option value="4">04</option>
-            <option value="5">05</option>
-            <option value="6">06</option>
-            <option value="7">07</option>
-            <option value="8">08</option>
-            <option value="9">09</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-        </select>节课&nbsp;&nbsp;
-        <select name="classLocation" onchange="setLocation(this.value)">
-            <option>教室位置</option>
-            <option value="微">微</option>
-            <option value="文理">文理</option>
-        </select>
-        <select name="classNum">
-            <option value="num">教室编号</option>
-        </select>
-        <!--to be continue-->
-        <!--TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC-->
-        <!-- 教室编号以及对应地址ip       -->
-        <!--T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C-->
-        <!--TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC-->
-        <!--        T:::::T                   B::::B     B:::::B         C:::::C-->
-        <!--        T:::::T                   B::::BBBBBB:::::B         C:::::C-->
-        <!--        T:::::T                   B:::::::::::::BB          C:::::C-->
-        <!--        T:::::T                   B::::BBBBBB:::::B         C:::::C-->
-        <!--        T:::::T                   B::::B     B:::::B        C:::::C-->
-        <!--        T:::::T                   B::::B     B:::::B        C:::::C-->
-        <!--        T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC-->
-        <!--      TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C-->
-        <!--      T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C-->
-        <!--      T:::::::::T               B::::::::::::::::B               CCC::::::::::::C-->
-        <!--      TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC-->
-        <input name="tchID" type="text" value="请输入教师工号" onfocus="javascript:if(this.value=='请输入教师工号')this.value='';">
-        <input type="submit" value="提交设置"></p>
-</form>
-<a href="admin.php">点此返回主操作界面</a>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<hr>
-<pre style="font-size:120%">
-<span style="color: red;font-weight: bold;font-size: 140%">注意：</span>
-        1.由于服务器每天凌晨会从教务处拉取更新课表,所以该设置仅限于当天修改当天有效,隔天无效;
-        2."微"开头教室为多媒体机房,"文理"开头教室为文理楼机房;
-    </pre>
+<br>
+<div align="left" style="margin-left: 20%">
+    <p>
+        请输入上课时间,教室名称以及教师工号:
+    </p>
+    <form name="classroom" method="post" onsubmit="return confirm('确认提交？')" action="admin-setClass.php">
+        <p>第<select name="no1" onchange="setClassNo2(this.value)">
+                <option>n</option>
+                <option value="1">01</option>
+                <option value="2">02</option>
+                <option value="3">03</option>
+                <option value="4">04</option>
+                <option value="5">05</option>
+                <option value="6">06</option>
+                <option value="7">07</option>
+                <option value="8">08</option>
+                <option value="9">09</option>
+                <option value="10">10</option>
+            </select>&nbsp;-&nbsp;
+            <select name="no2">
+                <option>m</option>
+            </select>节课&nbsp;&nbsp;
+            <select name="classLocation" onchange="setLocation(this.value)">
+                <option>教室位置</option>
+                <option value="微">微</option>
+                <option value="文理">文理</option>
+            </select>
+            <select name="classNum">
+                <option value="num">教室编号</option>
+            </select>
+            <!--to be continue-->
+            <!--TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC-->
+            <!-- 教室编号以及对应地址ip       -->
+            <!--T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C-->
+            <!--TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC-->
+            <!--        T:::::T                   B::::B     B:::::B         C:::::C-->
+            <!--        T:::::T                   B::::BBBBBB:::::B         C:::::C-->
+            <!--        T:::::T                   B:::::::::::::BB          C:::::C-->
+            <!--        T:::::T                   B::::BBBBBB:::::B         C:::::C-->
+            <!--        T:::::T                   B::::B     B:::::B        C:::::C-->
+            <!--        T:::::T                   B::::B     B:::::B        C:::::C-->
+            <!--        T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC-->
+            <!--      TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C-->
+            <!--      T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C-->
+            <!--      T:::::::::T               B::::::::::::::::B               CCC::::::::::::C-->
+            <!--      TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC-->
+            <input name="tchID" type="text" value="请输入教师工号"
+                   onfocus="javascript:if(this.value=='请输入教师工号')this.value='';">
+            <button type="submit" class="btn btn-warning">提交</button>
+            <button type="button" class="btn btn-success" onclick="window.location.href='admin.php'">点此返回主操作界面</button>
+    </form>
+
+</div>
+<div style="background-color: grey;width: 100%;text-align:left">
+<pre
+        style="position: fixed;margin: 0 auto;bottom: 0;width: 100%; font-family: 幼圆; color: white;font-size: medium;background-color: grey;">
+<span style="color: red;font-weight: bold;font-size: 140%;">注意：</span>
+1.由于服务器每天凌晨会从教务处拉取更新课表,所以该设置仅限于当天修改当天有效,隔天无效;
+2."微"开头教室为多媒体机房,"文理"开头教室为文理楼机房;
+3.具体使用规则举例如下：
+    例如，老师在第01020304节有课，可以修改为任意包含01020304的区间，如010203040506节；
+    或任意被01020304包含的区间，如0102节，不能修改为03040506，否则会与原01020304中的0304冲突
+    老师在要安排的时间段内无课，则可以任意添加
+</pre>
+</div>
+
 </body>
 </html>
