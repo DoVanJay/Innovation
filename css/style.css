@@ -1,0 +1,11 @@
+body {
+    font-family: 微软雅黑;
+    font-size: medium;
+    background-color:#F6F6F6;
+    color: grey;
+}
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
