@@ -8,7 +8,7 @@
     <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div align="center"><img src="../head.jpg" width="550"/>
+<div align="center"><img src="/imgs/title.png" width="550"/>
 </div>
 <br>
 <div align="left" style="margin-left: 20%;height:120%;overflow: hidden">
@@ -106,11 +106,12 @@
     /**
      * 该程序实现教师查询自己操作记录和管理员查询所有教师操作记录的功能
      */
-    $host = "localhost";
-    $username = "root";
-    $password = "";
-
-    $db = "operating_log";
+//    $host = "localhost";
+//    $username = "root";
+//    $password = "";
+//
+//    $db = "operating_log";
+    include "../possess/mysql.php";
     $con = mysqli_connect($host, $username, $password, $db);
     if (mysqli_connect_errno()) {
         echo "连接失败";
@@ -130,10 +131,10 @@
     if ($tchID != null && $tchID != '请输入教师工号') {
         echo "<p>当前查询工号为 <span style='background-color: lightgreen ;'>" . $tchID . "</span> 的老师在 <span style='background-color: lightgreen ;'>" . $display . "</span>的操作记录</p>";
     }
-    $sql = "select * from log where tchID='$tchID' and time LIKE '%$time%'";
+    $sql = "select * from operating_log where tchID='$tchID' and time LIKE '%$time%'";
     $result = mysqli_query($con, $sql);
     ?>
-    <textarea rows="25" cols="70" readonly="readonly">
+    <textarea rows="25" cols="70" readonly="readonly" style="opacity: 0.4;color: black">
     <?php
     echo "++++操作时间++++工号+++++操作教室+++具体操作++++\n";
     if ($time) {
@@ -155,10 +156,9 @@
 </div>
 <br><br><br>
 <p>sadfo</p>
-<div style="background-color: grey;width: 100%;text-align:left">
-<pre
-        style="position: fixed;margin: 0 auto;bottom: 0;width: 100%; font-family: 幼圆; color: white;font-size: medium;background-color: grey;">
-<span style="color: red;font-weight: bold;font-size: 140%;">注意：</span>
+<div class="bottom-remind">
+<pre>
+<span>注意：</span>
 若只输入年，则将查询全年记录；
 若输入年月则将查询该年该月的全部记录；
 </pre>

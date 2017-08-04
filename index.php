@@ -7,35 +7,28 @@
     <title>登录</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div align="center"><img src="../head.jpg" width="550"/>
+<div align="center">
+    <img src="/imgs/title.png" width="550px"/>
 </div>
-<br>
-<div align="left" style="margin-left: 20%">
-    <form name="login" method="post" id="login" action="/possess/login.php">
-        <table>
-            <tr>
-                <td>
-                    username:<input type="text" id="input1" name="ID"/><br><br>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    password:<input type="password" id="input2" name="passwd"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div align="left" style="margin-left: 85%">
-                        <button type="submit" class="btn btn-warning">提交</button>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </form>
-</div>
+
+
+<form style="margin-top:8%" class="bs-example bs-example-form" name="login" method="post" id="login" action="/possess/login.php">
+    <div class="input-group" style="width:300px;margin-left: 32%">
+        <div style="background-color: rgba(255, 255, 255, 0.4);padding: 20px;">
+            <span style="color: gray;font-size: 130%;font-family: 幼圆, serif;">登录系统:</span><br><br>
+            <input class="form-control" type="text" name="ID"
+                   placeholder="用户名"/><br><br>
+            <input class="form-control" type="password" name="passwd"
+                   placeholder="密码"/>
+            <br><br><br>
+            <button type="submit" class="btn btn-warning" style="width: 130px;height: 50px;margin-left: 50%;">登录
+            </button>
+        </div>
+    </div>
+</form>
+
+
 </body>
 </html>

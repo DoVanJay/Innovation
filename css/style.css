@@ -1,11 +1,45 @@
 body {
     font-family: 微软雅黑;
     font-size: medium;
-    background-color:#F6F6F6;
+    background-color: #F6F6F6;
     color: grey;
+    background-image: url(/imgs/bg.jpg);
+    -moz-background-size: 100% 100%; /*  Firefox 3.6 */
+    -o-background-size: 100% 100%; /* Opera 9.5 */
+    -webkit-background-size: 100% 100%; /* Safari 3.0 */
+    background-size: 100% 100%; /*  Firefox 4.0 and other CSS3-compliant browsers */
+    -moz-border-image: url(/imgs/bg.jpg) 0; /* Firefox 3.5 */
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/imgs/bg.jpg', sizingMethod='scale'); /* for < ie9 */
+
 }
+
 pre {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
 
+.partly-transparent{
+
+}
+
+.bottom-remind {
+    width: 100%;
+    text-align:left;
+}
+
+.bottom-remind pre{
+    position: fixed;
+    margin: 0 auto;
+    bottom: 0px;
+    width: 100%;
+    font-family: 幼圆, serif;
+    color: black;
+    font-size: medium;
+    opacity: 0.4;
+}
+
+.bottom-remind span {
+    color: red;
+    font-weight: bold;
+    font-size: 140%;
+}

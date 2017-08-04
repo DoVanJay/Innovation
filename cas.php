@@ -8,7 +8,7 @@ $validateServer = "http://cas.***.edu.cn/cas/serviceValidate";
 //以及新增加的集成登录入口
 $thisOne = "http://localhost:8181/neusoftcas.php";
 
-//判断是否有验证成功后需要跳转页面，如果有，增加跳转参数
+//判断是否有验证成功后需要跳转页面，如果有 ，增加跳转参数
 if (isset($_REQUEST["redirectUrl"]) && !empty($_REQUEST["redirectUrl"])) {
     $thisOne = $thisOne . "?redirectUrl=" . $_REQUEST["redirectUrl"];
 }

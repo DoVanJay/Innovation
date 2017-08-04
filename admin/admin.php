@@ -22,6 +22,7 @@ function whichWeek($days)               /*计算当前是第几周*/
 <?php
 require('../possess/mysql.php');
 session_start();
+@$_SESSION["status"] = "admin";//将用户身份赋值为管理员
 if ($_SESSION['ID'] == false) {
     header("location:../possess/login.php");
 }
@@ -55,12 +56,12 @@ $result = mysqli_query($con, $sql_innovation);
     <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div align="center"><img src="../head.jpg" width="550"/>
+<div align="center"><img src="/imgs/title.png" width="550"/>
 </div>
 <br/><br/>
 <div align="left" style="margin-left: 20%">
     <?php
-    echo "<p><span style='font-weight: bold;font-size: 110%'>" . $adminID . "</span> 管理员, 您好。 <button class=\"btn btn-danger\" onclick='window.location.href=\"../possess/off.php\"'>点此注销</button></p>";
+    echo "<p><span style='font-weight: bold;font-size: 110%'>" . $adminID . "</span> 管理员, 您好。 <button class=\"btn btn-danger\" onclick='window.location.href=\"../possess/logout.php\"'>点此注销</button><button class=\"btn btn-primary\"  onclick='window.location.href=\"../possess/reset-password.php\"'>点此修改密码</button></p>";
     ?>
     <p>今天是 第<span
                 style="text-decoration-line: underline"> <?php echo "&nbsp" . $whichWeek . " " ?></span><?php echo "周 周" . $day[date("w")] . '&nbsp;&nbsp;;' ?></span>
@@ -86,10 +87,9 @@ $result = mysqli_query($con, $sql_innovation);
         </li>
     </ul>
 </div>
-<div style="background-color: grey;width: 100%;text-align:left">
-<pre
-        style="position: fixed;margin: 0 auto;bottom: 0;width: 100%; font-family: 幼圆; color: white;font-size: medium;background-color: grey;">
-<span style="color: red;font-weight: bold;font-size: 140%;">注意：</span>
+<div class="bottom-remind">
+<pre>
+<span>注意：</span>
 1.每周从周一开始计算;
 2.若当前周次为负数(如-2),则为开学前倒数第2周;
 </pre>

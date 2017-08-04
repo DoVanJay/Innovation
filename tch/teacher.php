@@ -40,10 +40,11 @@ function whichWeek($days)               /*计算当前是第几周*/
 ?>
 <?php
 require('../possess/mysql.php');
-session_start();
+@session_start();
 if ($_SESSION['ID'] == false) {
     header("location:../possess/login.php");
 }
+@$_SESSION["status"] = "tch"; //将用户身份赋值为教师
 $tchID = $_SESSION['ID'];
 $today = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
@@ -78,7 +79,7 @@ if (date("w") != 0) {
     }
 </script>
 <body>
-<div align="center"><img src="../head.jpg" width="550"/>
+<div align="center"><img src="/imgs/title.png" width="550"/>
 </div>
 <br/><br/>
 <div align='left' style="margin-left:20%;">
@@ -86,8 +87,9 @@ if (date("w") != 0) {
     echo "<p><span style='font-weight: bold;font-size: 110%'>" . $tchID . "</span>  老师, 您好。";
     $o = 0;/*当天的课程数*/
     ?>
-    <button class="btn btn-danger" onclick='window.location.href="../possess/off.php"'>点此注销</button>
+    <button class="btn btn-danger" onclick='window.location.href="../possess/logout.php"'>点此注销</button>
     <button class="btn btn-info" onclick='window.location.href="query.php"'>点此查看您的操作记录</button>
+    <button class="btn btn-primary"  onclick='window.location.href="../possess/reset-password.php"'>点此修改密码</button>
     <p>今天是 第 <span
                 style="color:white;text-decoration-line: underline;background-color: grey;"> <?php echo $whichweek ?></span><?php echo " 周 <span style='background-color: grey;color: white ;'>周" . $day[date("w")] . '</span> ;' ?>
     <div style="text-decoration-line: underline">您今天
@@ -215,17 +217,16 @@ if (date("w") != 0) {
         echo "</div>";
         ?>
     </div>
-    <div style="background-color: grey;width: 100%;text-align:left;">
-    <pre
-            style="position: fixed;margin: 0 auto;bottom: 0px;width: 100%; font-family: 幼圆,serif; color: white;font-size: medium;background-color: grey;">
-<span style="color: red;font-weight: bold;font-size: 140%;">注意：</span>
+    <div class="bottom-remind">
+<pre>
+<span>注意：</span>
 1.该控制系统只能用于多媒体机房和文理楼机房的控制；
 2.如果您需要临时换教室,请直接联系管理员修改;
 3.从上课前10分钟到您的课结束，您都有权限控制机房网络；
 4.您的课结束后网络将自动恢复到完全开放状态;
-    例：您03和04节在文理楼105有课，那么从03节上课前十分钟到04节课下课机房网络都将处于您设置的状态，04节下课后网络将自动恢复到完全开放状态。
+  例：您03和04节在文理楼105有课，那么从03节上课前十分钟到04节课下课机房网络都将处于您设置的状态，04节下课后网络将自动恢复到完全开放状态。
 </pre>
     </div>
-
+</div>
 </body>
 </html>

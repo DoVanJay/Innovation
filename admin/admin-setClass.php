@@ -183,7 +183,7 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
     }
 </script>
 <body>
-<div align="center"><img src="../head.jpg" width="550"/>
+<div align="center"><img src="/imgs/title.png" width="550"/>
 </div>
 <br>
 <div align="left" style="margin-left: 20%">
@@ -238,16 +238,15 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
     </form>
 
 </div>
-<div style="background-color: grey;width: 100%;text-align:left">
-<pre
-        style="position: fixed;margin: 0 auto;bottom: 0;width: 100%; font-family: 幼圆; color: white;font-size: medium;background-color: grey;">
-<span style="color: red;font-weight: bold;font-size: 140%;">注意：</span>
+<div class="bottom-remind">
+<pre>
+<span>注意：</span>
 1.由于服务器每天凌晨会从教务处拉取更新课表,所以该设置仅限于当天修改当天有效,隔天无效;
 2."微"开头教室为多媒体机房,"文理"开头教室为文理楼机房;
 3.具体使用规则举例如下：
-    例如，老师在第01020304节有课，可以修改为任意包含01020304的区间，如010203040506节；
-    或任意被01020304包含的区间，如0102节，不能修改为03040506，否则会与原01020304中的0304冲突
-    老师在要安排的时间段内无课，则可以任意添加
+  例如，老师在第01020304节有课，可以修改为任意包含01020304的区间，如010203040506节；
+  或任意被01020304包含的区间，如0102节，但不能修改为03040506，否则会与原01020304中的0304冲突
+  老师在要安排的时间段内无课，则可以任意添加
 </pre>
 </div>
 
