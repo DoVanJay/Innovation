@@ -44,7 +44,9 @@ require('../possess/mysql.php');
 if ($_SESSION['ID'] == false) {
     header("location:../possess/login.php");
 }
-@$_SESSION["status"] = "tch"; //将用户身份赋值为教师
+if (@$_SESSION["status"] != "admin") {
+    @$_SESSION["status"] = "tch"; //将用户身份赋值为教师
+}
 $tchID = $_SESSION['ID'];
 $today = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
@@ -60,9 +62,9 @@ if (date("w") != 0) {
 ?>
 <html>
 <head>
-    <!--    <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>教师操作界面</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
@@ -87,12 +89,25 @@ if (date("w") != 0) {
     echo "<p><span style='font-weight: bold;font-size: 110%'>" . $tchID . "</span>  老师, 您好。";
     $o = 0;/*当天的课程数*/
     ?>
-    <button class="btn btn-danger" onclick='window.location.href="../possess/logout.php"'>点此注销</button>
-    <button class="btn btn-info" onclick='window.location.href="query.php"'>点此查看您的操作记录</button>
-    <button class="btn btn-primary"  onclick='window.location.href="../possess/reset-password.php"'>点此修改密码</button>
+    <div class="btn-group">
+        <button style="height: 45px;" class="btn btn-danger" onclick='window.location.href="../possess/logout.php"'>
+            点此注销
+        </button>
+        <button style="height: 45px;" class="btn btn-info" onclick='window.location.href="query.php"'>
+            点此查看您的操作记录
+        </button>
+        <button style="height: 45px;" class="btn btn-primary"
+                onclick='window.location.href="../possess/reset-password.php"'>点此修改密码
+        </button>
+        <?php
+        if ($_SESSION["status"] == "admin") {
+            echo '<button style="height: 45px;" class="btn btn-success" onclick=window.location.href="../admin/admin.php">点此返回管理员界面</button >';
+        }
+        ?>
+    </div>
     <p>今天是 第 <span
-                style="color:white;text-decoration-line: underline;background-color: grey;"> <?php echo $whichweek ?></span><?php echo " 周 <span style='background-color: grey;color: white ;'>周" . $day[date("w")] . '</span> ;' ?>
-    <div style="text-decoration-line: underline">您今天
+                class="todayIs"> <?php echo $whichweek ?></span><?php echo " 周 <span class='todayIs'>周" . $day[date("w")] . '</span> ;' ?>
+
         <?php
         $sql_schedule = "select * from schedule 
                         WHERE tchID='$tchID' 
@@ -102,9 +117,20 @@ if (date("w") != 0) {
         $operation = null;
         if (mysqli_num_rows($result)) {
             $n = mysqli_num_rows($result);
+            echo '
+                <table class="table table-hover" style="width: 500px;">
+                    <caption>您今天的课程如下(只包含地点在机房的课程)</caption>
+                    <thead>
+                    <tr>
+                        <th>上课时间</th>
+                        <th>上课地点</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ';
             while ($n > 0) {
                 $info = mysqli_fetch_array($result);            /*取出当前老师课表信息*/
-                $SKSJ = (string)$info['timeForClass'];                       /*取出上课时间*/
+                $SKSJ = (string)$info['timeForClass'];          /*取出上课时间*/
                 $sksjPY = str_split($SKSJ);
                 $m = count($sksjPY);
                 if (strstr($info['locationOfClass'], "微") || strstr($info['locationOfClass'], "文理")) {
@@ -112,18 +138,30 @@ if (date("w") != 0) {
                     $operation[$o][1] = $info['locationOfClass'];/*可操作的机房课程地点*/
                     $o = $o + 1;
                 }
+                $timeOfClass = null;
                 for ($i = ($m - 1); $i >= 1; $i = $i - 2) {
                     if ($i == 2) {
-                        $info['locationOfClass'] = "第" . $sksjPY[$i - 1] . $sksjPY[$i] . "节&" . $info['locationOfClass'] . " 有课";
+                        $timeOfClass = "第" . $sksjPY[$i - 1] . $sksjPY[$i] . "节&" . $timeOfClass;
                     } elseif ($i == ($m - 1)) {
-                        $info['locationOfClass'] = $sksjPY[$i - 1] . $sksjPY[$i] . "节 @<span style='color: red'>" . $info['locationOfClass'] . "</span>";
+                        $timeOfClass = $sksjPY[$i - 1] . $sksjPY[$i] . "节";
                     } else {
-                        $info['locationOfClass'] = $sksjPY[$i - 1] . $sksjPY[$i] . "节&" . $info['locationOfClass'];
+                        $timeOfClass = $sksjPY[$i - 1] . $sksjPY[$i] . "节&" . $timeOfClass;
                     }
                 }
-                echo $info['locationOfClass'] . ";" . "&nbsp;&nbsp;";
+
+                echo '
+                            <tr>
+                                <td>' . $timeOfClass . '</td>
+                                <td><span style="color: red">' . $info['locationOfClass'] . '</span></td>
+                            </tr>
+                ';
+
                 $n = $n - 1;
             }
+            echo '
+                    </tbody>
+                    </table>
+            ';
         } else {
             $info['locationOfClass'] = "无课";
             echo $info['locationOfClass'];
@@ -185,14 +223,15 @@ if (date("w") != 0) {
         }
         if (strstr($todayLesson, $nowPermit)) {   /*根据时间判断当前是否有可操作的教室*/
             $nowPermitClassroomName = null;
-            echo "<div>您当前可操作教室：";
+            echo "<div class='classroom-now-control'>您当前可操作教室：";
             for ($i = 0; $i < $o; $i++) { /*$o为今天机房课的个数*/
                 if (strstr($operation[$i][0], $nowPermit)) {
                     $nowPermitClassroomName = $operation[$i][1];
+                    echo "$nowPermitClassroomName\n";
                     break;
                 }
             }
-            echo "<span style='text-decoration-line: underline;color: red'>" . $nowPermitClassroomName . "&nbsp;</span></div>";/*输出当前可操作的机房地点*/
+            echo "<span style='text-decoration-line: underline;color: red'>" . $nowPermitClassroomName . "&nbsp;</span>";/*输出当前可操作的机房地点*/
             echo "<br/><p id='now_net_status' style='font-size:120%;font-weight: bold;' >当前可操作教室网络状态:</p>";
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
@@ -208,16 +247,17 @@ if (date("w") != 0) {
         <label><input type="hidden" name="classroomName" value=' ?>
             <?php
             echo $nowPermitClassroomName;
-            echo '></label>
-        <button class="btn btn-warning" type="submit" value="提交"/>提交</button>
-</form>';
+            echo '></label><br>
+        <button class="btn btn-warning" style="margin-left: 50%;width: 120px;" type="submit" value="提交"/>提交</button>
+</form>
+</div>';
         } else {
             echo "<p style='font-size: 120%;color: orange;font-weight: bold'>您当前时间段没有可操作的教室</p>";
         }
         echo "</div>";
         ?>
-    </div>
-    <div class="bottom-remind">
+</div>
+<div class="bottom-remind">
 <pre>
 <span>注意：</span>
 1.该控制系统只能用于多媒体机房和文理楼机房的控制；
@@ -226,7 +266,7 @@ if (date("w") != 0) {
 4.您的课结束后网络将自动恢复到完全开放状态;
   例：您03和04节在文理楼105有课，那么从03节上课前十分钟到04节课下课机房网络都将处于您设置的状态，04节下课后网络将自动恢复到完全开放状态。
 </pre>
-    </div>
+</div>
 </div>
 </body>
 </html>

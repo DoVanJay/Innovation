@@ -28,10 +28,10 @@ $admin_result = mysqli_query($con, $sql_admin);
 $tch_row = mysqli_num_rows($tch_result);       /*查找是否有符合的用户*/
 $admin_row = mysqli_num_rows($admin_result);         /*查找是否有符合的用户*/
 if ($tch_row == 0 && $admin_row == 0) {
-    echo "<div style='margin-top:8%;background-color: rgba(255, 255, 255, 0.4);padding: 20px;width:300px;margin-left: 32%'>
+    echo "<div class='translucence' style='margin-top:8%;padding: 20px;width:300px;margin-left: 32%'>
             <span style='color: gray;font-size: 130%;font-family: 幼圆, serif;'>友情提醒:</span><br><br>
             您已注销或登录失败<br/>
-            点此<a href='../index.php'>重新登录</a><br />
+            点此 <a href='../index.php'>重新登录</a><br />
           </div>";
 } else {
     if ($admin_row != 0) {

@@ -61,10 +61,10 @@ $result = mysqli_query($con, $sql_innovation);
 <br/><br/>
 <div align="left" style="margin-left: 20%">
     <?php
-    echo "<p><span style='font-weight: bold;font-size: 110%'>" . $adminID . "</span> 管理员, 您好。 <button class=\"btn btn-danger\" onclick='window.location.href=\"../possess/logout.php\"'>点此注销</button><button class=\"btn btn-primary\"  onclick='window.location.href=\"../possess/reset-password.php\"'>点此修改密码</button></p>";
+    echo "<p><span style='font-weight: bold;font-size: 110%'>" . $adminID . "</span> 管理员, 您好。 <button class=\"btn btn-danger\" onclick='window.location.href=\"../possess/logout.php\"'>点此注销</button> <button class=\"btn btn-primary\"  onclick='window.location.href=\"../possess/reset-password.php\"'>点此修改密码</button></p>";
     ?>
-    <p>今天是 第<span
-                style="text-decoration-line: underline"> <?php echo "&nbsp" . $whichWeek . " " ?></span><?php echo "周 周" . $day[date("w")] . '&nbsp;&nbsp;;' ?></span>
+    <p>今天是 第 <span
+                class="todayIs"> <?php echo $whichWeek ?></span><?php echo " 周 <span class='todayIs'>周" . $day[date("w")] . '</span> ;' ?>
     </p>
     <ul class="list-group">
         <li>

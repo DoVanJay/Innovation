@@ -1,6 +1,6 @@
 <?php
 /**
- * 实现 [临时换教室功能(仅限当天修改当天有效)] 功能
+ * 实现 临时换教室功能(仅限当天修改当天有效) 功能
  */
 /** to be continue
  * TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC

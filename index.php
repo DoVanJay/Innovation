@@ -19,10 +19,10 @@
         <div style="background-color: rgba(255, 255, 255, 0.4);padding: 20px;">
             <span style="color: gray;font-size: 130%;font-family: 幼圆, serif;">登录系统:</span><br><br>
             <input class="form-control" type="text" name="ID"
-                   placeholder="用户名"/><br><br>
+                   placeholder="用户名"/><br>
             <input class="form-control" type="password" name="passwd"
                    placeholder="密码"/>
-            <br><br><br>
+            <br>
             <button type="submit" class="btn btn-warning" style="width: 130px;height: 50px;margin-left: 50%;">登录
             </button>
         </div>
