@@ -83,8 +83,7 @@ if (date("w") != 0) {
 <body>
 <div align="center"><img src="/imgs/title.png" width="550"/>
 </div>
-<br/><br/>
-<div align='left' style="margin-left:20%;">
+<div align='left' style="margin-left:20%;margin-top: 3%;">
     <?php
     echo "<p><span style='font-weight: bold;font-size: 110%'>" . $tchID . "</span>  老师, 您好。";
     $o = 0;/*当天的课程数*/
@@ -118,12 +117,12 @@ if (date("w") != 0) {
         if (mysqli_num_rows($result)) {
             $n = mysqli_num_rows($result);
             echo '
-                <table class="table table-hover" style="width: 500px;">
-                    <caption>您今天的课程如下(只包含地点在机房的课程)</caption>
+                <table class="table table-hover" style="margin-top:20px;color: gray;background-color: rgba(255, 255, 255, 0.4)">
+                    <caption style="background-color: rgba(255, 255, 255, 0.4)">您今天的课程如下(只包含地点在机房的课程)</caption>
                     <thead>
                     <tr>
-                        <th>上课时间</th>
-                        <th>上课地点</th>
+                        <th style="width:50px;">上课时间</th>
+                        <th style="width:50px;">上课地点</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -155,7 +154,6 @@ if (date("w") != 0) {
                                 <td><span style="color: red">' . $info['locationOfClass'] . '</span></td>
                             </tr>
                 ';
-
                 $n = $n - 1;
             }
             echo '
@@ -168,7 +166,6 @@ if (date("w") != 0) {
         }
         echo "</div>";
         ?>
-        <br/>
         <?php
         /*直接把时间段分割成上课节数*/
         $nowTime = date('H:i');/*赋值当前时间*/
@@ -227,7 +224,7 @@ if (date("w") != 0) {
             for ($i = 0; $i < $o; $i++) { /*$o为今天机房课的个数*/
                 if (strstr($operation[$i][0], $nowPermit)) {
                     $nowPermitClassroomName = $operation[$i][1];
-                    echo "$nowPermitClassroomName\n";
+//                    echo "$nowPermitClassroomName\n";
                     break;
                 }
             }
@@ -252,7 +249,7 @@ if (date("w") != 0) {
 </form>
 </div>';
         } else {
-            echo "<p style='font-size: 120%;color: orange;font-weight: bold'>您当前时间段没有可操作的教室</p>";
+            echo "<p class='no-classroom-to-control' '>您当前时间段没有可操作的教室</p>";
         }
         echo "</div>";
         ?>
@@ -261,12 +258,11 @@ if (date("w") != 0) {
 <pre>
 <span>注意：</span>
 1.该控制系统只能用于多媒体机房和文理楼机房的控制；
-2.如果您需要临时换教室,请直接联系管理员修改;
+2.如果您需要临时换教室,请直接联系管理员修改；
 3.从上课前10分钟到您的课结束，您都有权限控制机房网络；
-4.您的课结束后网络将自动恢复到完全开放状态;
+4.您的课结束后网络将自动恢复到完全开放状态；
   例：您03和04节在文理楼105有课，那么从03节上课前十分钟到04节课下课机房网络都将处于您设置的状态，04节下课后网络将自动恢复到完全开放状态。
 </pre>
-</div>
 </div>
 </body>
 </html>

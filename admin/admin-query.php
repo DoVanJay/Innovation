@@ -23,7 +23,7 @@
         <select name="day" id="day">
             <option value="">日</option>
         </select>
-        <input type="text" value="请输入教师工号" onfocus="javascript:if(this.value=='请输入教师工号')this.value='';" name="tchID">
+        <input style="width: 300px;display: inline;" class="form-control" placeholder="请输入教师工号" name="tchID">
         <button type="submit" class="btn btn-warning">提交</button>
         <button type="button" class="btn btn-success" onclick="window.location.href='admin.php'">点此返回主操作界面</button>
     </form>
@@ -37,6 +37,7 @@
             }
             document.selectDate.year.outerHTML = strY + "</select>";
         }
+
         function YYMM() {
             var strM = '<select name="month" onchange="MMDD(this.value)"><option value="">月</option>';
             for (var i = 1; i < 10; i++) {
@@ -47,6 +48,7 @@
             }
             document.selectDate.month.outerHTML = strM + "</select>";
         }
+
         function MMDD(strM) {
             var strD = '<select name="day"><option value="">日</option>';
             var yearValue = document.selectDate.year.options[document.selectDate.year.selectedIndex].value;
@@ -96,6 +98,7 @@
             }
             document.selectDate.day.outerHTML = strD + "</select>";
         }
+
         function isLeapYear(year)//判断是否闰平年
         {
             return (0 == year % 4 && (year % 100 != 0 || year % 400 == 0))
@@ -106,11 +109,11 @@
     /**
      * 实现管理员查询所有教师操作记录的功能
      */
-//    $host = "localhost";
-//    $username = "root";
-//    $password = "";
-//
-//    $db = "operating_log";
+    //    $host = "localhost";
+    //    $username = "root";
+    //    $password = "";
+    //
+    //    $db = "operating_log";
     include "../possess/mysql.php";
     $con = mysqli_connect($host, $username, $password, $db);
     if (mysqli_connect_errno()) {
@@ -134,15 +137,14 @@
     $sql = "select * from operating_log where tchID='$tchID' and time LIKE '%$time%'";
     $result = mysqli_query($con, $sql);
     ?>
-    <textarea rows="25" cols="70" readonly="readonly" style="opacity: 0.4;color: black">
     <?php
-    echo "++++操作时间++++工号+++++操作教室+++具体操作++++\n";
     if ($time) {
-        echo "结果如下:\n";
+        echo '<textarea rows="26" cols="70" readonly="readonly" style="opacity: 0.4;color: black;font-size: 120%">结果如下:';
         if ($tchID != null && $tchID != '请输入教师工号') {
             if (mysqli_num_rows($result) < 1) {
                 echo "\n当前日期无操作记录";
             } else {
+                echo "\n           操作时间 ++++++ 工号 ++++++ 操作教室 ++++++ 具体操作\n\n";
                 while ($row = mysqli_fetch_array($result)) {
                     echo $row[0] . "&nbsp;&nbsp;&nbsp;" . $row[1] . "&nbsp;&nbsp;&nbsp;" . $row[2] . "&nbsp;&nbsp;&nbsp;" . $row[3] . "\n";
                 }
@@ -152,10 +154,9 @@
         }
     }
     ?>
-</textarea>
+    </textarea>
 </div>
 <br><br><br>
-<p>sadfo</p>
 <div class="bottom-remind">
 <pre>
 <span>注意：</span>

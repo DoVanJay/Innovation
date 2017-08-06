@@ -3,6 +3,8 @@ body {
     font-size: medium;
     color: white;
     background: #F6F6F6 url(/imgs/bg.jpg);
+    height: 100%;
+    position: relative;
 
     /*背景图片高斯模糊*/
     /*-moz-background-size: 100% 100%; !*  Firefox 3.6 *!*/
@@ -18,47 +20,71 @@ pre {
     word-wrap: break-word;
 }
 
+/*半透明特效*/
 .translucence {
-    /*半透明特效*/
     background-color: rgba(255, 255, 255, 0.4);
 }
 
+/*现在可以控制的教室*/
 .classroom-now-control {
-    /*现在可以控制的教室*/
+    margin-top: 20px;
     background-color: rgba(255, 255, 255, 0.4);
     color: grey;
     width: 35%;
     padding: 5px;
+    margin-left: 20%;
 }
 
+/* "您当前时间段没有可操作的教室"效果*/
+.no-classroom-to-control {
+    font-size: 120%;
+    color: orange;
+    font-weight: bold;
+    margin-left: 20%;
+}
+
+/* “今天是第_周 周_”提醒栏的效果*/
 .todayIs {
     color: white;
     text-decoration-line: underline;
     background-color: grey;
 }
 
+/*底部“注意”的效果*/
 .bottom-remind {
+    margin-top: 50px;
     width: 100%;
     text-align: left;
 }
 
 .bottom-remind pre {
-    position: fixed;
-    margin: 0 auto;
-    bottom: 0px;
     width: 100%;
     font-family: 幼圆, serif;
     color: black;
     font-size: medium;
-    opacity: 0.4;
+    opacity: 0.7;
 }
 
 .bottom-remind span {
+    margin: 0px;
+    padding: 0px;
+    bottom: 0px;
+    width: 100%;
     color: red;
     font-weight: bold;
     font-size: 140%;
 }
 
+select {
+    height: 30px;
+}
+
+input {
+    height: 30px;
+}
+
+/*复制自bootstrap*/
+/*关键词：btn/btn-group/form-control/table */
 .btn {
     display: inline-block;
     padding: 6px 12px;
@@ -897,5 +923,36 @@ table th[class*="col-"] {
     .table-responsive > .table-bordered > tbody > tr:last-child > td,
     .table-responsive > .table-bordered > tfoot > tr:last-child > td {
         border-bottom: 0;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    input[type="date"].form-control,
+    input[type="time"].form-control,
+    input[type="datetime-local"].form-control,
+    input[type="month"].form-control {
+        line-height: 34px;
+    }
+
+    input[type="date"].input-sm,
+    input[type="time"].input-sm,
+    input[type="datetime-local"].input-sm,
+    input[type="month"].input-sm,
+    .input-group-sm input[type="date"],
+    .input-group-sm input[type="time"],
+    .input-group-sm input[type="datetime-local"],
+    .input-group-sm input[type="month"] {
+        line-height: 30px;
+    }
+
+    input[type="date"].input-lg,
+    input[type="time"].input-lg,
+    input[type="datetime-local"].input-lg,
+    input[type="month"].input-lg,
+    .input-group-lg input[type="date"],
+    .input-group-lg input[type="time"],
+    .input-group-lg input[type="datetime-local"],
+    .input-group-lg input[type="month"] {
+        line-height: 46px;
     }
 }

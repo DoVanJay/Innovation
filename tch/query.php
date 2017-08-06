@@ -10,11 +10,11 @@
 <body>
 <div align="center"><img src="/imgs/title.png" width="550"/>
 </div>
-<br>
-<div align="left" style="margin-left: 20%;height:110%;overflow: hidden">
+
+<div align="left" style="margin-top:3%;margin-left: 20%;overflow: hidden">
     <p>请输入要查询的日期:
     <form name="selectDate" method="post" action="query.php">
-        <select name='year' onchange="YYMM()">
+        <select  name='year' onchange="YYMM()">
             <option value="">年</option>
         </select>
         <select name="month" onchange="MMDD(this.value)">
@@ -36,6 +36,7 @@
             }
             document.selectDate.year.outerHTML = strY + "</select>";
         }
+
         function YYMM() {
             var strM = '<select name="month" onchange="MMDD(this.value)"><option value="">月</option>';
             for (var i = 1; i < 10; i++) {
@@ -46,6 +47,7 @@
             }
             document.selectDate.month.outerHTML = strM + "</select>";
         }
+
         function MMDD(strM) {
             var strD = '<select name="day"><option value="">日</option>';
             var yearValue = document.selectDate.year.options[document.selectDate.year.selectedIndex].value;
@@ -95,6 +97,7 @@
             }
             document.selectDate.day.outerHTML = strD + "</select>";
         }
+
         function isLeapYear(year)//判断是否闰平年
         {
             return (0 == year % 4 && (year % 100 != 0 || year % 400 == 0))
@@ -105,15 +108,6 @@
     /**
      * 该程序实现教师查询自己操作记录和管理员查询所有教师操作记录的功能
      */
-    //    $host = "localhost";
-    //    $username = "root";
-    //    $password = "D1ccb572";
-    //    $db = "operating_log";
-    //    $con = mysqli_connect($host, $username, $password, $db);
-    //    if (mysqli_connect_errno()) {
-    //        echo "连接失败";
-    //        exit();
-    //    }
     include("../possess/mysql.php");
     @session_start();
     @$time = $_POST['year'];
@@ -133,14 +127,14 @@
     $sql = "select * from operating_log where tchID='$tchID' and time LIKE '%$time%'";
     $result = mysqli_query($con, $sql);
     ?>
-    <textarea rows="20" cols="70" readonly="readonly" style="opacity: 0.4;color: black">
+
     <?php
-    echo "++++操作时间++++工号+++++操作教室+++具体操作++++\n";
     if ($time) {
-        echo "结果如下:\n";
+        echo '<textarea rows="26" cols="70" readonly="readonly" style="opacity: 0.4;color: black;font-size: 120%">结果如下:';
         if (mysqli_num_rows(mysqli_query($con, $sql)) < 1) {
             echo "\n当前日期无操作记录";
         } else {
+            echo "\n           操作时间 ++++++ 工号 ++++++ 操作教室 ++++++ 具体操作\n\n";
             while ($row = mysqli_fetch_array($result)) {
                 echo $row[0] . "&nbsp;&nbsp;&nbsp;" . $row[1] . "&nbsp;&nbsp;&nbsp;" . $row[2] . "&nbsp;&nbsp;&nbsp;" . $row[3] . "\n";
             }
@@ -149,10 +143,9 @@
         if ($time != null) {
             echo "\n请输入正确的日期(>_<)";
         }
-
     }
     ?>
-</textarea>
+    </textarea>
 </div>
 
 <div class="bottom-remind">
