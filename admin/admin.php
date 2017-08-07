@@ -56,10 +56,10 @@ $result = mysqli_query($con, $sql_innovation);
     <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+
 <div align="center"><img src="/imgs/title.png" width="550"/>
 </div>
-<br/><br/>
-<div align="left" style="margin-left: 20%">
+<div align="left" class="main">
     <?php
     echo "<p><span style='font-weight: bold;font-size: 110%'>" . $adminID . "</span> 管理员, 您好。 <button class=\"btn btn-danger\" onclick='window.location.href=\"../possess/logout.php\"'>点此注销</button> <button class=\"btn btn-primary\"  onclick='window.location.href=\"../possess/reset-password.php\"'>点此修改密码</button></p>";
     ?>
@@ -87,6 +87,7 @@ $result = mysqli_query($con, $sql_innovation);
         </li>
     </ul>
 </div>
+
 <div class="bottom-remind">
 <pre>
 <span>注意：</span>
@@ -94,5 +95,6 @@ $result = mysqli_query($con, $sql_innovation);
 2.若当前周次为负数(如-2),则为开学前倒数第2周;
 </pre>
 </div>
+
 </body>
 </html>

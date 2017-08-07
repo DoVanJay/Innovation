@@ -1,10 +1,17 @@
+html {
+    height: 100%;
+}
+
 body {
-    font-family: 微软雅黑;
+    font-family: 微软雅黑, serif;
     font-size: medium;
     color: white;
     background: #F6F6F6 url(/imgs/bg.jpg);
+    margin: 0;
+    /*充满屏幕*/
     height: 100%;
-    position: relative;
+    display: flex;
+    flex-direction: column;
 
     /*背景图片高斯模糊*/
     /*-moz-background-size: 100% 100%; !*  Firefox 3.6 *!*/
@@ -13,6 +20,13 @@ body {
     /*background-size: 100% 100%; !*  Firefox 4.0 and other CSS3-compliant browsers *!*/
     /*-moz-border-image: url(/imgs/bg.jpg) 0; !* Firefox 3.5 *!*/
     /*filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/imgs/bg.jpg', sizingMethod='scale'); !* for < ie9 *!*/
+}
+
+.main {
+    margin-top: 3%;
+    margin-left: 20%;
+    overflow: hidden;
+    flex: 1 0 auto;
 }
 
 pre {
@@ -32,15 +46,14 @@ pre {
     color: grey;
     width: 35%;
     padding: 5px;
-    margin-left: 20%;
 }
 
 /* "您当前时间段没有可操作的教室"效果*/
 .no-classroom-to-control {
+    margin-top: 50px;
     font-size: 120%;
     color: orange;
     font-weight: bold;
-    margin-left: 20%;
 }
 
 /* “今天是第_周 周_”提醒栏的效果*/
@@ -52,13 +65,14 @@ pre {
 
 /*底部“注意”的效果*/
 .bottom-remind {
-    margin-top: 50px;
     width: 100%;
     text-align: left;
+    flex: 0 0 auto;
 }
 
 .bottom-remind pre {
     width: 100%;
+    margin: 0 0 5px;
     font-family: 幼圆, serif;
     color: black;
     font-size: medium;
@@ -66,10 +80,6 @@ pre {
 }
 
 .bottom-remind span {
-    margin: 0px;
-    padding: 0px;
-    bottom: 0px;
-    width: 100%;
     color: red;
     font-weight: bold;
     font-size: 140%;

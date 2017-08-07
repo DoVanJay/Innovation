@@ -186,7 +186,7 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
 <div align="center"><img src="/imgs/title.png" width="550"/>
 </div>
 <br>
-<div align="left" style="margin-left: 20%">
+<div align="left" class="main">
     <p>
         请输入上课时间,教室名称以及教师工号:
     </p>

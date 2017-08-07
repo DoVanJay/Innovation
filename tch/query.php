@@ -8,13 +8,13 @@
     <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+
 <div align="center"><img src="/imgs/title.png" width="550"/>
 </div>
-
-<div align="left" style="margin-top:3%;margin-left: 20%;overflow: hidden">
+<div align="left" class="main">
     <p>请输入要查询的日期:
     <form name="selectDate" method="post" action="query.php">
-        <select  name='year' onchange="YYMM()">
+        <select name='year' onchange="YYMM()">
             <option value="">年</option>
         </select>
         <select name="month" onchange="MMDD(this.value)">
@@ -24,7 +24,8 @@
             <option value="">日</option>
         </select>
         <button type="submit" class="btn btn-info">提交</button>
-        <button type="button" class="btn btn-success" onclick="window.location.href='teacher.php'">点此返回主操作界面</button>
+        <button type="button" class="btn btn-success" onclick="window.location.href='teacher.php'">点此返回主操作界面
+        </button>
     </form>
     <script language="JavaScript">
         window.onload = function () {
@@ -100,7 +101,7 @@
 
         function isLeapYear(year)//判断是否闰平年
         {
-            return (0 == year % 4 && (year % 100 != 0 || year % 400 == 0))
+            return (0 === year % 4 && (year % 100 !== 0 || year % 400 === 0))
         }
     </script>
 
@@ -147,13 +148,13 @@
     ?>
     </textarea>
 </div>
-
 <div class="bottom-remind">
-    <pre>
+<pre>
 <span>注意：</span>
 若只输入年，则将查询全年记录；
 若输入年月则将查询该年该月的全部记录；
 </pre>
 </div>
+
 </body>
 </html>

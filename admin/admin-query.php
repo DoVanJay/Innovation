@@ -10,8 +10,7 @@
 <body>
 <div align="center"><img src="/imgs/title.png" width="550"/>
 </div>
-<br>
-<div align="left" style="margin-left: 20%;height:120%;overflow: hidden">
+<div align="left" class="main">
     <p>请输入要查询的日期及教师工号:
     <form name="selectDate" method="post" action="admin-query.php">
         <select name='year' onchange="YYMM()">
@@ -156,7 +155,6 @@
     ?>
     </textarea>
 </div>
-<br><br><br>
 <div class="bottom-remind">
 <pre>
 <span>注意：</span>
