@@ -46,7 +46,6 @@ $tchID = null;
 @$classLocation = $_POST['classLocation'];
 @$classNum = $_POST['classNum'];
 @$tchID = $_POST['tchID'];
-//echo $class1 . "-" . $class2 . "-" . $classLocation . "-" . $classNum . "-" . $tchID;
 $today = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
 $firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from thefirstday'));
@@ -147,6 +146,7 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
 <script>
     classLocation = document.classroom.classLocation.outerHTML;
     classNum = document.classroom.classNum.outerHTML;
+
     function setClassNo2(str) {
         var s = '<option>m</option>';
         var i = str;

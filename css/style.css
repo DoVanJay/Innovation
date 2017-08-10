@@ -65,6 +65,7 @@ pre {
 
 /*底部“注意”的效果*/
 .bottom-remind {
+    margin-top: 50px;
     width: 100%;
     text-align: left;
     flex: 0 0 auto;

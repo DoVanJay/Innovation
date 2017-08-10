@@ -206,7 +206,7 @@ if (date("w") != 0) {
              * T:::::T                   B::::B     B:::::B        C:::::C
              * T:::::T                   B::::B     B:::::B        C:::::C
              * T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC
-             * TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C
+             * TT:::::::TT               BB:::::BBBBB B::::::B          C:::::CCCCCCCC::::C
              * T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C
              * T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
              * TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
