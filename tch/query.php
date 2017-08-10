@@ -23,9 +23,11 @@
         <select name="day">
             <option value="">日</option>
         </select>
-        <button type="submit" class="btn btn-info">提交</button>
-        <button type="button" class="btn btn-success" onclick="window.location.href='teacher.php'">点此返回主操作界面
-        </button>
+        <div class="btn-group">
+            <button type="submit" class="btn btn-info">提交</button>
+            <button type="button" class="btn btn-success" onclick="window.location.href='teacher.php'">点此返回主操作界面
+            </button>
+        </div>
     </form>
     <script language="JavaScript">
         window.onload = function () {

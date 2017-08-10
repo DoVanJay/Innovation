@@ -12,7 +12,7 @@
 </div>
 <div align="left" class="main">
     <p>请输入要查询的日期及教师工号:
-    <form name="selectDate" method="post" action="admin-query.php">
+    <form name="selectDate" method="post" action="admin-query-log.php">
         <select name='year' onchange="YYMM()">
             <option value="">年</option>
         </select>
@@ -23,8 +23,10 @@
             <option value="">日</option>
         </select>
         <input style="width: 300px;display: inline;" class="form-control" placeholder="请输入教师工号" name="tchID">
-        <button type="submit" class="btn btn-warning">提交</button>
-        <button type="button" class="btn btn-success" onclick="window.location.href='admin.php'">点此返回主操作界面</button>
+        <div class="btn-group">
+            <button type="submit" class="btn btn-warning">提交</button>
+            <button type="button" class="btn btn-success" onclick="window.location.href='admin.php';">点此返回主操作界面</button>
+        </div>
     </form>
     <script language="JavaScript">
         window.onload = function () {
@@ -108,11 +110,6 @@
     /**
      * 实现管理员查询所有教师操作记录的功能
      */
-    //    $host = "localhost";
-    //    $username = "root";
-    //    $password = "";
-    //
-    //    $db = "operating_log";
     include "../possess/mysql.php";
     $con = mysqli_connect($host, $username, $password, $db);
     if (mysqli_connect_errno()) {

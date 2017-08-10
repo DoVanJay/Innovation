@@ -94,6 +94,22 @@ input {
     height: 30px;
 }
 
+.table-top-hr {
+    margin: 0;
+    width: 70%;
+    color: black;
+    float: left;
+}
+
+.table-top-p {
+    background-color: rgba(255, 255, 255, 0.4);
+    width: 70%;
+    color: black;
+    font-size: 120%;
+    font-style: italic;
+    margin-bottom: 0;
+}
+
 /*复制自bootstrap*/
 /*关键词：btn/btn-group/form-control/table */
 .btn {

@@ -20,26 +20,11 @@
 /**
  * 教师操作界面
  */
-/*自定义函数*/
-function calDays($date1, $date2)        /*计算两天之间隔了多少天*/
-{
-    $time1 = strtotime($date1);
-    $time2 = strtotime($date2);
-    return ($time2 - $time1) / 86400;
-}
-
-function whichWeek($days)               /*计算当前是第几周*/
-{
-    if (($days / 7) >= floor($days / 7)) {
-        return floor($days / 7) + 1;
-    } else {
-        return (int)($days / 7);
-    }
-}
 
 ?>
 <?php
 require('../possess/mysql.php');
+require('../possess/function.php');
 @session_start();
 if ($_SESSION['ID'] == false) {
     header("location:../possess/login.php");
@@ -118,8 +103,9 @@ if (date("w") != 0) {
             if (mysqli_num_rows($result)) {
                 $n = mysqli_num_rows($result);
                 echo '
-                <table class="table table-hover" style="width:50%;margin-top:20px;color: gray;background-color: rgba(255, 255, 255, 0.4)">
-                    <caption style="background-color: rgba(255, 255, 255, 0.4)">您今天的课程如下(只包含地点在机房的课程)</caption>
+                <p class="table-top-p">您今天在机房的课程如下：</p>
+                <hr class="table-top-hr">
+                <table class="table table-hover" style="margin-top:0;width:70%;color: gray;background-color: rgba(255, 255, 255, 0.4)">
                     <thead>
                     <tr>
                         <th>上课时间</th>
@@ -148,13 +134,11 @@ if (date("w") != 0) {
                             $timeOfClass = $sksjPY[$i - 1] . $sksjPY[$i] . "节&" . $timeOfClass;
                         }
                     }
-
                     echo '
-                            <tr>
-                                <td>' . $timeOfClass . '</td>
-                                <td><span style="color: red">' . $info['locationOfClass'] . '</span></td>
-                            </tr>
-                ';
+                    <tr>
+                        <td>' . $timeOfClass . '</td>
+                        <td><span style="color: red">' . $info['locationOfClass'] . '</span></td>
+                    </tr>';
                     $n = $n - 1;
                 }
                 echo '

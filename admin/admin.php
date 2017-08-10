@@ -60,24 +60,45 @@ $result = mysqli_query($con, $sql_innovation);
 <div align="center"><img src="/imgs/title.png" width="550"/>
 </div>
 <div align="left" class="main">
-    <?php
-    echo "<p><span style='font-weight: bold;font-size: 110%'>" . $adminID . "</span> 管理员, 您好。 <button class=\"btn btn-danger\" onclick='window.location.href=\"../possess/logout.php\"'>点此注销</button> <button class=\"btn btn-primary\"  onclick='window.location.href=\"../possess/reset-password.php\"'>点此修改密码</button></p>";
-    ?>
+    <div>
+        <?php
+        echo "<p style='display: inline'><span style='font-weight: bold;font-size: 110%'>" . $adminID . "</span> 管理员, 您好。</p>";
+        ?>
+        <div class="btn-group" style="display: inline-block;">
+            <button class="btn btn-danger" onclick='window.location.href="../possess/logout.php"'>
+                点此注销
+            </button>
+            <button class="btn btn-primary"
+                    onclick='window.location.href="../possess/reset-password.php"'>点此修改密码
+            </button>
+        </div>
+    </div>
     <p>今天是 第 <span
                 class="todayIs"> <?php echo $whichWeek ?></span><?php echo " 周 <span class='todayIs'>周" . $day[date("w")] . '</span> ;' ?>
     </p>
     <ul class="list-group">
         <li>
-            <button class="btn btn-primary" onclick=" window.location.href='../tch/teacher.php'">查看您当前有课/可直接控制的教室
+            <button class="btn btn-primary" onclick=" window.location.href='../tch/teacher.php'">
+                查看您当前有课/可直接控制的教室
             </button>
         </li>
         <br>
         <li>
-            <button class="btn btn-primary" onclick=" window.location.href='admin-query.php'">查看所有老师的操作记录</button>
+            <button class="btn btn-primary" onclick=" window.location.href='admin-query-log.php'">
+                查看指定老师的操作记录
+            </button>
         </li>
         <br>
         <li>
-            <button class="btn btn-primary" onclick=" window.location.href='admin-setDate.php'">设置本学期的第一天</button>
+            <button class="btn btn-primary" onclick=" window.location.href='admin-query-class.php'">
+                查看/删除指定老师的今日机房课程
+            </button>
+        </li>
+        <br>
+        <li>
+            <button class="btn btn-primary" onclick=" window.location.href='admin-setDate.php'">
+                设置本学期的第一天
+            </button>
         </li>
         <br>
         <li>
