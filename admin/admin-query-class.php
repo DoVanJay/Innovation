@@ -8,14 +8,15 @@
     <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div align="center"><img src="/imgs/title.png" width="550"/>
+<div align="center">
+    <img src="/imgs/title.png" width="550"/>
 </div>
 <div align="left" class="main">
     <p>请输入要查询的教师工号:
     <form name="selectDate" method="post" action="admin-query-class.php">
-        <input style="width: 300px;display: inline;" class="form-control" placeholder="请输入教师工号" name="tchID">
+        <input style="width: 300px;display: inline;" class="form-control" placeholder="请输入教师工号" name="query_tchID">
         <div class="btn-group">
-            <button type="submit" class="btn btn-warning">提交</button>
+            <button type="submit" class="btn btn-warning" onclick="storage(this)">提交</button>
             <button type="button" class="btn btn-success" onclick="window.location.href='admin.php'">点此返回主操作界面</button>
         </div>
     </form>
@@ -23,7 +24,7 @@
     require('../possess/mysql.php');//引入数据库连接
     require('../possess/function.php');//引入函数
     @session_start();
-    @$tchID = $_POST['tchID'];
+    @$query_tchID = $_POST['query_tchID'];
     $today = date('y-m-d');
     $day = array('日', '一', '二', '三', '四', '五', '六');
     $firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from thefirstday'));
@@ -37,7 +38,7 @@
         $dayInWeek = 7 . "%";
     }
     $sql_schedule = "select * from schedule 
-                        WHERE tchID='$tchID' 
+                        WHERE tchID='$query_tchID' 
                         AND find_in_set('$whichweek',detailsOfWeeks) 
                         AND timeForClass like '$dayInWeek' ";
     $result = mysqli_query($con, $sql_schedule);
@@ -45,7 +46,7 @@
     if (mysqli_num_rows($result)) {
         $n = mysqli_num_rows($result);
         echo '
-                <p class="table-top-p">' . $tchID . '老师今天在机房的课程如下：</p>
+                <p class="table-top-p">' . $query_tchID . '老师今天在机房的课程如下：</p>
                 <hr class="table-top-hr">
                 <table class="table table-hover" style="margin-top:0;width:70%;color: gray;background-color: rgba(255, 255, 255, 0.4)">
                     <thead>
@@ -91,10 +92,10 @@
                     </tbody>
                     </table>
             ';
-    } else if ($tchID) {
+    } else if ($query_tchID) {
         echo '
                 <div class="alert alert-success" style="margin-top: 30px;width: 40%;height: 10%;">
-                <a class="alert-link">' . $tchID . '  老师今天在机房无课</a>
+                <a class="alert-link">' . $query_tchID . '  老师今天在机房无课</a>
                 </div>
                 ';
     }
@@ -105,7 +106,7 @@
 <pre>
 <span>注意：</span>
 1.仅可查询指定教师当天在机房的课程；
-2.如果教师有课可进行删除操作；
+2.如果教师有课可进行删除课程操作；
 </pre>
 </div>
 
@@ -127,6 +128,27 @@
             form.submit();
             document.body.removeChild(form);
         }
+    }
+
+    function storage(button) {
+        if (localStorage.getItem("query_tchID")) {
+            var form = document.createElement("form");
+            form.action = 'admin-query-class.php';
+            form.method = 'post';
+            document.body.appendChild(form);
+            var input = document.createElement("input");
+            input.type = 'text';
+            input.name = 'query_tchID';
+            input.value = localStorage.getItem("query_tchID");
+            form.appendChild(input);
+            form.submit();
+            document.body.removeChild(form);
+        }
+        else {
+            var query_tchID = button.parentNode.parentNode.childNodes[1].innerHTML;
+            localStorage.setItem("query_tchID", query_tchID);
+        }
+
     }
 </script>
 <?php

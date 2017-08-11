@@ -3,9 +3,9 @@
  * 设置网络状态
  */
 session_start();
-include("../test.php");
+require("../test.php");
 header("content-type:text/html;charset=utf-8");
-include("../possess/mysql.php");
+require("../possess/mysql.php");
 if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) {
     echo "<script>alert('对不起,操作出错！')</script>";
 } else {

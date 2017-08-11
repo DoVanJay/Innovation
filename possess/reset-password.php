@@ -9,7 +9,8 @@
     <title>修改密码</title>
 </head>
 <body>
-<div align="center"><img src="/imgs/title.png" width="550"/>
+<div align="center">
+    <img src="/imgs/title.png" width="550"/>
 </div>
 
 
@@ -31,7 +32,7 @@
 
 <?php
 @session_start();
-include("../possess/mysql.php");
+require("../possess/mysql.php");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($_SESSION['status'] == "admin") {
         $sql = 'update admin set passwd= "' . $_POST["passwd"] . '" where adminID=' . $_SESSION["ID"];
@@ -39,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = 'update tch set passwd= "' . $_POST["passwd"] . '" where tchID=' . $_SESSION["ID"];
     }
     $result = mysqli_query($con, $sql);
-    if (mysqli_affected_rows($con)>0) {
+    if (mysqli_affected_rows($con) > 0) {
         echo "<script>alert('修改成功');</script>";
     }
 }

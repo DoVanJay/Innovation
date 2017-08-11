@@ -9,7 +9,8 @@
 </head>
 <body>
 
-<div align="center"><img src="/imgs/title.png" width="550"/>
+<div align="center">
+    <img src="/imgs/title.png" width="550"/>
 </div>
 <div align="left" class="main">
     <p>请输入要查询的日期:
@@ -111,7 +112,7 @@
     /**
      * 该程序实现教师查询自己操作记录和管理员查询所有教师操作记录的功能
      */
-    include("../possess/mysql.php");
+    require("../possess/mysql.php");
     @session_start();
     @$time = $_POST['year'];
     @$display = $_POST['year'] . "年";

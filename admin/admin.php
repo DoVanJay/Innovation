@@ -57,12 +57,15 @@ $result = mysqli_query($con, $sql_innovation);
 </head>
 <body>
 
-<div align="center"><img src="/imgs/title.png" width="550"/>
+<div align="center">
+    <img src="/imgs/title.png" width="550"/>
 </div>
 <div align="left" class="main">
     <div>
         <?php
-        echo "<p style='display: inline'><span style='font-weight: bold;font-size: 110%'>" . $adminID . "</span> 管理员, 您好。</p>";
+        echo "<p style='display: inline'>
+                <span style='font-weight: bold;font-size: 110%'>" . $adminID . "</span> 管理员, 您好。
+              </p>";
         ?>
         <div class="btn-group" style="display: inline-block;">
             <button class="btn btn-danger" onclick='window.location.href="../possess/logout.php"'>

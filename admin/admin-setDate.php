@@ -74,7 +74,8 @@
     }
 </script>
 <body>
-<div align="center"><img src="/imgs/title.png" width="550"/>
+<div align="center">
+    <img src="/imgs/title.png" width="550"/>
 </div>
 <br><br>
 <div align="left" style="margin-left: 20%">

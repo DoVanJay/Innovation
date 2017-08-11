@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<div align="center"><img src="/imgs/title.png" width="550"/>
+<div align="center">
+    <img src="/imgs/title.png" width="550"/>
 </div>
 <?php
 /**

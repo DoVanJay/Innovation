@@ -8,7 +8,8 @@
     <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div align="center"><img src="/imgs/title.png" width="550"/>
+<div align="center">
+    <img src="/imgs/title.png" width="550"/>
 </div>
 <div align="left" class="main">
     <p>请输入要查询的日期及教师工号:
@@ -110,7 +111,7 @@
     /**
      * 实现管理员查询所有教师操作记录的功能
      */
-    include "../possess/mysql.php";
+    require "../possess/mysql.php";
     $con = mysqli_connect($host, $username, $password, $db);
     if (mysqli_connect_errno()) {
         echo "连接失败";

@@ -2,40 +2,8 @@
 /**
  * 实现 临时换教室功能(仅限当天修改当天有效) 功能
  */
-/** to be continue
- * TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
- *直接填写文本框,后台数据格式化提交到数据库直接修改对应课的操作教室
- * T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C
- * TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC
- *         T:::::T                   B::::B     B:::::B         C:::::C
- *         T:::::T                   B::::BBBBBB:::::B         C:::::C
- *         T:::::T                   B:::::::::::::BB          C:::::C
- *         T:::::T                   B::::BBBBBB:::::B         C:::::C
- *         T:::::T                   B::::B     B:::::B        C:::::C
- *         T:::::T                   B::::B     B:::::B        C:::::C
- *         T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC
- *       TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C
- *       T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C
- *       T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
- *       TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
- */
-function calDays($date1, $date2)        /*计算两天之间隔了多少天*/
-{
-    $time1 = strtotime($date1);
-    $time2 = strtotime($date2);
-    return ($time2 - $time1) / 86400;
-}
-
-function whichWeek($days)               /*计算当前是第几周*/
-{
-    if (($days / 7) >= floor($days / 7)) {
-        return floor($days / 7) + 1;
-    } else {
-        return (int)($days / 7);
-    }
-}
-
 require('../possess/mysql.php');
+require('../possess/function.php');
 $class1 = null;
 $class2 = null;
 $classLocation = null;
@@ -76,24 +44,7 @@ for (; $i <= $class2; $i++) {
 //设置的时间有无课,有的话直接修改,否则添加
 $check_result = mysqli_query($con, $sql_check);
 $check = mysqli_num_rows($check_result);
-/** to be continue
- * TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
- *目前设置临时教室功能对于设置上课时间还只能扩大或缩小，不能实现错开来，
- * 如0102节要换到0203节的话就无法合并为010203，或将0102节的安排删掉，只能0102和0203同时存在
- * T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C
- * TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC
- *         T:::::T                   B::::B     B:::::B         C:::::C
- *         T:::::T                   B::::BBBBBB:::::B         C:::::C
- *         T:::::T                   B:::::::::::::BB          C:::::C
- *         T:::::T                   B::::BBBBBB:::::B         C:::::C
- *         T:::::T                   B::::B     B:::::B        C:::::C
- *         T:::::T                   B::::B     B:::::B        C:::::C
- *         T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC
- *       TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C
- *       T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C
- *       T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
- *       TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
- */
+
 if ($class1 != null && $class2 != null && $classLocation != null && $classNum != null && $tchID != null) {
     if ($check && $class1 != null) {
         @$sql_update = "update schedule
@@ -102,11 +53,11 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
                           and (timeForClass LIKE '%$classes%' or locate(timeForClass,'$dayInWeek$classes'))  
                           and find_in_set('$whichweek',detailsOfWeeks)";
         if (@mysqli_query($con, $sql_update)) {
-            echo "<script>alert('修改课程操作成功');
+            echo "<script>alert('更新操作成功');
                           window.location.href='admin-setClass.php';
                   </script>";
         } else {
-            echo "<script>alert('操作失败');
+            echo "<script>alert('更新操作失败');
                           window.location.href='admin-setClass.php';
                   </script>";
             header("location:admin-setClass.php");
@@ -116,11 +67,11 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
             @$sql_insert = "insert into schedule(timeForClass,locationOfClass,tchID,detailsOfWeeks) 
                                 values('$dayInWeek$classes','$classLocation$classNum','$tchID','$whichweek')";
             if (@mysqli_query($con, $sql_insert)) {
-                echo "<script>alert('新增课程操作成功');
+                echo "<script>alert('插入操作成功');
                               window.location.href='admin-setClass.php';
                       </script>";
             } else {
-                echo "<script>alert('操作失败');
+                echo "<script>alert('插入操作失败');
                               window.location.href='admin-setClass.php';
                       </script>";
             }
@@ -183,7 +134,8 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
     }
 </script>
 <body>
-<div align="center"><img src="/imgs/title.png" width="550"/>
+<div align="center">
+    <img src="/imgs/title.png" width="550"/>
 </div>
 <br>
 <div align="left" class="main">
@@ -191,7 +143,7 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
         请输入上课时间,教室名称以及教师工号:
     </p>
     <form name="classroom" method="post" onsubmit="return confirm('确认提交？')" action="admin-setClass.php">
-        <p>第<select name="no1" onchange="setClassNo2(this.value)">
+        <p style='display: inline'>第<select name="no1" onchange="setClassNo2(this.value)">
                 <option>n</option>
                 <option value="1">01</option>
                 <option value="2">02</option>
@@ -233,8 +185,11 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
             <!--      TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC-->
             <input name="tchID" type="text" value="请输入教师工号"
                    onfocus="javascript:if(this.value=='请输入教师工号')this.value='';">
+        </p>
+        <div class="btn-group" style="display: inline-block;">
             <button type="submit" class="btn btn-warning">提交</button>
             <button type="button" class="btn btn-success" onclick="window.location.href='admin.php'">点此返回主操作界面</button>
+        </div>
     </form>
 
 </div>
@@ -243,10 +198,11 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
 <span>注意：</span>
 1.由于服务器每天凌晨会从教务处拉取更新课表,所以该设置仅限于当天修改当天有效,隔天无效;
 2."微"开头教室为多媒体机房,"文理"开头教室为文理楼机房;
-3.具体使用规则举例如下：
+4.具体使用规则举例如下：
   例如，老师在第01020304节有课，可以修改为任意包含01020304的区间，如010203040506节；
   或任意被01020304包含的区间，如0102节，但不能修改为03040506，否则会与原01020304中的0304冲突
-  老师在要安排的时间段内无课，则可以任意添加
+  老师在要安排的时间段内无课，则可以任意添加；
+  <a style="color: red;font-weight: bold">如果有必要可以先将指定教师当天有冲突的机房课程删除，再进行重新添加。</a>
 </pre>
 </div>
 

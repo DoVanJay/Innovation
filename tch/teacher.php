@@ -66,7 +66,8 @@ if (date("w") != 0) {
     }
 </script>
 <body>
-<div align="center"><img src="/imgs/title.png" width="550"/>
+<div align="center">
+    <img src="/imgs/title.png" width="550"/>
 </div>
 <div align='left' class="main">
     <div>
