@@ -102,11 +102,11 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
                           and (timeForClass LIKE '%$classes%' or locate(timeForClass,'$dayInWeek$classes'))  
                           and find_in_set('$whichweek',detailsOfWeeks)";
         if (@mysqli_query($con, $sql_update)) {
-            echo "<script>alert('更新操作成功');
+            echo "<script>alert('修改课程操作成功');
                           window.location.href='admin-setClass.php';
                   </script>";
         } else {
-            echo "<script>alert('更新操作失败');
+            echo "<script>alert('操作失败');
                           window.location.href='admin-setClass.php';
                   </script>";
             header("location:admin-setClass.php");
@@ -116,11 +116,11 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
             @$sql_insert = "insert into schedule(timeForClass,locationOfClass,tchID,detailsOfWeeks) 
                                 values('$dayInWeek$classes','$classLocation$classNum','$tchID','$whichweek')";
             if (@mysqli_query($con, $sql_insert)) {
-                echo "<script>alert('插入操作成功');
+                echo "<script>alert('新增课程操作成功');
                               window.location.href='admin-setClass.php';
                       </script>";
             } else {
-                echo "<script>alert('插入操作失败');
+                echo "<script>alert('操作失败');
                               window.location.href='admin-setClass.php';
                       </script>";
             }

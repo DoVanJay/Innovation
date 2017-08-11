@@ -94,13 +94,6 @@ input {
     height: 30px;
 }
 
-.table-top-hr {
-    margin: 0;
-    width: 70%;
-    color: black;
-    float: left;
-}
-
 .table-top-p {
     background-color: rgba(255, 255, 255, 0.4);
     width: 70%;
@@ -108,6 +101,17 @@ input {
     font-size: 120%;
     font-style: italic;
     margin-bottom: 0;
+}
+
+.table-top-hr {
+    margin: 0;
+    width: 70%;
+    color: black;
+    float: left;
+}
+
+td {
+    text-align: center;
 }
 
 /*复制自bootstrap*/
@@ -982,4 +986,56 @@ table th[class*="col-"] {
     .input-group-lg input[type="month"] {
         line-height: 46px;
     }
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert h4 {
+    margin-top: 0;
+    color: inherit;
+}
+
+.alert .alert-link {
+    font-weight: bold;
+}
+
+.alert > p,
+.alert > ul {
+    margin-bottom: 0;
+}
+
+.alert > p + p {
+    margin-top: 5px;
+}
+
+.alert-dismissable,
+.alert-dismissible {
+    padding-right: 35px;
+}
+
+.alert-dismissable .close,
+.alert-dismissible .close {
+    position: relative;
+    top: -2px;
+    right: -21px;
+    color: inherit;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-success hr {
+    border-top-color: #c9e2b3;
+}
+
+.alert-success .alert-link {
+    color: #2b542c;
 }
