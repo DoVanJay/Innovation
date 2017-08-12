@@ -1,11 +1,9 @@
 <html>
 <head>
-    <title>全员操作记录查询</title>
+    <title>全员机房课程操作</title>
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div align="center">
@@ -14,9 +12,10 @@
 <div align="left" class="main">
     <p>请输入要查询的教师工号:
     <form name="selectDate" method="post" action="admin-query-class.php">
-        <input style="width: 300px;display: inline;" class="form-control" placeholder="请输入教师工号" name="query_tchID">
+        <input style="width: 300px;display: inline;" class="form-control" placeholder="请输入教师工号" name="query_tchID"
+               id="query_tchID">
         <div class="btn-group">
-            <button type="submit" class="btn btn-warning" onclick="storage(this)">提交</button>
+            <button type="submit" class="btn btn-warning" id="sub" onclick="storage(this)">提交</button>
             <button type="button" class="btn btn-success" onclick="window.location.href='admin.php'">点此返回主操作界面</button>
         </div>
     </form>
@@ -46,7 +45,7 @@
     if (mysqli_num_rows($result)) {
         $n = mysqli_num_rows($result);
         echo '
-                <p class="table-top-p">' . $query_tchID . '老师今天在机房的课程如下：</p>
+                <p class="table-top-p" id="show-result">' . $query_tchID . '老师今天在机房的课程如下：</p>
                 <hr class="table-top-hr">
                 <table class="table table-hover" style="margin-top:0;width:70%;color: gray;background-color: rgba(255, 255, 255, 0.4)">
                     <thead>
@@ -94,7 +93,7 @@
             ';
     } else if ($query_tchID) {
         echo '
-                <div class="alert alert-success" style="margin-top: 30px;width: 40%;height: 10%;">
+                <div class="alert alert-success" id="show-result" style="margin-top: 30px;width: 40%;height: 10%;">
                 <a class="alert-link">' . $query_tchID . '  老师今天在机房无课</a>
                 </div>
                 ';
@@ -111,6 +110,18 @@
 </div>
 
 <script>
+    //页面加载时检测localStorage中有无query_tchID
+    window.onload = function () {
+        //有则将其填入输入框
+        if (localStorage.getItem("query_tchID")) {
+            document.getElementById('query_tchID').value = localStorage.getItem("query_tchID");
+            //如果当前没有显示查询结果则点击提交按钮进行查询
+            if (!(document.getElementById("show-result")) {
+                document.getElementById('sub').click();
+            }
+        }
+    };
+    
     //    获取指定行的课程号并创建表单提交以删除课程
     function deleteClass(button) {
         var con = confirm("确认删除？");
@@ -130,26 +141,12 @@
         }
     }
 
+    //提交query_tchID时将其存入localStorage
     function storage(button) {
-        if (localStorage.getItem("query_tchID")) {
-            var form = document.createElement("form");
-            form.action = 'admin-query-class.php';
-            form.method = 'post';
-            document.body.appendChild(form);
-            var input = document.createElement("input");
-            input.type = 'text';
-            input.name = 'query_tchID';
-            input.value = localStorage.getItem("query_tchID");
-            form.appendChild(input);
-            form.submit();
-            document.body.removeChild(form);
-        }
-        else {
-            var query_tchID = button.parentNode.parentNode.childNodes[1].innerHTML;
-            localStorage.setItem("query_tchID", query_tchID);
-        }
-
+        var query_tchID = button.parentNode.parentNode.childNodes[1].value;
+        localStorage.setItem("query_tchID", query_tchID);
     }
+
 </script>
 <?php
 $id = @$_POST['id'];
@@ -157,7 +154,9 @@ $delete_sql = "delete from schedule where id=$id";
 $result = mysqli_query($con, $delete_sql);
 $affected = mysqli_affected_rows($con);
 if ($affected > 0) {
-    echo "<script>alert('删除成功');</script>";
+    echo "<script>
+            alert('删除成功');
+          </script>";
 }
 ?>
 </body>
