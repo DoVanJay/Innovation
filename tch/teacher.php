@@ -53,8 +53,8 @@ if (date("w") != 0) {
     <title>教师操作界面</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--    <script src="ht.static.runoob.com/ltps://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+    <!--    <script src="https://cdnibs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 </head>
 <script type="text/javascript">
     function checkConfirm() {
@@ -67,7 +67,7 @@ if (date("w") != 0) {
 </script>
 <body>
 <div align="center">
-    <img src="/imgs/title.png" width="550"/>
+    <img src="/imgs/title.png" style="width:550px"/>
 </div>
 <div align='left' class="main">
     <div>
@@ -181,7 +181,7 @@ if (date("w") != 0) {
             }
             /** to be continue
              * TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
-             * 第11节课的网络状态设置应该和第9&10之间不断,还有1234连课,检测下$nowPermit
+             * 第11节课的网络状态设置应该和第9&10之间不断,检测下$nowPermit
              * T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C
              * TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC
              * T:::::T                   B::::B     B:::::B         C:::::C

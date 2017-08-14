@@ -7,7 +7,7 @@
 </head>
 <body>
 <div align="center">
-    <img src="/imgs/title.png" width="550"/>
+    <img src="/imgs/title.png" style="width:550px"/>
 </div>
 <div align="left" class="main">
     <p>请输入要查询的教师工号:
@@ -121,7 +121,6 @@
             }
         }
     };
-    
     //    获取指定行的课程号并创建表单提交以删除课程
     function deleteClass(button) {
         var con = confirm("确认删除？");

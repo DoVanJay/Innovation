@@ -4,13 +4,11 @@
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 
 <div align="center">
-    <img src="/imgs/title.png" width="550"/>
+    <img src="/imgs/title.png" style="width:550px"/>
 </div>
 <div align="left" class="main">
     <p>请输入要查询的日期:
@@ -143,13 +141,14 @@
                 echo $row[0] . "&nbsp;&nbsp;&nbsp;" . $row[1] . "&nbsp;&nbsp;&nbsp;" . $row[2] . "&nbsp;&nbsp;&nbsp;" . $row[3] . "\n";
             }
         }
+        echo "</textarea>";
     } else {
         if ($time != null) {
             echo "\n请输入正确的日期(>_<)";
         }
     }
     ?>
-    </textarea>
+
 </div>
 <div class="bottom-remind">
 <pre>
@@ -158,6 +157,5 @@
 若输入年月则将查询该年该月的全部记录；
 </pre>
 </div>
-
 </body>
 </html>

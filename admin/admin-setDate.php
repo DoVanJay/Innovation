@@ -7,8 +7,8 @@
     <title>Set Date</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!--    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+<!--    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 </head>
 <script language="JavaScript">
     window.onload = function () {
@@ -32,29 +32,29 @@
         document.form1.MM.outerHTML = str + "</select>";
         document.form1.YYYY.value = y;
         var n = MonHead[new Date().getMonth()];
-        if (new Date().getMonth() == 1 && IsPinYear(YYYYvalue)) n++;
+        if (new Date().getMonth() === 1 && IsPinYear(YYYYvalue)) n++;
         writeDay(n); //赋日期下拉框
     }
     function YYYYMM(str) //年发生变化时日期发生变化(主要是判断闰平年)
     {
         var MMvalue = document.form1.MM.options[document.form1.MM.selectedIndex].value;
-        if (MMvalue == "") {
+        if (MMvalue === "") {
             document.form1.DD.outerHTML = strDD;
             return;
         }
         var n = MonHead[MMvalue - 1];
-        if (MMvalue == 2 && IsPinYear(str)) n++;
+        if (MMvalue === 2 && IsPinYear(str)) n++;
         writeDay(n)
     }
     function MMDD(str) //月发生变化时日期联动
     {
         var YYYYvalue = document.form1.YYYY.options[document.form1.YYYY.selectedIndex].value;
-        if (str == "") {
+        if (str === "") {
             document.form1.DD.outerHTML = strDD;
             return;
         }
         var n = MonHead[str - 1];
-        if (str == 2 && IsPinYear(YYYYvalue)) n++;
+        if (str === 2 && IsPinYear(YYYYvalue)) n++;
         writeDay(n)
     }
     function writeDay(n) //据条件写日期的下拉框
@@ -68,14 +68,18 @@
             s += "<option value='" + i + "'> " + i + "</option>\r\n";
         document.form1.DD.outerHTML = s + "</select>";
     }
+
+    /**
+     * @return {boolean}
+     */
     function IsPinYear(year)//判断是否闰平年
     {
-        return (0 == year % 4 && (year % 100 != 0 || year % 400 == 0))
+        return (0 === year % 4 && (year % 100 !== 0 || year % 400 === 0))
     }
 </script>
 <body>
 <div align="center">
-    <img src="/imgs/title.png" width="550"/>
+    <img src="/imgs/title.png" style="width:550px"/>
 </div>
 <br><br>
 <div align="left" style="margin-left: 20%">

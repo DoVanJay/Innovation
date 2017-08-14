@@ -4,15 +4,15 @@
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+    <!--    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 </head>
 <body>
 <div align="center">
-    <img src="/imgs/title.png" width="550"/>
+    <img src="/imgs/title.png" style="width:550px"/>
 </div>
 <div align="left" class="main">
-    <p>请输入要查询的日期及教师工号:
+    <p>请输入要查询的日期及教师工号:</p>
     <form name="selectDate" method="post" action="admin-query-log.php">
         <select name='year' onchange="YYMM()">
             <option value="">年</option>
@@ -38,7 +38,7 @@
                 strY += "<option value='" + i + "'> " + i + "</option>\r\n";
             }
             document.selectDate.year.outerHTML = strY + "</select>";
-        }
+        };
 
         function YYMM() {
             var strM = '<select name="month" onchange="MMDD(this.value)"><option value="">月</option>';
@@ -62,7 +62,7 @@
                 case'08':
                 case'10':
                 case'12':
-                    for (var i = 1; i <= 9; i++) {
+                    for (i = 1; i <= 9; i++) {
                         strD += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
                     }
                     for (i = 10; i <= 31; i++) {
@@ -71,14 +71,14 @@
                     break;
                 case '02':
                     if (isLeapYear(yearValue)) {
-                        for (var i = 1; i <= 9; i++) {
+                        for (i = 1; i <= 9; i++) {
                             strD += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
                         }
                         for (i = 10; i <= 29; i++) {
                             strD += "<option value='" + i + "'> " + i + "</option>\r\n";
                         }
                     } else {
-                        for (var i = 1; i <= 9; i++) {
+                        for (i = 1; i <= 9; i++) {
                             strD += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
                         }
                         for (i = 10; i <= 28; i++) {
@@ -103,10 +103,9 @@
 
         function isLeapYear(year)//判断是否闰平年
         {
-            return (0 == year % 4 && (year % 100 != 0 || year % 400 == 0))
+            return (0 === year % 4 && (year % 100 !== 0 || year % 400 === 0))
         }
     </script>
-    </p>
     <?php
     /**
      * 实现管理员查询所有教师操作记录的功能

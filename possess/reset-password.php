@@ -10,7 +10,7 @@
 </head>
 <body>
 <div align="center">
-    <img src="/imgs/title.png" width="550"/>
+    <img src="/imgs/title.png" style="width:550px"/>
 </div>
 
 

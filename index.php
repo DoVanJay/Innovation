@@ -10,7 +10,7 @@
 </head>
 <body>
 <div align="center">
-    <img src="/imgs/title.png" width="550px"/>
+    <img src="/imgs/title.png" style="width:550px"/>
 </div>
 
 <form style="margin-top:8%" class="bs-example bs-example-form" name="login" method="post" id="login"
