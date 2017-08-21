@@ -15,9 +15,9 @@
 
 <form style="margin-top:8%" class="bs-example bs-example-form" name="login" method="post" id="login"
       action="/possess/login.php" onsubmit="return check(this);">
-    <div class="input-group" style="width:300px;margin-left: 32%">
-        <div style="background-color: rgba(255, 255, 255, 0.4);padding: 20px;">
-            <span style="color: gray;font-size: 130%;font-family: 幼圆, serif;">登录系统:</span><br><br>
+    <div class="input-group" style="width:300px;margin-left: 32%;">
+        <div style="background-color: rgba(255, 255, 255, 0.4);padding: 20px;border-radius:10px;">
+            <span class="title">登录系统:</span><br><br>
             <input class="form-control" type="text" name="ID"
                    placeholder="用户名"/><br>
             <input class="form-control" type="password" name="passwd"

@@ -39,6 +39,15 @@ pre {
     background-color: rgba(255, 255, 255, 0.4);
 }
 
+.title {
+    color: white;
+    font-weight: bold;
+    font-size: 130%;
+    font-family: 幼圆, serif;
+    margin:10px;
+
+}
+
 /*现在可以控制的教室*/
 .classroom-now-control {
     margin-top: 20px;
