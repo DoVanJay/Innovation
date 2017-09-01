@@ -29,16 +29,17 @@ require('../possess/function.php');
 if ($_SESSION['ID'] == false) {
     header("location:../possess/login.php");
 }
-if (@$_SESSION["status"] != "admin") {
+if (@$_SESSION["status"] !== "admin") {
     @$_SESSION["status"] = "tch"; //将用户身份赋值为教师
 }
+
 $tchID = $_SESSION['ID'];
 $today = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
 $firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from thefirstday'));
 $firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];
 $days = calDays($firstDay, $today);      /*当天和本学期第一天中间隔了多少天*/
-$whichweek = whichWeek($days);          /*当前是第几周*/
+$whichWeek = whichWeek($days);          /*当前是第几周*/
 if (date("w") != 0) {
     $dayInWeek = date("w") . "%";         /*对当前是周几的判断*/
 } else {
@@ -82,6 +83,7 @@ if (date("w") != 0) {
             <button style="height: 45px;" class="btn btn-info" onclick='window.location.href="query.php"'>
                 点此查看您的操作记录
             </button>
+            <!--如果使用单点登录等集成验证登录方式，则删除下面的button标签-->
             <button style="height: 45px;" class="btn btn-primary"
                     onclick='window.location.href="../possess/reset-password.php"'>点此修改密码
             </button>
@@ -92,12 +94,12 @@ if (date("w") != 0) {
             ?>
         </div>
         <p>今天是 第 <span
-                    class="todayIs"> <?php echo $whichweek ?></span><?php echo " 周 <span class='todayIs'>周" . $day[date("w")] . '</span> ;' ?>
+                    class="todayIs"> <?php echo $whichWeek ?></span><?php echo " 周 <span class='todayIs'>周" . $day[date("w")] . '</span> ;' ?>
 
             <?php
             $sql_schedule = "select * from schedule 
                         WHERE tchID='$tchID' 
-                        AND find_in_set('$whichweek',detailsOfWeeks) 
+                        AND find_in_set('$whichWeek',detailsOfWeeks) 
                         AND timeForClass like '$dayInWeek' ";
             $result = mysqli_query($con, $sql_schedule);
             $operation = null;
@@ -244,10 +246,11 @@ if (date("w") != 0) {
 <div class="bottom-remind">
 <pre>
 <span>注意：</span>
-1.该控制系统只能用于多媒体机房和文理楼机房的控制；
-2.如果您需要临时换教室,请直接联系管理员修改；
-3.从上课前10分钟到您的课结束，您都有权限控制机房网络；
-4.您的课结束后网络将自动恢复到完全开放状态；
+1.每周从周一开始计算；若当前周次为负数(如-2)，则为开学之前的第2周（倒数）；没有第0周；
+2.该控制系统只能用于多媒体机房和文理楼机房的控制；
+3.如果您需要临时换教室，请直接联系管理员修改；
+4.从上课前10分钟到您的课结束，您都有权限控制机房网络；
+5.您的课结束后网络将自动恢复到完全开放状态；
   例：您03和04节在文理楼105有课，那么从03节上课前十分钟到04节课下课机房网络都将处于您设置的状态，04节下课后网络将自动恢复到完全开放状态。
 </pre>
 </div>

@@ -22,11 +22,11 @@
         str += "<option value='" + y + "'> " + y + "</option>\r\n";
         document.form1.YYYY.outerHTML = str + "</select>";
         //赋月份的下拉框
-        var str = strMM.substring(0, strMM.length - 9);
+        str = strMM.substring(0, strMM.length - 9);
         for (var i = 1; i < 10; i++) {
             str += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
         }
-        for (var i = 10; i < 13; i++) {
+        for (i = 10; i < 13; i++) {
             str += "<option value='" + i + "'> " + i + "</option>\r\n";
         }
         document.form1.MM.outerHTML = str + "</select>";
@@ -34,7 +34,7 @@
         var n = MonHead[new Date().getMonth()];
         if (new Date().getMonth() === 1 && IsPinYear(YYYYvalue)) n++;
         writeDay(n); //赋日期下拉框
-    }
+    };
     function YYYYMM(str) //年发生变化时日期发生变化(主要是判断闰平年)
     {
         var MMvalue = document.form1.MM.options[document.form1.MM.selectedIndex].value;
@@ -64,7 +64,7 @@
             s += "<option value='" + 0 + i + "'> " + 0 + i + "</option>\r\n";
             document.form1.DD.outerHTML = s + "</select>";
         }
-        for (var i = 10; i < (n + 1); i++)
+        for (i = 10; i < (n + 1); i++)
             s += "<option value='" + i + "'> " + i + "</option>\r\n";
         document.form1.DD.outerHTML = s + "</select>";
     }

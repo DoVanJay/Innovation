@@ -16,30 +16,30 @@
 /**
  * 登录功能
  */
-session_start();
 require('./mysql.php');
+session_start();
 @$_SESSION['ID'] = $_POST['ID'];
 @$_SESSION['passwd'] = $_POST['passwd'];
+@$_SESSION['status'] = 'init';//初始化登录者身份的值
 $userID = $_SESSION['ID'];
 $passwd = $_SESSION['passwd'];
 $sql_tch = "select * from tch where passwd='$passwd' and tchID='$userID';";
 $sql_admin = "select * from admin where passwd='$passwd' and adminID='$userID';";
 $tch_result = mysqli_query($con, $sql_tch);
 $admin_result = mysqli_query($con, $sql_admin);
-$tch_row = mysqli_num_rows($tch_result);       /*查找是否有符合的用户*/
-$admin_row = mysqli_num_rows($admin_result);         /*查找是否有符合的用户*/
-if ($tch_row == 0 && $admin_row == 0) {
+$tch_row = mysqli_num_rows($tch_result);       /*查找是否是教师*/
+if ($tch_row != 0) {
+    header("location:../tch/teacher.php");
+}
+$admin_row = mysqli_num_rows($admin_result);         /*查找是否是管理员*/
+if ($admin_row != 0) {
+    header("location:../admin/admin.php");
+} else {
     echo "<div class='translucence' style='margin-top:8%;padding: 20px;width:300px;margin-left: 32%;border-radius:10px;'>
             <span class='title'>友情提醒:</span><br><br>
             您已注销或登录失败<br/>
             点此 <a href='../index.php'>重新登录</a><br />
           </div>";
-} else {
-    if ($admin_row != 0) {
-        header("location:../admin/admin.php");
-    } else if ($tch_row != 0) {
-        header("location:../tch/teacher.php");
-    }
 } ?>
 </body>
 </html>

@@ -2,25 +2,11 @@
 /**
  *管理员操作界面
  */
-function calDays($date1, $date2)        /*计算两天之间隔了多少天*/
-{
-    $time1 = strtotime($date1);
-    $time2 = strtotime($date2);
-    return (($time2 - $time1) / 86400 - 1);
-}
-
-function whichWeek($days)               /*计算当前是第几周*/
-{
-    if (($days / 7) >= floor($days / 7)) {
-        return floor($days / 7) + 1;
-    } else {
-        return (int)($days / 7);
-    }
-}
 
 ?>
 <?php
 require('../possess/mysql.php');
+require('../possess/function.php');
 session_start();
 @$_SESSION["status"] = "admin";//将用户身份赋值为管理员
 if ($_SESSION['ID'] == false) {
@@ -52,8 +38,8 @@ $result = mysqli_query($con, $sql_innovation);
     <title>管理员操作界面</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-<!--    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
-<!--    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <!--    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+    <!--    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 </head>
 <body>
 
@@ -71,6 +57,7 @@ $result = mysqli_query($con, $sql_innovation);
             <button class="btn btn-danger" onclick='window.location.href="../possess/logout.php"'>
                 点此注销
             </button>
+            <!--如果使用单点登录等集成验证登录方式，则删除下面的button标签-->
             <button class="btn btn-primary"
                     onclick='window.location.href="../possess/reset-password.php"'>点此修改密码
             </button>
@@ -116,7 +103,7 @@ $result = mysqli_query($con, $sql_innovation);
 <pre>
 <span>注意：</span>
 1.每周从周一开始计算;
-2.若当前周次为负数(如-2),则为开学前倒数第2周;
+2.若当前周次为负数(如-2),则为开学之前的第2周（倒数）；没有第0周;
 </pre>
 </div>
 

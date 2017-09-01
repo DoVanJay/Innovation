@@ -1,5 +1,6 @@
 <?php
 /**
+ *
  * 设置网络状态
  */
 session_start();

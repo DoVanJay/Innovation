@@ -29,7 +29,7 @@
     $firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from thefirstday'));
     $firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];
     $days = calDays($firstDay, $today);      /*当天和本学期第一天中间隔了多少天*/
-    $whichweek = whichWeek($days);          /*当前是第几周*/
+    $whichWeek = whichWeek($days);          /*当前是第几周*/
     $o = 0;/*当天的课程数*/
     if (date("w") != 0) {
         $dayInWeek = date("w") . "%";         /*对当前是周几的判断*/
@@ -38,7 +38,7 @@
     }
     $sql_schedule = "select * from schedule 
                         WHERE tchID='$query_tchID' 
-                        AND find_in_set('$whichweek',detailsOfWeeks) 
+                        AND find_in_set('$whichWeek',detailsOfWeeks) 
                         AND timeForClass like '$dayInWeek' ";
     $result = mysqli_query($con, $sql_schedule);
     $operation = null;

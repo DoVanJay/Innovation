@@ -17,9 +17,9 @@ function calDays($date1, $date2)        /*计算两天之间隔了多少天*/
 
 function whichWeek($days)               /*计算当前是第几周*/
 {
-    if (($days / 7) >= floor($days / 7)) {
-        return floor($days / 7) + 1;
+    if ($days < 0) {
+        return floor($days / 7);
     } else {
-        return (int)($days / 7);
+        return floor($days / 7) + 1;
     }
 }
