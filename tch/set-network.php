@@ -36,4 +36,4 @@ if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) 
             break;
     }
 }
-header("location:teacher.php");
+header("location:tch.php");

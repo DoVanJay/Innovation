@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     function back() {
         if ('<?php echo $_SESSION["status"]?>' == "tch") {
-            window.location = "../tch/teacher.php";
+            window.location = "../tch/tch.php";
         } else {
             window.location = "../admin/admin.php";
         }

@@ -72,7 +72,8 @@ $tch_result = mysqli_query($con, $sql_tch);
 $tch_correct_hash = mysqli_fetch_array($tch_result);       /*查找是否是教师*/
 if ($tch_correct_hash[0] != "") {
     if ($hasher->CheckPassword($passwd, $tch_correct_hash[0])) {
-        header("location:./tch/teacher.php");
+        $_SESSION["status"] = "tch";
+        header("location:./possess/login.php");
     } else {
         echo "<div class='alert alert-danger' style='width:300px;margin-left: 32%'>用户名或密码错误,请重新登录</div>";
     }
@@ -83,7 +84,8 @@ $admin_result = mysqli_query($con, $sql_admin);
 $admin_correct_hash = mysqli_fetch_array($admin_result);         /*查找是否是管理员*/
 if ($admin_correct_hash[0] != "") {
     if ($hasher->CheckPassword($passwd, $admin_correct_hash[0])) {
-        header("location:./admin/admin.php");
+        $_SESSION["status"] = "admin";
+        header("location:./possess/login.php");
     } else {
         echo "<div class='alert alert-danger' style='width:300px;margin-left: 32%'>用户名或密码错误,请重新登录</div>";
     }

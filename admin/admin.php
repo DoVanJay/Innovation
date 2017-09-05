@@ -68,7 +68,7 @@ $result = mysqli_query($con, $sql_innovation);
     </p>
     <ul class="list-group">
         <li>
-            <button class="btn btn-primary" onclick=" window.location.href='../tch/teacher.php'">
+            <button class="btn btn-primary" onclick=" window.location.href='../tch/tch.php'">
                 查看您当前有课/可直接控制的教室
             </button>
         </li>
