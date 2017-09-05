@@ -63,7 +63,7 @@ $result = mysqli_query($con, $sql_innovation);
             </button>
         </div>
     </div>
-    <p>今天是 第 <span
+    <p style="margin-top: 10px">今天是 第 <span
                 class="todayIs"> <?php echo $whichWeek ?></span><?php echo " 周 <span class='todayIs'>周" . $day[date("w")] . '</span> ;' ?>
     </p>
     <ul class="list-group">

@@ -5,7 +5,6 @@ html {
 body {
     font-family: 微软雅黑, serif;
     font-size: medium;
-    color: white;
     background: #F6F6F6 url(/imgs/bg.jpg);
     margin: 0;
     /*充满屏幕*/
@@ -13,13 +12,6 @@ body {
     display: flex;
     flex-direction: column;
 
-    /*背景图片高斯模糊*/
-    /*-moz-background-size: 100% 100%; !*  Firefox 3.6 *!*/
-    /*-o-background-size: 100% 100%; !* Opera 9.5 *!*/
-    /*-webkit-background-size: 100% 100%; !* Safari 3.0 *!*/
-    /*background-size: 100% 100%; !*  Firefox 4.0 and other CSS3-compliant browsers *!*/
-    /*-moz-border-image: url(/imgs/bg.jpg) 0; !* Firefox 3.5 *!*/
-    /*filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/imgs/bg.jpg', sizingMethod='scale'); !* for < ie9 *!*/
 }
 
 .main {
@@ -44,7 +36,7 @@ pre {
     font-weight: bold;
     font-size: 130%;
     font-family: 幼圆, serif;
-    margin:10px;
+    margin: 10px;
 
 }
 

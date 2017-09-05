@@ -167,22 +167,6 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
             <select name="classNum">
                 <option value="num">教室编号</option>
             </select>
-            <!--to be continue-->
-            <!--TTTTTTTTTTTTTTTTTTTTTTT         BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC-->
-            <!-- 教室编号以及对应地址ip       -->
-            <!--T:::::::::::::::::::::T         B::::::BBBBBB:::::B            CC:::::::::::::::C-->
-            <!--TTTTTT  T:::::T  TTTTTT           B::::B     B:::::B          C:::::C       CCCCCC-->
-            <!--        T:::::T                   B::::B     B:::::B         C:::::C-->
-            <!--        T:::::T                   B::::BBBBBB:::::B         C:::::C-->
-            <!--        T:::::T                   B:::::::::::::BB          C:::::C-->
-            <!--        T:::::T                   B::::BBBBBB:::::B         C:::::C-->
-            <!--        T:::::T                   B::::B     B:::::B        C:::::C-->
-            <!--        T:::::T                   B::::B     B:::::B        C:::::C-->
-            <!--        T:::::T                   B::::B     B:::::B         C:::::C       CCCCCC-->
-            <!--      TT:::::::TT               BB:::::BBBBBB::::::B          C:::::CCCCCCCC::::C-->
-            <!--      T:::::::::T               B:::::::::::::::::B            CC:::::::::::::::C-->
-            <!--      T:::::::::T               B::::::::::::::::B               CCC::::::::::::C-->
-            <!--      TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC-->
             <input name="tchID" type="text" value="请输入教师工号"
                    onfocus="javascript:if(this.value=='请输入教师工号')this.value='';">
         </p>
