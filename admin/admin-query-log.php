@@ -135,7 +135,7 @@
     ?>
     <?php
     if ($time) {
-        echo '<textarea rows="26" cols="70" readonly="readonly" style="opacity: 0.4;color: black;font-size: 120%">结果如下:';
+        echo '<textarea rows="26" cols="100" readonly="readonly" style="opacity: 0.4;color: black;font-size: 120%">结果如下:';
         if ($tchID != null && $tchID != '请输入教师工号') {
             if (mysqli_num_rows($result) < 1) {
                 echo "\n当前日期无操作记录";

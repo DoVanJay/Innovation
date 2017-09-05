@@ -29,6 +29,9 @@
 </div>
 
 <?php
+/**
+ * 当使用单点登录等集成验证登录方式时，该页面无存在意义
+ */
 @session_start();
 require("../possess/mysql.php");
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

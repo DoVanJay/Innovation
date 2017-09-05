@@ -10,8 +10,8 @@
 
 function calDays($date1, $date2)        /*计算两天之间隔了多少天*/
 {
-    $time1 = strtotime($date1);
-    $time2 = strtotime($date2);
+    $time1 = strToTime($date1);
+    $time2 = strToTime($date2);
     return ($time2 - $time1) / 86400;
 }
 

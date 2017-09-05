@@ -37,7 +37,7 @@
                 strY += "<option value='" + i + "'> " + i + "</option>\r\n";
             }
             document.selectDate.year.outerHTML = strY + "</select>";
-        }
+        };
 
         function YYMM() {
             var strM = '<select name="month" onchange="MMDD(this.value)"><option value="">月</option>';
@@ -132,7 +132,7 @@
 
     <?php
     if ($time) {
-        echo '<textarea rows="26" cols="70" readonly="readonly" style="opacity: 0.4;color: black;font-size: 120%">结果如下:';
+        echo '<textarea rows="26" cols="100" readonly="readonly" style="opacity: 0.4;color: black;font-size: 120%">结果如下:';
         if (mysqli_num_rows(mysqli_query($con, $sql)) < 1) {
             echo "\n当前日期无操作记录";
         } else {

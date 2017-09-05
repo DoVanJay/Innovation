@@ -45,7 +45,7 @@
     if (mysqli_num_rows($result)) {
         $n = mysqli_num_rows($result);
         echo '
-                <p class="table-top-p" id="show-result">' . $query_tchID . '老师今天在机房的课程如下：</p>
+                <p class="table-top-p" id="show-result"><span style="background-color: lightgreen ;">' . $query_tchID . '</span>  老师今天在机房的课程如下：</p>
                 <hr class="table-top-hr">
                 <table class="table table-hover" style="margin-top:0;width:70%;color: gray;background-color: rgba(255, 255, 255, 0.4)">
                     <thead>
@@ -124,8 +124,8 @@
     //    获取指定行的课程号并创建表单提交以删除课程
     function deleteClass(button) {
         var con = confirm("确认删除？");
-        var id = button.parentNode.parentNode.childNodes[1].innerHTML;
         if (con === true) {
+            var id = button.parentNode.parentNode.childNodes[1].innerHTML;
             var form = document.createElement("form");
             form.action = 'admin-query-class.php';
             form.method = 'post';

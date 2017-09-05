@@ -159,22 +159,22 @@ if (date("w") != 0) {
             $nowTime = date('H:i');/*赋值当前时间*/
             switch ($nowTime) {
                 /*由当前时间$nowTime得到当前时间所在的周几的第几节课$nowPermit*/
-                case (strtotime($nowTime) <= strtotime('09:50')):
+                case (strToTime($nowTime) <= strToTime('09:50')):
                     $nowPermit = '0102';
                     break;
-                case (strtotime('09:50') < strtotime($nowTime) && strtotime($nowTime) <= strtotime('12:00')):/*至此为上午*/
+                case (strToTime('09:50') < strToTime($nowTime) && strToTime($nowTime) <= strToTime('12:00')):/*至此为上午*/
                     $nowPermit = '0304';
                     break;
-                case (strtotime('12:00') < strtotime($nowTime) && strtotime($nowTime) <= strtotime('15:50')):
+                case (strToTime('12:00') < strToTime($nowTime) && strToTime($nowTime) <= strToTime('15:50')):
                     $nowPermit = '0506';
                     break;
-                case (strtotime('15:50') < strtotime($nowTime) && strtotime($nowTime) <= strtotime('18:00')):/*至此为下午*/
+                case (strToTime('15:50') < strToTime($nowTime) && strToTime($nowTime) <= strToTime('18:00')):/*至此为下午*/
                     $nowPermit = '0708';
                     break;
-                case (strtotime('18:00') < strtotime($nowTime) && strtotime($nowTime) <= strtotime('20:50')): /*至此为10节课*/
+                case (strToTime('18:00') < strToTime($nowTime) && strToTime($nowTime) <= strToTime('20:50')): /*至此为10节课*/
                     $nowPermit = '0910';
                     break;
-                case (strtotime('20:50') < strtotime($nowTime) && strtotime($nowTime) <= strtotime('24:00')):/*至此为全天结束*/
+                case (strToTime('20:50') < strToTime($nowTime) && strToTime($nowTime) <= strToTime('24:00')):/*至此为全天结束*/
                     $nowPermit = '11';
                     break;
                 default:
@@ -217,7 +217,7 @@ if (date("w") != 0) {
                     }
                 }
                 echo "<span style='text-decoration-line: underline;color: red'>" . $nowPermitClassroomName . "&nbsp;</span>";/*输出当前可操作的机房地点*/
-                echo "<br/><p id='now_net_status' style='font-size:120%;font-weight: bold;' >当前可操作教室网络状态:</p>";
+                echo "<br/><p id='now_net_status' style='font-size:120%;font-weight: bold;' >可操作教室的当前网络状态:</p>";
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
 ///取交换机对应接口下的网络状态////////////////////////
