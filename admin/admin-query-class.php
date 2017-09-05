@@ -19,6 +19,7 @@
             <button type="button" class="btn btn-success" onclick="window.location.href='admin.php'">点此返回主操作界面</button>
         </div>
     </form>
+
     <?php
     require('../possess/mysql.php');//引入数据库连接
     require('../possess/function.php');//引入函数
@@ -84,13 +85,13 @@
                         <td>' . $timeOfClass . '</td>
                         <td><span style="color: red">' . $info['locationOfClass'] . '</span></td>
                         <td><button class="btn btn-info" onclick="deleteClass(this)">删除</button></td>
-                    </tr>';
+                    </tr>
+                    ';
             $n = $n - 1;
         }
         echo '
                     </tbody>
-                    </table>
-            ';
+                    </table>';
     } else if ($query_tchID) {
         echo '
                 <div class="alert alert-success" id="show-result" style="margin-top: 30px;width: 40%;height: 10%;">
@@ -108,7 +109,6 @@
 2.如果教师有课可进行删除课程操作；
 </pre>
 </div>
-
 <script>
     //页面加载时检测localStorage中有无query_tchID
     window.onload = function () {
@@ -116,37 +116,36 @@
         if (localStorage.getItem("query_tchID")) {
             document.getElementById('query_tchID').value = localStorage.getItem("query_tchID");
             //如果当前没有显示查询结果则点击提交按钮进行查询
-            if (!(document.getElementById("show-result")) {
-                document.getElementById('sub').click();
+            if (!(document.getElementById("show-result"))) {
+                document.getElementById("sub").click();
             }
         }
     };
+    //提交query_tchID时将其存入localStorage
+    function storage(button) {
+        var query_tchID = button.parentNode.parentNode.childNodes[1].value;
+        localStorage.setItem("query_tchID", query_tchID);
+    }
     //    获取指定行的课程号并创建表单提交以删除课程
     function deleteClass(button) {
         var con = confirm("确认删除？");
         if (con === true) {
             var id = button.parentNode.parentNode.childNodes[1].innerHTML;
             var form = document.createElement("form");
-            form.action = 'admin-query-class.php';
-            form.method = 'post';
+            form.action = "admin-query-class.php";
+            form.method = "post";
             document.body.appendChild(form);
             var input = document.createElement("input");
-            input.type = 'text';
-            input.name = 'id';
+            input.type = "text";
+            input.name = "id";
             input.value = id;
             form.appendChild(input);
             form.submit();
             document.body.removeChild(form);
         }
     }
-
-    //提交query_tchID时将其存入localStorage
-    function storage(button) {
-        var query_tchID = button.parentNode.parentNode.childNodes[1].value;
-        localStorage.setItem("query_tchID", query_tchID);
-    }
-
 </script>
+
 <?php
 $id = @$_POST['id'];
 $delete_sql = "delete from schedule where id=$id";
