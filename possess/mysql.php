@@ -1,9 +1,8 @@
 <?php
 /**
- * 连接数据库
+ * 连接本地数据库
  */
 $host = "localhost";
-/*本地服务器，以后再换*/
 $username = "root";
 $password = "D1ccb572";
 $db = "innovation";

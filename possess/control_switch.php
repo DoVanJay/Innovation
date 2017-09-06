@@ -1,11 +1,16 @@
 <?php
 /**
- * 实现telnet连接交换机
+ * 连接控制交换机
  *
+ * Created by IntelliJ IDEA.
+ * User: jay
+ * Date: 9/6/2017
+ * Time: 9:05 AM
  */
 error_reporting(-1);
 
-class Telnet
+//telnet连接交换机
+class telnet_control_switch
 {
     var $sock = NULL;
 
@@ -71,21 +76,22 @@ class Telnet
             }
         }
     }
-}
 
-function exe($order)
+}
+//使用telnet连接并执行命令
+function telnetExeCommand($host, $password, $command)
 {
-    $telnet = new telnet("192.168.255.1", 23);
+    $telnet = new telnet($host, 23);
     echo $telnet->read_till("password: ");
-    $telnet->write("123456\r\n");
+    $telnet->write($password);
     echo $telnet->read_till(":> ");
     $telnet->write("sys\r\n");
     echo $telnet->read_till(":> ");
     $telnet->write("interface vlan-interface 200\r\n");
     echo $telnet->read_till(":> ");
-    $telnet->write("$order\r\n");
+    $telnet->write("$command\r\n");
     echo $telnet->read_till(":> ");
     echo $telnet->close();
 }
 //
-//exe("undo packet-filter name dmt101_deny_upc inbound");
+//exeCommand("undo packet-filter name dmt101_deny_upc inbound");

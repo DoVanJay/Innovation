@@ -1,6 +1,6 @@
 <?php
 /**
- * 用来从主服务器更新数据
+ * 用以从主服务器更新课表数据
  * Created by IntelliJ IDEA.
  * User: jay
  * Date: 9/4/2017
