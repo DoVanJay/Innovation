@@ -1,30 +1,49 @@
 <?php
 /**
- *
  * 设置网络状态
  */
 session_start();
-require("../possess/mysql.php");
-require("../test.php");
+require "../possess/mysql.php";
+require "../possess/control_switch.php";
+require "../possess/restore_network.php";
 header("content-type:text/html;charset=utf-8");
+
 if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) {
     echo "<script>alert('对不起,操作出错！')</script>";
 } else {
     $var = $_POST["network"];
     switch ($_POST['network']) {
         case 0:
-            ///////////////////////////////////////////////////
-            ///这里设置交换机对应接口下的网络状态:完全开放////////////////////
-            exe("undo packet-filter name dmt101_deny_upc inbound");
-            $sql = "insert operating_log values(NOW(),\"" . $_SESSION["ID"] . "\",\"" . $_POST['classroomName'] . "\",\"完全开放\")";
+            //这里设置交换机对应接口下的网络状态:完全开放
+            telnetExeCommand($host, $password, "undo packet-filter name dmt101_deny_upc inbound");
+            $log_sql = "insert operating_log values(NOW(),\"" . $_SESSION["ID"] . "\",\"" . $_POST['classroomName'] . "\",\"完全开放\")";
             mysqli_query($con, $sql);
+            //查找当前用户有无已存在的flag，有的话删除，即终止已存在的恢复网络计划任务
+            $search = glob("./possess/flags/" . $_SESSION['ID']);
+            if ($search) {
+                foreach ($search as $item) {
+                    unlink($item);
+                }
+            }
+
             break;
         case 1:
             ///////////////////////////////////////////////////
             ///这里设置交换机对应接口下的网络状态:仅关闭外网//////////////////////
             ///////////////////////////////////////////////////
-            $sql = "insert operating_log values(NOW(),\"" . $_SESSION["ID"] . "\",\"" . $_POST['classroomName'] . "\",\"仅关闭内网\")";
+            $log_sql = "insert operating_log values(NOW(),\"" . $_SESSION["ID"] . "\",\"" . $_POST['classroomName'] . "\",\"仅关闭内网\")";
             mysqli_query($con, $sql);
+            //查找当前用户有无已存在的flag，有的话删除，即终止已存在的恢复网络计划任务
+            $search = glob("./possess/flags/" . $_SESSION['ID']);
+            if ($search) {
+                foreach ($search as $item) {
+                    unlink($item);
+                }
+            }
+            $flag = "../possess/flags/" . $_SESSION["ID"] . time() . ".flag";
+            $newFlag = fopen($flag, "w");
+            fclose($newFlag);
+
             break;
         case 2:
             ///////////////////////////////////////////////////
@@ -33,6 +52,18 @@ if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) 
             exe("packet-filter name dmt101_deny_upc inbound");
             $sql = "insert operating_log values(NOW(),\"" . $_SESSION["ID"] . "\",\"" . $_POST['classroomName'] . "\",\"完全关闭\")";
             mysqli_query($con, $sql);
+            //查找当前用户有无已存在的flag，有的话删除，即终止已存在的恢复网络计划任务
+            $search = glob("./possess/flags/" . $_SESSION['ID']);
+            if ($search) {
+                foreach ($search as $item) {
+                    unlink($item);
+                }
+            }
+            $flag = "../possess/flags/" . $_SESSION["ID"] . time() . ".flag";
+            $newFlag = fopen($flag, "w");
+            fclose($newFlag);
+
+
             break;
     }
 }
