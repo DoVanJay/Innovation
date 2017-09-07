@@ -158,7 +158,7 @@ if (date("w") != 0) {
             /*直接把时间段分割成上课节数*/
             $nowTime = date('H:i');/*赋值当前时间*/
             switch ($nowTime) {
-                /*由当前时间$nowTime得到当前时间所在的周几的第几节课$nowPermit*/
+                /*由当前时间$nowTime得到当前时间所在的是第几节课$nowPermit*/
                 case (strToTime($nowTime) <= strToTime('09:50')):
                     $nowPermit = '0102';
                     break;
@@ -198,7 +198,6 @@ if (date("w") != 0) {
              * T:::::::::T               B::::::::::::::::B               CCC::::::::::::C
              * TTTTTTTTTTT               BBBBBBBBBBBBBBBBB                   CCCCCCCCCCCCC
              */
-            //$nowPermit = '040102';/*临时设置*/
             $todayLesson = null;
             if ($operation != null) {
                 $todayLesson = $operation[0][0];
@@ -212,13 +211,48 @@ if (date("w") != 0) {
                 for ($i = 0; $i < $o; $i++) { /*$o为今天机房课的个数*/
                     if (strstr($operation[$i][0], $nowPermit)) {
                         $nowPermitClassroomName = $operation[$i][1];
-//                    echo "$nowPermitClassroomName\n";
+                        //下课时间是第几节课，用来传给set-network来确定什么时候下课
+                        $endTimestamp = substr((string)$operation[$i][0], -2);
                         break;
                     }
+
+                }
+                switch ($endTimestamp) {
+                    case "01":
+                        $endTimestamp = strtotime(date("y-m-d") . " 08:50:00");
+                        break;
+                    case "02":
+                        $endTimestamp = strtotime(date("y-m-d") . " 09:50:00");
+                        break;
+                    case "03":
+                        $endTimestamp = strtotime(date("y-m-d") . " 11:00:00");
+                        break;
+                    case "04":
+                        $endTimestamp = strtotime(date("y-m-d") . " 12:00:00");
+                        break;
+                    case "05":
+                        $endTimestamp = strtotime(date("y-m-d") . " 14:50:00");
+                        break;
+                    case "06":
+                        $endTimestamp = strtotime(date("y-m-d") . " 15:50:00");
+                        break;
+                    case "07":
+                        $endTimestamp = strtotime(date("y-m-d") . " 17:00:00");
+                        break;
+                    case "08":
+                        $endTimestamp = strtotime(date("y-m-d") . " 18:00:00");
+                        break;
+                    case "09":
+                        $endTimestamp = strtotime(date("y-m-d") . " 19:50:00");
+                        break;
+                    case "10":
+                        $endTimestamp = strtotime(date("y-m-d") . " 20:50:00");
+                        break;
+                    default:
+                        $endTimestamp = strtotime(date("y-m-d") . " 21:50:00");
                 }
                 echo "<span style='text-decoration-line: underline;color: red'>" . $nowPermitClassroomName . "&nbsp;</span>";/*输出当前可操作的机房地点*/
                 echo "<br/><p id='now_net_status' style='font-size:120%;font-weight: bold;' >可操作教室的当前网络状态:</p>";
-///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
 ///取交换机对应接口下的网络状态////////////////////////
 ///////////////////////////////////////////////////
@@ -229,10 +263,8 @@ if (date("w") != 0) {
         <label><input name="network" type="radio" value="0" >完全开放 </label><br>
         <label><input name="network" type="radio" value="1" >仅关闭外网</label><br>
         <label><input name="network" type="radio" value="2" >完全关闭(包括内网)</label><br>    
-        <label><input type="hidden" name="classroomName" value=' ?>
-                <?php
-                echo $nowPermitClassroomName;
-                echo '></label><br>
+        <label><input type="hidden" name="classroomName" value=' . $nowPermitClassroomName . '></label><br>
+        <label><input type="hidden" name="endTimestamp" value=' . $endTimestamp . '></label><br>
         <button class="btn btn-warning" style="margin-left: 50%;width: 120px;" type="submit" value="提交"/>提交</button>
 </form>
 </div>';

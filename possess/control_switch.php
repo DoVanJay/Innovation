@@ -78,10 +78,11 @@ class telnet_control_switch
     }
 
 }
+
 //使用telnet连接并执行命令
 function telnetExeCommand($host, $password, $command)
 {
-    $telnet = new telnet($host, 23);
+    $telnet = new telnet_control_switch($host, 23);
     echo $telnet->read_till("password: ");
     $telnet->write($password);
     echo $telnet->read_till(":> ");
