@@ -2,6 +2,8 @@
 /**
  * 连接本地数据库
  */
+
+//要改
 $host = "localhost";
 $username = "root";
 $password = "D1ccb572";
