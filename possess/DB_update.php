@@ -72,11 +72,14 @@ if ($connection) {
         foreach ($result as $item) {
             //输出测试
             //echo $item[0] . "  " . $item[1] . "  " . $item[2] . "  " . $item[0] . "\n";
-            $sql = "INSERT into 
+            //清空课表数据表
+            $truncate_sql = "truncate" . $local_table_name . ";";
+            mysqli_query($con, $truncate_sql);
+            $insert_sql = "INSERT into 
                 `$local_table_name`($local_tchID_colName,$local_timeForClass_colName,$local_locationOfClass_colName,$local_detailOfWeeks_colName) 
                 values ($item[0],$item[1],$item[2],$item[3])";
-            $exe = mysqli_query($con, $getDate_sql);
-            if ($exe) {
+            $insert_exe = mysqli_query($con, $insert_sql);
+            if ($insert_exe) {
                 $content = date("Y/m/d h:i:sa") . "  课表数据更新成功\n";
             } else {
                 $content = date("Y/m/d h:i:sa") . "  课表数据更新失败\n";

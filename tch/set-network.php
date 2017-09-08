@@ -5,7 +5,7 @@
 session_start();
 require "../possess/mysql.php";
 require "../possess/control_switch.php";
-require "../possess/restore_network.php";
+require "../possess/restore-network.php";
 header("content-type:text/html;charset=utf-8");
 
 if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) {

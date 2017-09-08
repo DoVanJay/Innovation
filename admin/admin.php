@@ -46,9 +46,19 @@ $result = mysqli_query($con, $sql_innovation);
 <div align="center">
     <img src="/imgs/title.png" style="width:550px"/>
 </div>
+<div>
+    <?php
+    $result = mysqli_query($con, "select * from messages");
+    if (mysqli_affected_rows($con) > 0) {
+        $message = mysqli_fetch_array($result)[1];
+        echo "<marquee style='font-size: 24px;color: black'>通知：" . $message . "</marquee>";
+    }
+    ?>
+</div>
 <div align="left" class="main">
     <div>
         <?php
+
         echo "<p style='display: inline'>
                 <span style='font-weight: bold;font-size: 110%'>" . $adminID . "</span> 管理员, 您好。
               </p>";
@@ -94,6 +104,12 @@ $result = mysqli_query($con, $sql_innovation);
         <li>
             <button class="btn btn-primary" onclick=" window.location.href='admin-setClass.php'">
                 给老师开放临时的教室控制权限(限当天设置当天有效)
+            </button>
+        </li>
+        <br>
+        <li>
+            <button class="btn btn-primary" onclick=" window.location.href='admin-setMessages.php'">
+                设置全员通知消息
             </button>
         </li>
     </ul>

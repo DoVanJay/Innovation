@@ -70,6 +70,16 @@ if (date("w") != 0) {
 <div align="center">
     <img src="/imgs/title.png" style="width:550px"/>
 </div>
+<div>
+    <?php
+    $result = mysqli_query($con, "select * from messages");
+    if (mysqli_affected_rows($con) > 0) {
+        $message = mysqli_fetch_array($result)[1];
+        echo "<marquee style='font-size: 24px;color: black'>通知：" . $message . "</marquee>";
+    }
+    ?>
+</div>
+
 <div align='left' class="main">
     <div>
         <?php
