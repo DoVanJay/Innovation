@@ -13,7 +13,7 @@
  * Time: 11:51 AM
  */
 
-require "./mysql.php";
+require "../possess/mysql.php";
 /**
  * 远程数据库配置
  */

@@ -6,7 +6,7 @@
 ?>
 <?php
 require('../possess/mysql.php');
-require('../possess/function.php');
+require('../function/function.php');
 session_start();
 @$_SESSION["status"] = "admin";//将用户身份赋值为管理员
 if ($_SESSION['ID'] == false) {

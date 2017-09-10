@@ -3,7 +3,7 @@
  * 实现 临时换教室功能(仅限当天修改当天有效) 功能
  */
 require('../possess/mysql.php');
-require('../possess/function.php');
+require('../function/function.php');
 $class1 = null;
 $class2 = null;
 $classLocation = null;

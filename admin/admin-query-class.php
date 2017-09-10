@@ -22,7 +22,7 @@
 
     <?php
     require('../possess/mysql.php');//引入数据库连接
-    require('../possess/function.php');//引入函数
+    require('../function/function.php');//引入函数
     @session_start();
     @$query_tchID = $_POST['query_tchID'];
     $today = date('y-m-d');
