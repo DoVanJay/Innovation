@@ -12,14 +12,21 @@
 <div align="center">
     <img src="/imgs/title.png" style="width:550px"/>
 </div>
-<p style="margin-left: 30%;margin-top: 50px">请在下面输入你想通知全体使用人员的消息：</p>
-<form action="admin-setMessages.php" method="post" onsubmit="return confirm('确认提交？');">
-    <textarea id="messages" class="messages" name="messages"></textarea>
-    <div class="btn-group" style="margin-left: 55%;margin-top: 10px">
-        <button type="submit" class="btn btn-warning" style="height: 50px;width: 90px">提交</button>
-        <button type="button" class="btn btn-success" style="height: 50px;width: 90px;" onclick="window.location.href='admin.php'">返回主界面</button>
-    </div>
-</form>
+
+<div align="left" class="main">
+    <p style="margin-top: 50px">请在下面输入你想通知全体使用人员的消息：</p>
+    <form action="admin-setMessages.php" method="post" onsubmit="return confirm('确认提交？');">
+        <textarea id="messages" class="messages" name="messages"></textarea>
+        <br>
+        <div class="btn-group" style="margin-left: 30%;margin-top: 10px">
+            <button type="submit" class="btn btn-warning" style="height: 50px;width: 90px">提交</button>
+            <button type="button" class="btn btn-success" style="height: 50px;width: 90px;"
+                    onclick="window.location.href='admin.php'">返回主界面
+            </button>
+        </div>
+    </form>
+
+</div>
 
 <div class="bottom-remind">
 <pre>

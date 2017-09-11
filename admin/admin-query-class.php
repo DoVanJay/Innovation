@@ -27,7 +27,7 @@
     @$query_tchID = $_POST['query_tchID'];
     $today = date('y-m-d');
     $day = array('日', '一', '二', '三', '四', '五', '六');
-    $firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from thefirstday'));
+    $firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from the_first_day'));
     $firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];
     $days = calDays($firstDay, $today);      /*当天和本学期第一天中间隔了多少天*/
     $whichWeek = whichWeek($days);          /*当前是第几周*/
@@ -37,13 +37,13 @@
     } else {
         $dayInWeek = 7 . "%";
     }
-    $sql_schedule = "select * from schedule 
+    $sql_schedule = "select * from course_timetable 
                         WHERE tchID='$query_tchID' 
                         AND find_in_set('$whichWeek',detailsOfWeeks) 
                         AND timeForClass like '$dayInWeek' ";
     $result = mysqli_query($con, $sql_schedule);
     $operation = null;
-    if (mysqli_num_rows($result)) {
+    if (@mysqli_num_rows($result)) {
         $n = mysqli_num_rows($result);
         echo '
                 <p class="table-top-p" id="show-result"><span style="background-color: lightgreen ;">' . $query_tchID . '</span>  老师今天在机房的课程如下：</p>
@@ -148,7 +148,7 @@
 
 <?php
 $id = @$_POST['id'];
-$delete_sql = "delete from schedule where id=$id";
+$delete_sql = "delete from course_timetable where id=$id";
 $result = mysqli_query($con, $delete_sql);
 $affected = mysqli_affected_rows($con);
 if ($affected > 0) {
@@ -159,10 +159,3 @@ if ($affected > 0) {
 ?>
 </body>
 </html>
-<?php
-/**
- * Created by IntelliJ IDEA.
- * User: jay
- * Date: 8/10/2017
- * Time: 10:09 PM
- */

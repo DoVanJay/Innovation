@@ -130,14 +130,14 @@
     if ($tchID != null && $tchID != '请输入教师工号') {
         echo "<p>当前查询工号为 <span style='background-color: lightgreen ;'>" . $tchID . "</span> 的老师在 <span style='background-color: lightgreen ;'>" . $display . "</span>的操作记录</p>";
     }
-    $sql = "select * from operating_log where tchID='$tchID' and time LIKE '%$time%'";
+    $sql = "select * from operation_log where tchID='$tchID' and time LIKE '%$time%'";
     $result = mysqli_query($con, $sql);
     ?>
     <?php
     if ($time) {
         echo '<textarea rows="26" cols="100" readonly="readonly" style="opacity: 0.4;color: black;font-size: 120%">结果如下:';
         if ($tchID != null && $tchID != '请输入教师工号') {
-            if (mysqli_num_rows($result) < 1) {
+            if (@mysqli_num_rows($result) < 1) {
                 echo "\n当前日期无操作记录";
             } else {
                 echo "\n           操作时间 ++++++ 工号 ++++++ 操作教室 ++++++ 具体操作\n\n";

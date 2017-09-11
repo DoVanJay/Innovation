@@ -7,8 +7,8 @@
     <title>Set Date</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-<!--    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
-<!--    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <!--    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+    <!--    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 </head>
 <script language="JavaScript">
     window.onload = function () {
@@ -35,6 +35,7 @@
         if (new Date().getMonth() === 1 && IsPinYear(YYYYvalue)) n++;
         writeDay(n); //赋日期下拉框
     };
+
     function YYYYMM(str) //年发生变化时日期发生变化(主要是判断闰平年)
     {
         var MMvalue = document.form1.MM.options[document.form1.MM.selectedIndex].value;
@@ -46,6 +47,7 @@
         if (MMvalue === 2 && IsPinYear(str)) n++;
         writeDay(n)
     }
+
     function MMDD(str) //月发生变化时日期联动
     {
         var YYYYvalue = document.form1.YYYY.options[document.form1.YYYY.selectedIndex].value;
@@ -57,6 +59,7 @@
         if (str === 2 && IsPinYear(YYYYvalue)) n++;
         writeDay(n)
     }
+
     function writeDay(n) //据条件写日期的下拉框
     {
         var s = strDD.substring(0, strDD.length - 9);
@@ -85,7 +88,7 @@
 <div align="left" style="margin-left: 20%">
     <?php
     require('../possess/mysql.php');
-    $sql_currentFirstDay = "select * from thefirstday";
+    $sql_currentFirstDay = "select * from the_first_day";
     $result = mysqli_query($con, $sql_currentFirstDay);
     $currentFirstDay = mysqli_fetch_array($result);
     echo "<p>已将当前学期的开学第一天为 : <span style='text-decoration-line: underline;font-weight: bold'>" . $currentFirstDay[0] . "年" . "$currentFirstDay[1]" . "月" . $currentFirstDay[2] . "日</span></p>";
@@ -107,9 +110,9 @@
     @$month = $_POST["MM"];
     @$day = $_POST["DD"];
     if ($month != 0 && $day != 0 && $year != 0) {
-        $cleanTable = "truncate table thefirstday";
+        $cleanTable = "truncate table the_first_day";
         mysqli_query($con, $cleanTable);
-        $sql_thefirstday = "INSERT INTO `thefirstday` (`year`, `month`, `day`) VALUES ('$year','$month', '$day'); ";
+        $sql_thefirstday = "INSERT INTO `the_first_day` (`year`, `month`, `day`) VALUES ('$year','$month', '$day'); ";
         if (mysqli_query($con, $sql_thefirstday)) {
             echo "<script>alert('设置成功 !  本学期第一天将从 " . $year . "年" . $month . "月" . $day . "日" . " 开始计算');
                       window.location.href='admin.php';</script>";

@@ -15,7 +15,7 @@ if ($_SESSION['ID'] == false) {
 $adminID = $_SESSION['ID'];
 $date = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
-$firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from TheFirstDay'));
+$firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from the_first_day'));
 $firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];//第一天的日期格式化
 $days = calDays($firstDay, $date);      /*当天和本学期第一天中间隔了多少天*/
 $whichWeek = whichWeek($days);          /*当前是第几周*/

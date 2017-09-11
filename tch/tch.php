@@ -36,7 +36,7 @@ if (@$_SESSION["status"] !== "admin") {
 $tchID = $_SESSION['ID'];
 $today = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
-$firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from thefirstday'));
+$firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from the_first_day'));
 $firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];
 $days = calDays($firstDay, $today);      /*当天和本学期第一天中间隔了多少天*/
 $whichWeek = whichWeek($days);          /*当前是第几周*/
@@ -91,7 +91,7 @@ if (date("w") != 0) {
                         onclick='window.location.href="../possess/logout.php"'>
                     点此注销
                 </button>
-                <button style="height: 45px;" class="btn btn-info" onclick='window.location.href="query.php"'>
+                <button style="height: 45px;" class="btn btn-info" onclick='window.location.href="query-log.php"'>
                     点此查看您的操作记录
                 </button>
                 <!--如果使用单点登录等集成验证登录方式，则删除下面的button标签-->
@@ -108,7 +108,7 @@ if (date("w") != 0) {
                         class="todayIs"> <?php echo $whichWeek ?></span><?php echo " 周 <span class='todayIs'>周" . $day[date("w")] . '</span> ;' ?>
 
                 <?php
-                $sql_schedule = "select * from schedule 
+                $sql_schedule = "select * from course_timetable 
                         WHERE tchID='$tchID' 
                         AND find_in_set('$whichWeek',detailsOfWeeks) 
                         AND timeForClass like '$dayInWeek' ";

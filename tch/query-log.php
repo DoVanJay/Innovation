@@ -12,7 +12,7 @@
 </div>
 <div align="left" class="main">
     <p>请输入要查询的日期:
-    <form name="selectDate" method="post" action="query.php">
+    <form name="selectDate" method="post" action="query-log.php">
         <select name='year' onchange="YYMM()">
             <option value="">年</option>
         </select>
@@ -126,14 +126,14 @@
         echo "<p>当前查询日期: <span style='background-color: lightgreen ;'>" . $display . "</span></p>";
     }
     $tchID = $_SESSION['ID'];
-    $sql = "select * from operating_log where tchID='$tchID' and time LIKE '%$time%'";
+    $sql = "select * from operation_log where tchID='$tchID' and time LIKE '%$time%'";
     $result = mysqli_query($con, $sql);
     ?>
 
     <?php
     if ($time) {
         echo '<textarea rows="26" cols="100" readonly="readonly" style="opacity: 0.4;color: black;font-size: 120%">结果如下:';
-        if (mysqli_num_rows(mysqli_query($con, $sql)) < 1) {
+        if (@mysqli_num_rows(mysqli_query($con, $sql)) < 1) {
             echo "\n当前日期无操作记录";
         } else {
             echo "\n           操作时间 ++++++ 工号 ++++++ 操作教室 ++++++ 具体操作\n\n";
