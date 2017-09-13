@@ -19,16 +19,6 @@ $firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from the_first_day')
 $firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];//第一天的日期格式化
 $days = calDays($firstDay, $date);      /*当天和本学期第一天中间隔了多少天*/
 $whichWeek = whichWeek($days);          /*当前是第几周*/
-if (date("w") != 0) {
-    $mysqlZJ = date("w") . "%";
-} else {
-    $mysqlZJ = 7 . "%";
-}
-$sql_innovation = "select * from innovation 
-                      WHERE JSXM='$username' 
-                      AND find_in_set('$whichWeek',SKZCMX) 
-                      AND SKSJ like '$mysqlZJ' ";
-$result = mysqli_query($con, $sql_innovation);
 ?>
 <html>
 <head>

@@ -132,13 +132,13 @@
 
     <?php
     if ($time) {
-        echo '<textarea rows="26" cols="100" readonly="readonly" style="opacity: 0.4;color: black;font-size: 120%">结果如下:';
+        echo '<textarea rows="26" cols="80" readonly="readonly" style="opacity: 0.4;color: black;font-size: 120%">结果如下:';
         if (@mysqli_num_rows(mysqli_query($con, $sql)) < 1) {
             echo "\n当前日期无操作记录";
         } else {
             echo "\n           操作时间 ++++++ 工号 ++++++ 操作教室 ++++++ 具体操作\n\n";
             while ($row = mysqli_fetch_array($result)) {
-                echo $row[0] . "&nbsp;&nbsp;&nbsp;" . $row[1] . "&nbsp;&nbsp;&nbsp;" . $row[2] . "&nbsp;&nbsp;&nbsp;" . $row[3] . "\n";
+                echo $row['time'] . "&nbsp;&nbsp;&nbsp;" . $row['tchID'] . "&nbsp;&nbsp;&nbsp;" . $row['classroomName'] . "&nbsp;&nbsp;&nbsp;" . $row['operation'] . "\n";
             }
         }
         echo "</textarea>";

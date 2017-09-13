@@ -21,10 +21,9 @@ function clean_schedule($con, $classroomIp)
     }
 }
 
+$operation_result = 000;
 
-if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) {
-    echo "<script>alert('对不起,操作出错！')</script>";
-} else {
+if ($_POST['network'] == 0 || $_POST['network'] == 1 || $_POST['network'] == 2) {
     $network = $_POST["network"];
     $classroomName = $_POST["classroomName"];
     $endTimestamp = $_POST["endTimestamp"];
@@ -33,7 +32,6 @@ if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) 
     $result = mysqli_query($con, $query_ip);
     $classroomIp = mysqli_fetch_array($result)[0]['classroom_ip'];
     $switchIp = mysqli_fetch_array($result)[0]['switch_ip'];
-
     switch ($network) {
         case 0:
             //这里设置交换机对应接口下的网络状态:完全开放
@@ -42,8 +40,9 @@ if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) 
             //因为这是开放网络操作，所以要检查当前教室是否已经有计划任务，有的话需要取消
             clean_schedule($con, $classroomIp);
 
-            $log_sql = "insert operation_log values(NOW(),\"" . $_SESSION["ID"] . "\",\"" . $_POST['classroomName'] . "\",\"完全开放\")";
+            $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","' . $_POST['classroomName'] . '","完全开放")';
             mysqli_query($con, $log_sql);
+            $operation_result = 111;
             break;
         case 1:
             ///////////////////////////////////////////////////
@@ -60,9 +59,9 @@ if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) 
             mysqli_query($con, $store_schedule);
 
             //将操作记录写入操作记录数据表中
-            $log_sql = "insert operation_log values(NOW(),\"" . $_SESSION["ID"] . "\",\"" . $_POST['classroomName'] . "\",\"仅关闭内网\")";
+            $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","' . $_POST['classroomName'] . '","仅关闭外网")';
             mysqli_query($con, $log_sql);
-            //查找当前用户有无已存在的flag，有的话删除，即终止已存在的恢复网络计划任务
+            $operation_result = 111;
             break;
 
         case 2:
@@ -76,9 +75,10 @@ if ($_POST['network'] != 0 && $_POST['network'] != 1 && $_POST['network'] != 2) 
             mysqli_query($con, $store_schedule);
 
 
-            $log_sql = "insert operation_log values(NOW(),\"" . $_SESSION["ID"] . "\",\"" . $_POST['classroomName'] . "\",\"完全关闭\")";
+            $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","' . $_POST['classroomName'] . '","完全关闭")';
             mysqli_query($con, $log_sql);
+            $operation_result = 111;
             break;
     }
 }
-header("location:tch.php");
+header("location:tch.php?operation_result=" . $operation_result);
