@@ -14,10 +14,10 @@ class telnet_control_switch
 {
     var $sock = NULL;
 
-    function telnet($host, $port)
+    function __construct($host, $port)
     {
         $this->sock = fsockopen($host, $port);
-        socket_set_timeout($this->sock, 2, 0);
+        socket_set_timeout($this->sock, 1, 0);
     }
 
     function close()
@@ -52,9 +52,6 @@ class telnet_control_switch
             if ($c == $theNULL) {
                 continue;
             }
-            if ($c == "1") {
-                continue;
-            }
             if ($c != $IAC) {
                 $buf .= $c;
                 if ($what == (substr($buf, strlen($buf) - strlen($what)))) {
@@ -72,27 +69,49 @@ class telnet_control_switch
             } elseif (($c == $WILL) || ($c == $WONT)) {
                 $opt = $this->getc();
                 fwrite($this->sock, $IAC . $DONT . $opt);
-            } else {
             }
         }
     }
 
 }
 
+
 //使用telnet连接并执行命令
 function telnetExeCommand($host, $password, $command)
 {
+
     $telnet = new telnet_control_switch($host, 23);
     echo $telnet->read_till("password: ");
-    $telnet->write($password);
+    $telnet->write($password . "\r\n");
     echo $telnet->read_till(":> ");
     $telnet->write("sys\r\n");
     echo $telnet->read_till(":> ");
-    $telnet->write("interface vlan-interface 200\r\n");
-    echo $telnet->read_till(":> ");
-    $telnet->write("$command\r\n");
-    echo $telnet->read_till(":> ");
-    echo $telnet->close();
+    foreach ($command as $com) {
+        $telnet->write("$com\r\n");
+        echo $telnet->read_till(":> ");
+    }
+    $telnet->close();
 }
-//
-//exeCommand("undo packet-filter name dmt101_deny_upc inbound");
+
+function readCurrentACL($host, $password, $vlan)
+{
+    $query_acl = "display current-configuration interface Vlan-interface " . $vlan . "\r\n";
+    $telnet = new telnet_control_switch($host, 23);
+    $telnet->read_till("password: ");
+    $telnet->write($password . "\r\n");
+    $telnet->read_till(":> ");
+    $telnet->write("sys\r\n");
+    $telnet->read_till(":> ");
+    $telnet->write($query_acl);
+    $result = $telnet->read_till(":> ");
+    $telnet->close();
+    $results = explode("\r\n", $result);
+    return $results[5];
+}
+
+
+//$t1 = microtime(true);
+//readCurrentACL("10.0.0.1", "123456", "200");
+//test("10.0.0.1", "123456", "200");
+//$t2 = microtime(true);
+//echo (($t2 - $t1) * 1000) . 'ms';

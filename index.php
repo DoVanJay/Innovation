@@ -52,8 +52,7 @@
 
 <?php
 /**
- * 密码登录页，如使用单点登录则无需本文件
- *
+ * 密码登录页，如果不使用密码登录方式则请更名本文件为“backup-index.php”
  */
 
 require('./possess/mysql.php');

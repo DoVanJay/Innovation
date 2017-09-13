@@ -40,8 +40,10 @@ $whichWeek = whichWeek($days);          /*当前是第几周*/
     <?php
     $result = mysqli_query($con, "select * from messages");
     if (mysqli_affected_rows($con) > 0) {
-        $message = mysqli_fetch_array($result)[1];
-        echo "<marquee style='font-size: 24px;color: black'>通知：" . $message . "</marquee>";
+        $message = mysqli_fetch_array($result)["message"];
+        if ($message != "") {
+            echo "<marquee style='font-size: 24px;color: black'>通知：" . $message . "</marquee>";
+        }
     }
     ?>
 </div>
@@ -57,7 +59,7 @@ $whichWeek = whichWeek($days);          /*当前是第几周*/
             <button class="btn btn-danger" onclick='window.location.href="../possess/logout.php"'>
                 点此注销
             </button>
-            <!--如果使用单点登录等集成验证登录方式，则删除下面的button标签-->
+            <!--如果不使用密码登录方式，则注释下面的button标签-->
             <button class="btn btn-primary"
                     onclick='window.location.href="../possess/reset-password.php"'>点此修改密码
             </button>

@@ -2,8 +2,13 @@
 /**
  * 教师操作界面
  */
-require('../possess/mysql.php');
-require('../function/function.php');
+ignore_user_abort();//关掉浏览器，PHP脚本也可以继续执行.
+set_time_limit(0);//设置不受不响应最长时间限制
+
+require '../possess/mysql.php';
+require '../function/function.php';
+require '../config/config.php';
+require '../possess/control_switch.php';
 @session_start();
 if ($_SESSION['ID'] == false) {
     header("location:../possess/login.php");
@@ -11,7 +16,6 @@ if ($_SESSION['ID'] == false) {
 if (@$_SESSION["status"] !== "admin") {
     @$_SESSION["status"] = "tch"; //将用户身份赋值为教师
 }
-
 
 if (!@$_GET['operation_result']) {
     $_GET['operation_result'] = -1;
@@ -21,6 +25,11 @@ if (@$_GET['operation_result'] == 111) {
 } elseif (@$_GET['operation_result'] == 000) {
     echo "<script>alert('修改网络状态失败');window.location.href='tch.php';</script>";
 }
+
+$_SESSION["vlan"] = null;
+$_SESSION["current_acl"] = null;
+$_SESSION["switch_passwd"] = null;
+
 
 $tchID = $_SESSION['ID'];
 $today = date('y-m-d');
@@ -43,8 +52,6 @@ if (date("w") != 0) {
     <title>教师操作界面</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <!--    <script src="ht.static.runoob.com/ltps://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
-    <!--    <script src="https://cdnibs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 </head>
 <script type="text/javascript">
     function checkConfirm() {
@@ -59,8 +66,10 @@ if (date("w") != 0) {
     <?php
     $result = mysqli_query($con, "select * from messages");
     if (mysqli_affected_rows($con) > 0) {
-        $message = mysqli_fetch_array($result)[1];
-        echo "<marquee style='font-size: 24px;color: black'>通知：" . $message . "</marquee>";
+        $message = mysqli_fetch_array($result)["message"];
+        if ($message != "") {
+            echo "<marquee style='font-size: 24px;color: black'>通知：" . $message . "</marquee>";
+        }
     }
     ?>
 </div>
@@ -79,7 +88,7 @@ if (date("w") != 0) {
             <button style="height: 45px;" class="btn btn-info" onclick='window.location.href="query-log.php"'>
                 点此查看您的操作记录
             </button>
-            <!--如果使用单点登录等集成验证登录方式，则删除下面的button标签-->
+            <!--如果不使用密码登录方式，则删除下面的button标签-->
             <button style="height: 45px;" class="btn btn-primary"
                     onclick='window.location.href="../possess/reset-password.php"'>点此修改密码
             </button>
@@ -118,11 +127,12 @@ if (date("w") != 0) {
                     $SKSJ = (string)$info['timeForClass'];          /*取出上课时间*/
                     $sksjPY = str_split($SKSJ);
                     $m = count($sksjPY);
-                    if (strstr($info['locationOfClass'], "微") || strstr($info['locationOfClass'], "文理")) {
-                        $operation[$o][0] = $info['timeForClass'];/*可操作的机房课程时间*/
-                        $operation[$o][1] = $info['locationOfClass'];/*可操作的机房课程地点*/
-                        $o = $o + 1;
-                    }
+                    foreach ($computer_room_title as $title)
+                        if (strstr($info['locationOfClass'], $title)) {
+                            $operation[$o][0] = $info['timeForClass'];/*可操作的机房课程时间*/
+                            $operation[$o][1] = $info['locationOfClass'];/*可操作的机房课程地点*/
+                            $o = $o + 1;
+                        }
                     $timeOfClass = null;
                     for ($i = ($m - 1); $i >= 1; $i = $i - 2) {
                         if ($i == 2) {
@@ -145,8 +155,8 @@ if (date("w") != 0) {
                     </table>
             ';
             } else {
-                $info['locationOfClass'] = "无课";
-                echo $info['locationOfClass'];
+                $info['locationOfClass'] = "您今天在机房无课";
+                echo "<p style='font-weight: bold;font-size: 110%'>" . $info['locationOfClass'] . "</p>";
             }
             echo "</div>";
             ?>
@@ -189,7 +199,7 @@ if (date("w") != 0) {
                 echo "<div class='classroom-now-control'>您当前可操作教室：";
                 for ($i = 0; $i < $o; $i++) { /*$o为今天机房课的个数*/
                     if (strstr($operation[$i][0], $nowPermit)) {
-                        $nowPermitClassroomName = $operation[$i][1];
+                        $nowPermitClassroomName = $operation[$i]["1"];
                         //下课时间是第几节课，用来传给set-network来确定什么时候下课
                         $endTimestamp = substr((string)$operation[$i][0], -2);
                         break;
@@ -231,12 +241,38 @@ if (date("w") != 0) {
                         $endTimestamp = strtotime(date("y-m-d") . " 21:50:00");
                 }
                 echo "<span style='text-decoration-line: underline;color: red'>" . $nowPermitClassroomName . "&nbsp;</span>";/*输出当前可操作的机房地点*/
-                echo "<br/><p id='now_net_status' style='font-size:120%;font-weight: bold;' >可操作教室的当前网络状态:</p>";
+                echo "<br/><p id='now_net_status' style='font-size:120%;font-weight: bold;' >可操作教室的当前网络状态: <a style='color: black;'>";
 ///////////////////////////////////////////////////
 ///取交换机对应接口下的网络状态////////////////////////
 ///////////////////////////////////////////////////
 ///////////////////////////////////////////////////
-                echo '<div style="font-size: 120%">
+
+                $query_classroomInfo = "select * from classroom_info where classroom_name='" . $nowPermitClassroomName . "';";
+                $classroomInfo = mysqli_fetch_array(mysqli_query($con, $query_classroomInfo));
+
+                $nowPermitClassroomVlan = $classroomInfo["vlan"];
+                $_SESSION["vlan"] = $nowPermitClassroomVlan;
+                $nowPermitClassroomSwitchIp = $classroomInfo["switch_ip"];
+                $_SESSION['SwitchIp'] = $nowPermitClassroomSwitchIp;
+                $query_switch_passwd = "select passwd from switch_info where switch_ip='" . $nowPermitClassroomSwitchIp . "';";
+                $switch_passwd = mysqli_fetch_array(mysqli_query($con, $query_switch_passwd))['passwd'];
+                $_SESSION['switch_passwd'] = $switch_passwd;
+                $current_acl = mysqli_fetch_array(mysqli_query($con, "select current_acl_num from classroom_info where classroom_name='" . $nowPermitClassroomName . "';"))['current_acl_num'];
+                if ($current_acl) {
+                    if (strstr($current_acl, $open_net_acl)) {
+                        $_SESSION['current_acl'] = $open_net_acl;
+                        echo "完全开放";
+                    } elseif (strstr($current_acl, $only_campus_acl)) {
+                        $_SESSION['current_acl'] = $only_campus_acl;
+                        echo "仅可访问校园网";
+                    } elseif (strstr($current_acl, $shutdown_net_acl)) {
+                        $_SESSION['current_acl'] = $shutdown_net_acl;
+                        echo "完全关闭对外网络";
+                    }
+                } else {
+                    echo "<a style='color: tomato'>查询失败，请稍后再试</a>";
+                }
+                echo '</a></p><div style="font-size: 120%">
 设置学生机网络状态:<br>
 <form action="set-network.php" onsubmit="return checkConfirm()" method="post" style="margin-left: 10%">
         <label><input name="network" type="radio" value="0" >完全开放 </label><br>

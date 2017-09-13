@@ -4,15 +4,14 @@
  */
 require('../possess/mysql.php');
 require('../function/function.php');
+
 $class1 = null;
 $class2 = null;
 $classLocation = null;
-$classNum = null;
 $tchID = null;
 @$class1 = $_POST['no1'];
 @$class2 = $_POST['no2'];
 @$classLocation = $_POST['classLocation'];
-@$classNum = $_POST['classNum'];
 @$tchID = $_POST['tchID'];
 $today = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
@@ -35,7 +34,6 @@ for (; $i <= $class2; $i++) {
         $classes = $classes . $i;
     }
 }
-//and (locationOfClass like '文理%' or locationOfClass like '微%')
 $sql_check = "select tchID from course_timetable  
                       where tchID='$tchID'
                       and (SUBSTRING(timeForClass,2) LIKE '%$classes%' or locate(SUBSTRING(timeForClass,2),'$classes')) /*查找包含 classes 或被 classes包含的*/
@@ -45,10 +43,10 @@ $sql_check = "select tchID from course_timetable
 $check_result = mysqli_query($con, $sql_check);
 @$check = mysqli_num_rows($check_result);
 
-if ($class1 != null && $class2 != null && $classLocation != null && $classNum != null && $tchID != null) {
+if ($class1 != null && $class2 != null && $classLocation != null && $tchID != null) {
     if ($check && $class1 != null) {
         $sql_update = "update course_timetable 
-                          set locationOfClass='$classLocation$classNum' ,timeForClass='$dayInWeek$classes' 
+                          set locationOfClass='$classLocation' ,timeForClass='$dayInWeek$classes' 
                           where tchID='$tchID' 
                           and (timeForClass LIKE '%$classes%' or locate(timeForClass,'$dayInWeek$classes'))  
                           and find_in_set('$whichWeek',detailsOfWeeks)";
@@ -60,12 +58,11 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
             echo "<script>alert('更新操作失败');
                           window.location.href='admin-setClass.php';
                   </script>";
-            header("location:admin-setClass.php");
         }
     } else {
-        if (!($class1 == 'n' || $class2 == 'm' || $classLocation == '教室位置' || $classNum == 'num' || $tchID == '请输入教师工号')) {
+        if (!($class1 == 'n' || $class2 == 'm' || $classLocation == '教室位置' || $tchID == '请输入教师工号')) {
             $sql_insert = "insert into course_timetable(timeForClass,locationOfClass,tchID,detailsOfWeeks) 
-                                values('$dayInWeek$classes','$classLocation$classNum','$tchID','$whichWeek')";
+                                values('$dayInWeek$classes','$classLocation','$tchID','$whichWeek')";
             if (mysqli_query($con, $sql_insert)) {
                 echo "<script>alert('插入操作成功');
                               window.location.href='admin-setClass.php';
@@ -75,7 +72,7 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
                               window.location.href='admin-setClass.php';
                       </script>";
             }
-        } else if ($class1 == 'n' || $class2 == 'm' || $classLocation == '教室位置' || $classNum == 'num' || $tchID == '请输入教师工号') {
+        } else if ($class1 == 'n' || $class2 == 'm' || $classLocation == '教室位置' || $tchID == '请输入教师工号') {
             echo "<script>alert('请填入完整信息');</script>";
         }
     }
@@ -95,7 +92,7 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
     <!--    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 </head>
 <script>
-    classLocation = document.classroom.classLocation.outerHTML;
+    //    classLocation = document.classroom.classLocation.outerHTML;
     classNum = document.classroom.classNum.outerHTML;
 
     function setClassNo2(str) {
@@ -113,25 +110,7 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
         document.classroom.no2.outerHTML = "<select name='no2'>" + s + "</select>";
     }
 
-    function setLocation(str) {
-        var s = '<option value="num">教室编号</option>';
-        if (str != "微") {
-            if (str == "文理") {
-                for (var i = 10; i < 20; i++) {
-                    s += "<option  value='" + i + "'> " + i + "</option>\r\n";
-                }
-                document.classroom.classNum.outerHTML = "<select name='classNum'>" + s + "</select>";
-            }
-            else {
-                document.classroom.classNum.outerHTML = '<select name="classNum"><option value="num">教室编号</option></select>';
-            }
-        } else {
-            for (var i = 1; i < 10; i++) {
-                s += "<option value='" + i + "'> " + i + "</option>\r\n";
-            }
-            document.classroom.classNum.outerHTML = "<select name='classNum'>" + s + "</select>";
-        }
-    }
+
 </script>
 <body>
 <div align="center">
@@ -161,12 +140,21 @@ if ($class1 != null && $class2 != null && $classLocation != null && $classNum !=
             </select>节课&nbsp;&nbsp;
             <select name="classLocation" onchange="setLocation(this.value)">
                 <option>教室位置</option>
-                <option value="微">微</option>
-                <option value="文理">文理</option>
+                <!--                <option value="微">微</option>-->
+                <!--                <option value="文理">文理</option>-->
+                <?php
+                $query_classroom_sql = "select classroom_name from classroom_info;";
+                $result = mysqli_query($con, $query_classroom_sql);
+                $classroom_names = mysqli_fetch_all($result);
+
+                foreach ($classroom_names as $item) {
+                    echo "<option value=$item[0]>$item[0]</option>";
+                }
+                ?>
             </select>
-            <select name="classNum">
-                <option value="num">教室编号</option>
-            </select>
+            <!--            <select name="classNum">-->
+            <!--                <option value="num">教室编号</option>-->
+            <!--            </select>-->
             <input name="tchID" type="text" value="请输入教师工号"
                    onfocus="javascript:if(this.value=='请输入教师工号')this.value='';">
         </p>
