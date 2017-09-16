@@ -12,7 +12,7 @@
 $localhost = "localhost";
 $local_db_user_name = "root";
 $local_db_user_password = "";
-$local_db_name = "control_system";
+$local_db_name = "control_system";//请不要修改
 
 
 /**

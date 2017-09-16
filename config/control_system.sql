@@ -92,6 +92,13 @@ CREATE TABLE `classroom_info` (
   `switch_ip` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- 转存表中的数据 `classroom_info`
+--
+
+INSERT INTO `classroom_info` (`id`, `classroom_name`, `vlan`, `current_acl_num`, `switch_ip`) VALUES
+(1, '测试：微101', '200', '#', '10.0.0.1');
+
 -- --------------------------------------------------------
 
 --
@@ -156,6 +163,13 @@ CREATE TABLE `switch_info` (
   `switch_ip` varchar(100) NOT NULL,
   `passwd` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `switch_info`
+--
+
+INSERT INTO `switch_info` (`id`, `switch_ip`, `passwd`) VALUES
+(1, '10.0.0.1', '123456');
 
 -- --------------------------------------------------------
 
