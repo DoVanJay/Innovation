@@ -79,3 +79,9 @@ restore-network.php使用php命令每三分钟运行一次；
 ### 致歉
 由于开发的时间紧迫，本系统还有很多不完善和存在漏洞的地方，在后续的版本中会不断修正和完善，敬请谅解。
 使用过程中如遇到问题请邮件联系：1507020326@s.upc.edu.cn
+
+
+### 注意
+如果运行系统时php提示PHP Warning:system() has been disabled for security reasons in create-database.php on line 20
+之类的消息，请到php配置文件（php.ini）中将system函数从禁止的函数中删掉，否则由于安全策略无法调用
+

@@ -17,7 +17,9 @@ require dirname(__FILE__) . "/../config/config.php";
 $createCon = mysqli_connect($localhost, $local_db_user_name, $local_db_user_password);
 mysqli_query($createCon, "create database " . $local_db_name . ";");
 if ($local_db_user_password) {
-    system("mysql -u " . $local_db_user_name . " -p " . $local_db_user_password . "  " . $local_db_name . " < ../config/control_system.sql ");
+    system("mysql -u" . $local_db_user_name . " -p" . $local_db_user_password . "  " . $local_db_name . " < ../config/control_system.sql ");
+    echo "导入数据库成功";
 } else {
     system("mysql -u " . $local_db_user_name . "  " . $local_db_name . " < ../config/control_system.sql ");
+    echo "导入数据库成功";
 }
