@@ -34,7 +34,7 @@ $_SESSION["switch_passwd"] = null;
 $tchID = $_SESSION['ID'];
 $today = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
-$firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from the_first_day'));
+$firstDay = mysqli_fetch_array(mysqli_query($local_con, 'select * from the_first_day'));
 $firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];
 $days = calDays($firstDay, $today);      /*当天和本学期第一天中间隔了多少天*/
 $whichWeek = whichWeek($days);          /*当前是第几周*/
@@ -65,8 +65,8 @@ if (date("w") != 0) {
 </div>
 <div>
     <?php
-    $result = mysqli_query($con, "select * from messages");
-    if (mysqli_affected_rows($con) > 0) {
+    $result = mysqli_query($local_con, "select * from messages");
+    if (mysqli_affected_rows($local_con) > 0) {
         $message = mysqli_fetch_array($result)["message"];
         if ($message != "") {
             echo "<marquee style='font-size: 24px;color: black'>通知：" . $message . "</marquee>";
@@ -107,7 +107,7 @@ if (date("w") != 0) {
                         WHERE tchID='$tchID' 
                         AND find_in_set('$whichWeek',detailsOfWeeks) 
                         AND timeForClass like '$dayInWeek' ";
-            $result = mysqli_query($con, $sql_schedule);
+            $result = mysqli_query($local_con, $sql_schedule);
             $operation = null;
             if (mysqli_num_rows($result)) {
                 $n = mysqli_num_rows($result);
@@ -249,16 +249,16 @@ if (date("w") != 0) {
 ///////////////////////////////////////////////////
 
                 $query_classroomInfo = "select * from classroom_info where classroom_name='" . $nowPermitClassroomName . "';";
-                $classroomInfo = mysqli_fetch_array(mysqli_query($con, $query_classroomInfo));
+                $classroomInfo = mysqli_fetch_array(mysqli_query($local_con, $query_classroomInfo));
 
                 $nowPermitClassroomVlan = $classroomInfo["vlan"];
                 $_SESSION["vlan"] = $nowPermitClassroomVlan;
                 $nowPermitClassroomSwitchIp = $classroomInfo["switch_ip"];
                 $_SESSION['SwitchIp'] = $nowPermitClassroomSwitchIp;
                 $query_switch_passwd = "select passwd from switch_info where switch_ip='" . $nowPermitClassroomSwitchIp . "';";
-                $switch_passwd = mysqli_fetch_array(mysqli_query($con, $query_switch_passwd))['passwd'];
+                $switch_passwd = mysqli_fetch_array(mysqli_query($local_con, $query_switch_passwd))['passwd'];
                 $_SESSION['switch_passwd'] = $switch_passwd;
-                $current_acl = mysqli_fetch_array(mysqli_query($con, "select current_acl_num from classroom_info where classroom_name='" . $nowPermitClassroomName . "';"))['current_acl_num'];
+                $current_acl = mysqli_fetch_array(mysqli_query($local_con, "select current_acl_num from classroom_info where classroom_name='" . $nowPermitClassroomName . "';"))['current_acl_num'];
                 if ($current_acl) {
                     if (strstr($current_acl, $open_net_acl)) {
                         $_SESSION['current_acl'] = $open_net_acl;

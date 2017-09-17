@@ -128,7 +128,7 @@
         echo "<p>当前查询工号为 <span style='background-color: lightgreen ;'>" . $tchID . "</span> 的老师在 <span style='background-color: lightgreen ;'>" . $display . "</span>的操作记录</p>";
     }
     $sql = "select * from operation_log where tchID='$tchID' and time LIKE '%$time%'";
-    $result = mysqli_query($con, $sql);
+    $result = mysqli_query($local_con, $sql);
     ?>
     <?php
     if ($time) {

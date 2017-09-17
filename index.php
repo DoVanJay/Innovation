@@ -67,7 +67,7 @@ $passwd = $_SESSION['passwd'];
 $hasher = new PasswordHash(8, FALSE);
 
 $sql_tch = "select passwd from tch where tchID='$userID';";
-$tch_result = mysqli_query($con, $sql_tch);
+$tch_result = mysqli_query($local_con, $sql_tch);
 $tch_correct_hash = mysqli_fetch_array($tch_result);       /*查找是否是教师*/
 if ($tch_correct_hash[0] != "") {
     if ($hasher->CheckPassword($passwd, $tch_correct_hash[0])) {
@@ -79,7 +79,7 @@ if ($tch_correct_hash[0] != "") {
 }
 
 $sql_admin = "select passwd from admin where adminID='$userID';";
-$admin_result = mysqli_query($con, $sql_admin);
+$admin_result = mysqli_query($local_con, $sql_admin);
 $admin_correct_hash = mysqli_fetch_array($admin_result);         /*查找是否是管理员*/
 if ($admin_correct_hash[0] != "") {
     if ($hasher->CheckPassword($passwd, $admin_correct_hash[0])) {

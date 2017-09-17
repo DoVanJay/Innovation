@@ -30,14 +30,14 @@ function update_current_acl($con, $classroom_vlan)
 require "../possess/mysql.php";
 //查询恢复网络计划表中的任务
 $query_schedule_sql = "select * from restore_network_schedule;";
-$result = mysqli_query($con, $query_schedule_sql);
+$result = mysqli_query($local_con, $query_schedule_sql);
 $schedule_task = mysqli_fetch_array($result);
 foreach ($schedule_task as $task) {
     if ($task['endTimestamp'] < time()) {
-        restoreNet($con, $task['classroom_vlan'], $task['current_acl_num'], $task['switch_ip']);
-        update_current_acl($con, $task['classroom_vlan']);
+        restoreNet($local_con, $task['classroom_vlan'], $task['current_acl_num'], $task['switch_ip']);
+        update_current_acl($local_con, $task['classroom_vlan']);
         //执行完恢复网络任务后，删除数据表中的原有计划任务
         $delete_schedule_sql = "delete from restore_net_schedule where id='" . $task['id'] . "';";
-        mysqli_query($con, $delete_schedule_sql);
+        mysqli_query($local_con, $delete_schedule_sql);
     }
 }

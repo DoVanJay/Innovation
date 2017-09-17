@@ -8,9 +8,9 @@ require "../possess/PasswordHash.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $hasher = new PasswordHash(8, FALSE);
     if ($_SESSION["status"] == "admin") {
-        $old_passwd_hash_query = mysqli_query($con, "select passwd from admin where adminID='" . $_SESSION['ID'] . "';");
+        $old_passwd_hash_query = mysqli_query($local_con, "select passwd from admin where adminID='" . $_SESSION['ID'] . "';");
     } else {
-        $old_passwd_hash_query = mysqli_query($con, "select passwd from tch where tchID='" . $_SESSION['ID'] . "';");
+        $old_passwd_hash_query = mysqli_query($local_con, "select passwd from tch where tchID='" . $_SESSION['ID'] . "';");
     }
 
     $old_passwd_hash = mysqli_fetch_array($old_passwd_hash_query);
@@ -22,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } elseif ($_SESSION['status'] == "tch") {
             $sql = 'update tch set passwd= "' . $hash_password . '" where tchID=' . $_SESSION["ID"];
         }
-        $result = mysqli_query($con, $sql);
-        if (mysqli_affected_rows($con) > 0) {
+        $result = mysqli_query($local_con, $sql);
+        if (mysqli_affected_rows($local_con) > 0) {
             echo "<script>alert('修改成功');</script>";
         }
     } else {

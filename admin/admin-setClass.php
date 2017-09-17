@@ -15,7 +15,7 @@ $tchID = null;
 @$tchID = $_POST['tchID'];
 $today = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
-$firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from the_first_day'));
+$firstDay = mysqli_fetch_array(mysqli_query($local_con, 'select * from the_first_day'));
 $firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];
 $days = calDays($firstDay, $today);      /*当天和本学期第一天中间隔了多少天*/
 $whichWeek = whichWeek($days);          /*当前是第几周*/
@@ -40,7 +40,7 @@ $sql_check = "select tchID from course_timetable
                       and LEFT (timeForClass,1)='$dayInWeek'/*确定周几相同*/
                       and find_in_set('$whichWeek',detailsOfWeeks); ";
 //设置的时间有无课,有的话直接修改,否则添加
-$check_result = mysqli_query($con, $sql_check);
+$check_result = mysqli_query($local_con, $sql_check);
 @$check = mysqli_num_rows($check_result);
 
 if ($class1 != null && $class2 != null && $classLocation != null && $tchID != null) {
@@ -50,7 +50,7 @@ if ($class1 != null && $class2 != null && $classLocation != null && $tchID != nu
                           where tchID='$tchID' 
                           and (timeForClass LIKE '%$classes%' or locate(timeForClass,'$dayInWeek$classes'))  
                           and find_in_set('$whichWeek',detailsOfWeeks)";
-        if (mysqli_query($con, $sql_update)) {
+        if (mysqli_query($local_con, $sql_update)) {
             echo "<script>alert('更新操作成功');
                           window.location.href='admin-setClass.php';
                   </script>";
@@ -63,7 +63,7 @@ if ($class1 != null && $class2 != null && $classLocation != null && $tchID != nu
         if (!($class1 == 'n' || $class2 == 'm' || $classLocation == '教室位置' || $tchID == '请输入教师工号')) {
             $sql_insert = "insert into course_timetable(timeForClass,locationOfClass,tchID,detailsOfWeeks) 
                                 values('$dayInWeek$classes','$classLocation','$tchID','$whichWeek')";
-            if (mysqli_query($con, $sql_insert)) {
+            if (mysqli_query($local_con, $sql_insert)) {
                 echo "<script>alert('插入操作成功');
                               window.location.href='admin-setClass.php';
                       </script>";
@@ -88,8 +88,6 @@ if ($class1 != null && $class2 != null && $classLocation != null && $tchID != nu
     <title>设置教师定时定点操作权限</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
-    <!--    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
-    <!--    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
 </head>
 <script>
     //    classLocation = document.classroom.classLocation.outerHTML;
@@ -144,7 +142,7 @@ if ($class1 != null && $class2 != null && $classLocation != null && $tchID != nu
                 <!--                <option value="文理">文理</option>-->
                 <?php
                 $query_classroom_sql = "select classroom_name from classroom_info;";
-                $result = mysqli_query($con, $query_classroom_sql);
+                $result = mysqli_query($local_con, $query_classroom_sql);
                 $classroom_names = mysqli_fetch_all($result);
 
                 foreach ($classroom_names as $item) {

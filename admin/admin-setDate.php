@@ -87,7 +87,7 @@
     <?php
     require('../possess/mysql.php');
     $sql_currentFirstDay = "select * from the_first_day";
-    $result = mysqli_query($con, $sql_currentFirstDay);
+    $result = mysqli_query($local_con, $sql_currentFirstDay);
     $currentFirstDay = mysqli_fetch_array($result);
     echo "<p>已将当前学期的开学第一天为 : <span style='text-decoration-line: underline;font-weight: bold'>" . $currentFirstDay[0] . "年" . "$currentFirstDay[1]" . "月" . $currentFirstDay[2] . "日</span></p>";
     ?>
@@ -109,9 +109,9 @@
     @$day = $_POST["DD"];
     if ($month != 0 && $day != 0 && $year != 0) {
         $cleanTable = "truncate table the_first_day";
-        mysqli_query($con, $cleanTable);
+        mysqli_query($local_con, $cleanTable);
         $sql_thefirstday = "INSERT INTO `the_first_day` (`year`, `month`, `day`) VALUES ('$year','$month', '$day'); ";
-        if (mysqli_query($con, $sql_thefirstday)) {
+        if (mysqli_query($local_con, $sql_thefirstday)) {
             echo "<script>alert('设置成功 !  本学期第一天将从 " . $year . "年" . $month . "月" . $day . "日" . " 开始计算');
                       window.location.href='admin.php';</script>";
         }

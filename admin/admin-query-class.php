@@ -27,7 +27,7 @@
     @$query_tchID = $_POST['query_tchID'];
     $today = date('y-m-d');
     $day = array('日', '一', '二', '三', '四', '五', '六');
-    $firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from the_first_day'));
+    $firstDay = mysqli_fetch_array(mysqli_query($local_con, 'select * from the_first_day'));
     $firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];
     $days = calDays($firstDay, $today);      /*当天和本学期第一天中间隔了多少天*/
     $whichWeek = whichWeek($days);          /*当前是第几周*/
@@ -41,7 +41,7 @@
                         WHERE tchID='$query_tchID' 
                         AND find_in_set('$whichWeek',detailsOfWeeks) 
                         AND timeForClass like '$dayInWeek' ";
-    $result = mysqli_query($con, $sql_schedule);
+    $result = mysqli_query($local_con, $sql_schedule);
     $operation = null;
     if (@mysqli_num_rows($result)) {
         $n = mysqli_num_rows($result);
@@ -149,8 +149,8 @@
 <?php
 $id = @$_POST['id'];
 $delete_sql = "delete from course_timetable where id=$id";
-$result = mysqli_query($con, $delete_sql);
-$affected = mysqli_affected_rows($con);
+$result = mysqli_query($local_con, $delete_sql);
+$affected = mysqli_affected_rows($local_con);
 if ($affected > 0) {
     echo "<script>
             alert('删除成功');

@@ -127,13 +127,13 @@
     }
     $tchID = $_SESSION['ID'];
     $sql = "select * from operation_log where tchID='$tchID' and time LIKE '%$time%'";
-    $result = mysqli_query($con, $sql);
+    $result = mysqli_query($local_con, $sql);
     ?>
 
     <?php
     if ($time) {
         echo '<textarea rows="26" cols="80" readonly="readonly" style="opacity: 0.4;color: black;font-size: 120%">结果如下:';
-        if (@mysqli_num_rows(mysqli_query($con, $sql)) < 1) {
+        if (@mysqli_num_rows(mysqli_query($local_con, $sql)) < 1) {
             echo "\n当前日期无操作记录";
         } else {
             echo "\n           操作时间 ++++++ 工号 ++++++ 操作教室 ++++++ 具体操作\n\n";

@@ -51,9 +51,9 @@ require "../possess/mysql.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $messages = $_POST["messages"];
     $clean_messages_sql = "truncate messages";
-    mysqli_query($con, $clean_messages_sql);
+    mysqli_query($local_con, $clean_messages_sql);
     $store_messages_sql = "insert into messages(message) VALUES('" . $messages . "');";
-    $result = mysqli_query($con, $store_messages_sql);
+    $result = mysqli_query($local_con, $store_messages_sql);
     if ($result) {
         echo "<script>alert('设置通知消息成功');</script>";
     }

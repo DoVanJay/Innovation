@@ -21,14 +21,14 @@ session_start();
 //在实现身份验证之后，必须将用户id信息写入session，即传给$_SESSION["ID"]变量
 //根据$_SESSION["ID"]的值来查询身份并跳转到对应的操作界面
 $sql_tch = "select tchID from tch where tchID='" . $_SESSION['ID'] . "';";
-$tch_result = mysqli_fetch_all(mysqli_query($con, $sql_tch));
+$tch_result = mysqli_fetch_all(mysqli_query($local_con, $sql_tch));
 if ($tch_result) {
     $_SESSION["status"] = "tch";
     header("location:./possess/login.php");
 }
 
 $sql_admin = "select adminID from admin where adminID='" . $_SESSION['ID'] . "';";
-$admin_result = mysqli_fetch_all(mysqli_query($con, $sql_admin));
+$admin_result = mysqli_fetch_all(mysqli_query($local_con, $sql_admin));
 if ($admin_result) {
     $_SESSION["status"] = "admin";
     header("location:./possess/login.php");

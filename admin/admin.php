@@ -15,7 +15,7 @@ if ($_SESSION['ID'] == false) {
 $adminID = $_SESSION['ID'];
 $date = date('y-m-d');
 $day = array('日', '一', '二', '三', '四', '五', '六');
-$firstDay = mysqli_fetch_array(mysqli_query($con, 'select * from the_first_day'));
+$firstDay = mysqli_fetch_array(mysqli_query($local_con, 'select * from the_first_day'));
 $firstDay = $firstDay[0] . '-' . $firstDay[1] . '-' . $firstDay[2];//第一天的日期格式化
 $days = calDays($firstDay, $date);      /*当天和本学期第一天中间隔了多少天*/
 $whichWeek = whichWeek($days);          /*当前是第几周*/
@@ -37,8 +37,8 @@ $whichWeek = whichWeek($days);          /*当前是第几周*/
 </div>
 <div>
     <?php
-    $result = mysqli_query($con, "select * from messages");
-    if (mysqli_affected_rows($con) > 0) {
+    $result = mysqli_query($local_con, "select * from messages");
+    if (mysqli_affected_rows($local_con) > 0) {
         $message = mysqli_fetch_array($result)["message"];
         if ($message != "") {
             echo "<marquee style='font-size: 24px;color: black'>通知：" . $message . "</marquee>";

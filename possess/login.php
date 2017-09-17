@@ -12,7 +12,7 @@ if (@$_SESSION["status"] == null) {
      */
     $userID = $_SESSION['ID'];
     $sql_tch = "select tchID from tch where tchID='$userID';";
-    $tch_result = mysqli_query($con, $sql_tch);
+    $tch_result = mysqli_query($local_con, $sql_tch);
     $row_result = mysqli_num_rows($tch_result);
     if ($row_result > 0) {
         $_SESSION["status"] = "tch";
