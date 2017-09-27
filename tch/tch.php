@@ -10,9 +10,6 @@ require '../function/function.php';
 require '../config/config.php';
 require '../possess/control_switch.php';
 @session_start();
-if ($_SESSION['ID'] == false) {
-    header("location:../possess/login.php");
-}
 if (@$_SESSION["status"] !== "admin") {
     @$_SESSION["status"] = "tch"; //将用户身份赋值为教师
 }
@@ -89,7 +86,7 @@ if (date("w") != 0) {
             <button style="height: 45px;" class="btn btn-info" onclick='window.location.href="query-log.php"'>
                 点此查看您的操作记录
             </button>
-            <!--如果不使用密码登录方式，则删除下面的button标签-->
+            <!--如果不使用密码登录方式，则注释下面的button标签-->
             <button style="height: 45px;" class="btn btn-primary"
                     onclick='window.location.href="../possess/reset-password.php"'>点此修改密码
             </button>

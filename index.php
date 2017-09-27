@@ -54,7 +54,6 @@
 /**
  * 密码登录页，如果不使用密码登录方式则请更名本文件为“backup-index.php”
  */
-
 require('./possess/mysql.php');
 require('./possess/PasswordHash.php');
 session_start();
@@ -72,7 +71,7 @@ $tch_correct_hash = mysqli_fetch_array($tch_result);       /*查找是否是教�
 if ($tch_correct_hash[0] != "") {
     if ($hasher->CheckPassword($passwd, $tch_correct_hash[0])) {
         $_SESSION["status"] = "tch";
-        header("location:./possess/login.php");
+        header("location:./tch/tch.php");
     } else {
         echo "<div class='alert alert-danger' style='width:300px;margin-left: 32%'>用户名或密码错误,请重新登录</div>";
     }
@@ -84,7 +83,7 @@ $admin_correct_hash = mysqli_fetch_array($admin_result);         /*查找是否�
 if ($admin_correct_hash[0] != "") {
     if ($hasher->CheckPassword($passwd, $admin_correct_hash[0])) {
         $_SESSION["status"] = "admin";
-        header("location:./possess/login.php");
+        header("location:./admin/admin.php");
     } else {
         echo "<div class='alert alert-danger' style='width:300px;margin-left: 32%'>用户名或密码错误,请重新登录</div>";
     }
