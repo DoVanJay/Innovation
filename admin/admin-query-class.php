@@ -40,7 +40,9 @@
     $sql_schedule = "select * from course_timetable 
                         WHERE tchID='$query_tchID' 
                         AND find_in_set('$whichWeek',detailsOfWeeks) 
-                        AND timeForClass like '$dayInWeek' ";
+                        AND timeForClass like '$dayInWeek' 
+                        AN (locationOfClass like '%微%'
+                        OR locationOfClass like '%文理%')";
     $result = mysqli_query($local_con, $sql_schedule);
     $operation = null;
     if (@mysqli_num_rows($result)) {
