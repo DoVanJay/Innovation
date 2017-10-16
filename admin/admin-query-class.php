@@ -138,11 +138,16 @@
             form.action = "admin-query-class.php";
             form.method = "post";
             document.body.appendChild(form);
-            var input = document.createElement("input");
-            input.type = "text";
-            input.name = "id";
-            input.value = id;
-            form.appendChild(input);
+            var input1 = document.createElement("input");
+            input1.type = "text";
+            input1.name = "id";
+            input1.value = id;
+            form.appendChild(input1);
+            var input2 = document.createElement("input");
+            input2.type="text";
+            input2.name="tchID";
+            input2.value=localStorage.getItem("query_tchID");
+            form.appendChild(input2);
             form.submit();
             document.body.removeChild(form);
         }
@@ -151,11 +156,12 @@
 
 <?php
 $id = @$_POST['id'];
+$tchID = @$_POST["tchID"];#查询的教师工号
 $delete_sql = "delete from course_timetable where id=$id";
 $result = mysqli_query($local_con, $delete_sql);
 $affected = mysqli_affected_rows($local_con);
 if ($affected > 0) {
-    $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","#","删除' . $query_tchID . '老师机房课程")';
+    $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","#","删除' . $tchID . '老师机房课程")';
     mysqli_query($local_con, $log_sql);
     echo "<script>
             alert('删除成功');
