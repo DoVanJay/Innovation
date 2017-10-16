@@ -138,8 +138,6 @@ if ($class1 != null && $class2 != null && $classLocation != null && $tchID != nu
             </select>节课&nbsp;&nbsp;
             <select name="classLocation" onchange="setLocation(this.value)">
                 <option>教室位置</option>
-                <!--                <option value="微">微</option>-->
-                <!--                <option value="文理">文理</option>-->
                 <?php
                 $query_classroom_sql = "select classroom_name from classroom_info;";
                 $result = mysqli_query($local_con, $query_classroom_sql);
@@ -150,9 +148,6 @@ if ($class1 != null && $class2 != null && $classLocation != null && $tchID != nu
                 }
                 ?>
             </select>
-            <!--            <select name="classNum">-->
-            <!--                <option value="num">教室编号</option>-->
-            <!--            </select>-->
             <input name="tchID" type="text" value="请输入教师工号"
                    onfocus="javascript:if(this.value=='请输入教师工号')this.value='';">
         </p>

@@ -112,7 +112,7 @@
         mysqli_query($local_con, $cleanTable);
         $sql_thefirstday = "INSERT INTO `the_first_day` (`year`, `month`, `day`) VALUES ('$year','$month', '$day'); ";
         if (mysqli_query($local_con, $sql_thefirstday)) {
-            echo "<script>alert('设置成功 !  本学期第一天将从 " . $year . "年" . $month . "月" . $day . "日" . " 开始计算');
+            echo "<script>alert('设置成功 !  开学第一天设置为 " . $year . "年" . $month . "月" . $day . "日"."\\n\\n将跳转到首页......');
                       window.location.href='admin.php';</script>";
         }
     } else if ($month != 0 || $day != 0) {

@@ -40,9 +40,7 @@
     $sql_schedule = "select * from course_timetable 
                         WHERE tchID='$query_tchID' 
                         AND find_in_set('$whichWeek',detailsOfWeeks) 
-                        AND timeForClass like '$dayInWeek' 
-                        AN (locationOfClass like '%微%'
-                        OR locationOfClass like '%文理%')";
+                        AND timeForClass like '$dayInWeek' ";
     $result = mysqli_query($local_con, $sql_schedule);
     $operation = null;
     if (@mysqli_num_rows($result)) {
@@ -65,11 +63,12 @@
             $SKSJ = (string)$info['timeForClass'];          /*取出上课时间*/
             $sksjPY = str_split($SKSJ);
             $m = count($sksjPY);
-            if (strstr($info['locationOfClass'], "微") || strstr($info['locationOfClass'], "文理")) {
-                $operation[$o][0] = $info['timeForClass'];/*可操作的机房课程时间*/
-                $operation[$o][1] = $info['locationOfClass'];/*可操作的机房课程地点*/
-                $o = $o + 1;
-            }
+            foreach ($computer_room_title as $title)
+                if (strstr($info['locationOfClass'], $title)) {
+                    $operation[$o][0] = $info['timeForClass'];/*可操作的机房课程时间*/
+                    $operation[$o][1] = $info['locationOfClass'];/*可操作的机房课程地点*/
+                    $o = $o + 1;
+                }
             $timeOfClass = null;
             for ($i = ($m - 1); $i >= 1; $i = $i - 2) {
                 if ($i == 2) {
@@ -123,11 +122,13 @@
             }
         }
     };
+
     //提交query_tchID时将其存入localStorage
     function storage(button) {
         var query_tchID = button.parentNode.parentNode.childNodes[1].value;
         localStorage.setItem("query_tchID", query_tchID);
     }
+
     //    获取指定行的课程号并创建表单提交以删除课程
     function deleteClass(button) {
         var con = confirm("确认删除？");
