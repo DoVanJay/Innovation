@@ -4,7 +4,7 @@
  */
 require('../possess/mysql.php');
 require('../function/function.php');
-
+session_start();
 $class1 = null;
 $class2 = null;
 $classLocation = null;
@@ -51,6 +51,8 @@ if ($class1 != null && $class2 != null && $classLocation != null && $tchID != nu
                           and (timeForClass LIKE '%$classes%' or locate(timeForClass,'$dayInWeek$classes'))  
                           and find_in_set('$whichWeek',detailsOfWeeks)";
         if (mysqli_query($local_con, $sql_update)) {
+            $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","' . $classLocation . '","给'.$tchID.'老师开放权限")';
+            mysqli_query($local_con, $log_sql);
             echo "<script>alert('更新操作成功');
                           window.location.href='admin-setClass.php';
                   </script>";
@@ -64,6 +66,8 @@ if ($class1 != null && $class2 != null && $classLocation != null && $tchID != nu
             $sql_insert = "insert into course_timetable(timeForClass,locationOfClass,tchID,detailsOfWeeks) 
                                 values('$dayInWeek$classes','$classLocation','$tchID','$whichWeek')";
             if (mysqli_query($local_con, $sql_insert)) {
+                $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","' . $classLocation . '","给'.$tchID.'老师开放权限")';
+                mysqli_query($local_con, $log_sql);
                 echo "<script>alert('插入操作成功');
                               window.location.href='admin-setClass.php';
                       </script>";

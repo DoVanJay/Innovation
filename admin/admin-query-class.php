@@ -155,6 +155,8 @@ $delete_sql = "delete from course_timetable where id=$id";
 $result = mysqli_query($local_con, $delete_sql);
 $affected = mysqli_affected_rows($local_con);
 if ($affected > 0) {
+    $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","#","删除' . $query_tchID . '老师机房课程")';
+    mysqli_query($local_con, $log_sql);
     echo "<script>
             alert('删除成功');
           </script>";

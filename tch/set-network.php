@@ -59,7 +59,7 @@ if ($_POST['network'] == 0 || $_POST['network'] == 1 || $_POST['network'] == 2) 
             //因为这是开放网络操作，所以要检查当前教室是否已经有计划任务，有的话需要取消
             clean_schedule($local_con);
             update_current_acl($local_con, $open_net_acl, $classroomName);
-            $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","' . $_POST['classroomName'] . '","完全开放")';
+            $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","' . $_POST['classroomName'] . '","网络状态修改：完全开放")';
             mysqli_query($local_con, $log_sql);
             $operation_result = 111;
             break;
@@ -89,7 +89,7 @@ if ($_POST['network'] == 0 || $_POST['network'] == 1 || $_POST['network'] == 2) 
             mysqli_query($local_con, $store_schedule);
 
             //将操作记录写入操作记录数据表中
-            $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","' . $_POST['classroomName'] . '","仅关闭外网")';
+            $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","' . $_POST['classroomName'] . '","网络状态修改：仅关闭外网")';
             mysqli_query($local_con, $log_sql);
             $operation_result = 111;
             break;
@@ -116,7 +116,7 @@ if ($_POST['network'] == 0 || $_POST['network'] == 1 || $_POST['network'] == 2) 
                               VALUES ('" . $_SESSION['vlan'] . "','" . $shutdown_net_acl . "','" . $_SESSION['SwitchIp'] . "','" . $endTimestamp . "')";
             mysqli_query($local_con, $store_schedule);
 
-            $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","' . $_POST['classroomName'] . '","完全关闭")';
+            $log_sql = 'insert operation_log(time,tchID,classroomName,operation) values(NOW(),"' . $_SESSION["ID"] . '","' . $_POST['classroomName'] . '","网络状态修改：完全关闭")';
             mysqli_query($local_con, $log_sql);
             $operation_result = 111;
             break;
