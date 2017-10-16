@@ -42,9 +42,36 @@
                         AND find_in_set('$whichWeek',detailsOfWeeks) 
                         AND timeForClass like '$dayInWeek' ";
     $result = mysqli_query($local_con, $sql_schedule);
+    $n = mysqli_num_rows($result);
     $operation = null;
-    if (@mysqli_num_rows($result)) {
-        $n = mysqli_num_rows($result);
+    while ($n > 0) {
+        $outputClass = 0;//flag,判断是否要输出该课程信息
+        $info = mysqli_fetch_array($result);            /*取出当前老师课表信息*/
+        $SKSJ = (string)$info['timeForClass'];          /*取出上课时间*/
+        $sksjPY = str_split($SKSJ);
+        $m = count($sksjPY);
+        foreach ($computer_room_title as $title)
+            if (strstr($info['locationOfClass'], $title))
+                $outputClass = 1;
+        if ($outputClass == 1) {
+            $operation[$o]['id'] = $info['id'];
+            $operation[$o]['locationOfClass'] = $info['locationOfClass'];
+            $timeOfClass = null;
+            for ($i = ($m - 1); $i >= 1; $i = $i - 2) {
+                if ($i == 2) {
+                    $timeOfClass = "第" . $sksjPY[$i - 1] . $sksjPY[$i] . "节&" . $timeOfClass;
+                } elseif ($i == ($m - 1)) {
+                    $timeOfClass = $sksjPY[$i - 1] . $sksjPY[$i] . "节";
+                } else {
+                    $timeOfClass = $sksjPY[$i - 1] . $sksjPY[$i] . "节&" . $timeOfClass;
+                }
+            }
+            $operation[$o]['timeOfClass'] = $timeOfClass;
+            $o++;
+        }
+        $n--;
+    }
+    if ($o > 0) {
         echo '
                 <p class="table-top-p" id="show-result"><span style="background-color: lightgreen ;">' . $query_tchID . '</span>  老师今天在机房的课程如下：</p>
                 <hr class="table-top-hr">
@@ -58,42 +85,22 @@
                     </thead>
                     <tbody>
             ';
-        while ($n > 0) {
-            $info = mysqli_fetch_array($result);            /*取出当前老师课表信息*/
-            $SKSJ = (string)$info['timeForClass'];          /*取出上课时间*/
-            $sksjPY = str_split($SKSJ);
-            $m = count($sksjPY);
-            foreach ($computer_room_title as $title)
-                if (strstr($info['locationOfClass'], $title)) {
-                    $operation[$o][0] = $info['timeForClass'];/*可操作的机房课程时间*/
-                    $operation[$o][1] = $info['locationOfClass'];/*可操作的机房课程地点*/
-                    $o = $o + 1;
-                }
-            $timeOfClass = null;
-            for ($i = ($m - 1); $i >= 1; $i = $i - 2) {
-                if ($i == 2) {
-                    $timeOfClass = "第" . $sksjPY[$i - 1] . $sksjPY[$i] . "节&" . $timeOfClass;
-                } elseif ($i == ($m - 1)) {
-                    $timeOfClass = $sksjPY[$i - 1] . $sksjPY[$i] . "节";
-                } else {
-                    $timeOfClass = $sksjPY[$i - 1] . $sksjPY[$i] . "节&" . $timeOfClass;
-                }
-            }
-
+        while ($o > 0) {
+            $o--;
             echo '
                     <tr>
-                        <td style="display: none;">' . $info['id'] . '</td>
-                        <td>' . $timeOfClass . '</td>
-                        <td><span style="color: red">' . $info['locationOfClass'] . '</span></td>
+                        <td style="display: none;">' . $operation[$o]["id"] . '</td>
+                        <td>' . $operation[$o]["timeOfClass"] . '</td>
+                        <td><span style="color: red">' . $operation[$o]["locationOfClass"] . '</span></td>
                         <td><button class="btn btn-info" onclick="deleteClass(this)">删除</button></td>
                     </tr>
                     ';
-            $n = $n - 1;
+
         }
         echo '
                     </tbody>
                     </table>';
-    } else if ($query_tchID) {
+    } else if ($query_tchID && $o == 0) {
         echo '
                 <div class="alert alert-success" id="show-result" style="margin-top: 30px;width: 40%;height: 10%;">
                 <a class="alert-link">' . $query_tchID . '  老师今天在机房无课</a>
@@ -144,9 +151,9 @@
             input1.value = id;
             form.appendChild(input1);
             var input2 = document.createElement("input");
-            input2.type="text";
-            input2.name="tchID";
-            input2.value=localStorage.getItem("query_tchID");
+            input2.type = "text";
+            input2.name = "tchID";
+            input2.value = localStorage.getItem("query_tchID");
             form.appendChild(input2);
             form.submit();
             document.body.removeChild(form);
