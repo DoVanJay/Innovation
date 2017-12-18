@@ -1,6 +1,11 @@
+NSC
+==================
+
 ### 简单试运行
 如果你需要试运行该系统，请使用php命令为系统启动php内置的服务器：
+```
 php -S localhost:8081 -t C:\Users\jay\Documents\CODE\IDEA-Projects\Innovation
+```
 从浏览器访问 http://localhost:8081 进入系统
 此时是使用密码登录的方式
 请事先参照下面的”关于数据库“的提示来导入数据库。
