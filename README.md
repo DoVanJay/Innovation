@@ -87,3 +87,4 @@ restore-network.php使用php命令每三分钟运行一次；
 如果运行系统时php提示PHP Warning:system() has been disabled for security reasons in create-database.php on line 20
 之类的消息，请到php配置文件（php.ini）中将system函数从禁止的函数中删掉，否则由于安全策略无法调用
 
+*ps.详细用户手册请从此[链接](http://owncloud.safeandsound.cn:8081/index.php/s/T9B0uGKWFefcHt6)下载*
