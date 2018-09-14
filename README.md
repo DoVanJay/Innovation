@@ -1,4 +1,4 @@
-NSC
+NCS(Network Control System)
 ==================
 
 ### 简单试运行
